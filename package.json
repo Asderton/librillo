@@ -4,7 +4,7 @@
   "description": "Pagina web de libros",
   "main": "api.js",
   "scripts": {
-    "dev": "nodemon backend/src/api.js"
+    "dev": "nodemon backend/api.js"
   },
   "author": "",
   "license": "ISC",

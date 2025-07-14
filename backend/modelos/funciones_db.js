@@ -6,4 +6,5 @@ database: 'librillo',
 password: 'postgres',   
 port: 5432,             
 });
-module.exports = pool;
+
+module.exports = db_client;
