@@ -116,7 +116,7 @@ router.delete('/api/autores/:id', async (req, res) => {
     try {
         const autor_eliminado = await eliminar_autor(autor_id);
         if (autor_eliminado === undefined){
-            return res.status(404).json({ error: "El autor que estas buscando no existe"});
+            return res.status(404).json({ error: "El autor que quieres eliminar no existe"});
         }
         else {
             return res.status(201).json({ mensaje: `El autor ${autor_eliminado} ha sido eliminado con exito.\n`});
