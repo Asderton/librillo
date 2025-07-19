@@ -8,4 +8,5 @@ port: 5432,
 });
 
 
-module.exports = dbclient;
+module.exports = db_client;
+
