@@ -85,16 +85,13 @@ router.delete('/api/autores/:nombre_usuario', async (req, res) => {
     };
 });
 
+
 // mas tarde cuando haya mas interfaz :)
 router.patch('/api/autores', async (req, res) => {
     validar_patch_usuario(req,body);
 
     const {
         nombre_usuario,
-        contrasenia_encriptada,
-        foto_perfil,
-        nombre,
-        bio
     } = req.body;
 
     try {
