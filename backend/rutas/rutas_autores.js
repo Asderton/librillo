@@ -27,12 +27,14 @@ router.get ('/api/autores', async (req,res) => {
 router.get ('/api/autores/:id', async (req,res) => {
     const id_autor = req.params.id;
     if (!Number.isInteger(Number(id_autor))){
+
         return res.status(400).json({error: "Formato de ID invalido, debe ser un entero"});
     };
 
     try{    
         const autor = await get_un_autor(id_autor);
         if (autor === undefined){
+
             return res.status(404).json({error: "El autor no ha sido encontrado"});
         }
         return res.status(200).json(autor);
@@ -45,6 +47,7 @@ router.get ('/api/autores/:id', async (req,res) => {
 
 // Crear un autor
 router.post ('/api/autores', async (req,res) => { 
+
     const validacion = validar_request_autor(req.body);
     if(!validacion.resultado){
         return res.status(validacion.status).json({ error: validacion.mensaje});
@@ -56,26 +59,32 @@ router.post ('/api/autores', async (req,res) => {
         fecha_nacimiento,
         retrato,
     } = req.body;
+
     try{
         const autor_creado = await crear_autor(nombre_completo, nacionalidad, fecha_nacimiento, retrato);
         if (autor_creado === undefined) {
             return res.status(400).json({ error: "Datos de autor invalidos"});
+
         }; 
         return res.status(201).json({mensaje: `Autor ${nombre_completo} creado con éxito`});
     }
     catch(error){
+
         console.log(error);
         return res.status(500).json({error: "Error del servidor al crear autor"});
+
     };
 });
 
 
 //Actualizar autor
+
 router.put('/api/autores/:id', async (req, res)=> {
     const id_autor = req.params.id;
     if (!Number.isInteger(Number(id_autor))){
         return res.status(400).send("Formato de ID no valido, debe ser un entero");
     };
+
     const validacion = validar_request_autor(req.body);
     if (!validacion.resultado){
         return res.status(validacion.status).json({ error: validacion.mensaje});
@@ -91,12 +100,15 @@ router.put('/api/autores/:id', async (req, res)=> {
     try{
         const autor_actualizado = await actualizar_autor(id_autor, nombre_completo, nacionalidad, fecha_nacimiento, retrato);
         if(autor_actualizado === undefined){
+
             return res.status(404).json({error: "Datos de autor invalidos"});
+
         }
         return res.status(201).json({mensaje: `Autor ${autor_actualizado} actualizado con exito`});
     }
     catch(error){
         console.log(error);
+
         return res.status(500).json({error: "Error del servidor al actualizar los datos"});
     }
 });
@@ -106,6 +118,7 @@ router.put('/api/autores/:id', async (req, res)=> {
 router.delete('/api/autores/:id', async (req, res) => {
     const autor_id = req.params.id;
     if (!Number.isInteger(Number(autor_id))){
+
         return res.status(400).json({ error: "El id debe ser un numero"});
     }
 
@@ -113,6 +126,8 @@ router.delete('/api/autores/:id', async (req, res) => {
         const autor_eliminado = await eliminar_autor(autor_id);
         if (autor_eliminado === undefined){
             return res.status(404).json({ error: "El autor que quieres eliminar no existe"});
+
+
         }
         else {
             return res.status(201).json({ mensaje: `El autor ${autor_eliminado} ha sido eliminado con exito.\n`});
@@ -121,6 +136,7 @@ router.delete('/api/autores/:id', async (req, res) => {
     catch(error){
         console.log(error);
         return res.status(500).json({ error: 'Error del servidor al eliminar'});
+
     }
 });
 
