@@ -2,7 +2,7 @@ const db_client = require('./funciones_db');
 
 
 async function get_bibliotecas_username(username) {
-    const bibliotecas = await db_client.query('SELECT nombre_biblioteca, icono FROM bibliotecas WHERE nombre_usuario_propietario = $1',[username]);
+    const bibliotecas = await db_client.query('SELECT * FROM bibliotecas WHERE nombre_usuario_propietario = $1',[username]);
     if (bibliotecas.rowCount === 0){
         return undefined;
     }
@@ -10,7 +10,7 @@ async function get_bibliotecas_username(username) {
 };
 
 async function get_libros_biblioteca(id_biblioteca) {
-    const libros = await db_client.query('SELECT titulo, imagen_portada FROM libros INNER JOIN biblioteca_libro ON libros.isbn_code = biblioteca_libro.isbn_code WHERE id_biblioteca = $1', [id_biblioteca]);
+    const libros = await db_client.query('SELECT libros.isbn_code, titulo, imagen_portada FROM libros INNER JOIN biblioteca_libro ON libros.isbn_code = biblioteca_libro.isbn_code WHERE id_biblioteca = $1', [id_biblioteca]);
     if(libros.rowCount === 0) {
         return undefined
     };
@@ -18,20 +18,43 @@ async function get_libros_biblioteca(id_biblioteca) {
 };
 
 async function crear_biblioteca(username_creador, nombre_biblioteca, icono = null) {
-    const biblioteca_creada = await db_client.query('INSERT INTO bibliotecas (nombre_usuario_propietario, nombre_biblioteca, icono) VALUES ($1, $2, $3)',[username_creador, nombre_biblioteca, icono]);
+    const biblioteca_creada = await db_client.query('INSERT INTO bibliotecas (nombre_usuario_propietario, nombre_biblioteca, icono) VALUES ($1, $2, $3) RETURNING nombre_biblioteca',[username_creador, nombre_biblioteca, icono]);
     if(biblioteca_creada.rowCount === 0){
         return undefined;
     }
-    return biblioteca_creada.rows[0];
+    return biblioteca_creada;
+}
+
+async function get_creador_biblioteca(id_biblioteca) {
+    const creador = await db_client.query('SELECT nombre_usuario_propietario FROM bibliotecas WHERE id_biblioteca = $1', [id_biblioteca]);
+    if (creador.rowCount === 0){
+        return undefined;
+    }
+    return creador.rows[0].nombre_usuario_propietario;
 }
 
 
-async function agregar_libro_biblioteca(id_biblioteca, isbn_code) {
-    const relacion_creada = await db_client.query('INSERT INTO biblioteca_libro (id_biblioteca, isbn_code) VALUES ($1, $2)',[id_biblioteca, isbn_code]);
-    if (relacion_creada === 0){
-        return undefined;
+async function agregar_libro_biblioteca(username_cliente, id_biblioteca, isbn_code) {
+    const username_credor = await get_creador_biblioteca(id_biblioteca);
+    if (username_credor === undefined || username_credor !== username_cliente){
+        return {status: 401, error: "No eres dueño de esta biblioteca"};
     }
-    return relacion_creada.rows[0];
+    try{    
+        const libro_agregado = await db_client.query('INSERT INTO biblioteca_libro (id_biblioteca, isbn_code) VALUES ($1, $2) RETURNING isbn_code',[id_biblioteca, isbn_code]);
+        console.log(`el libro es ${libro_agregado}`);
+        return libro_agregado.rows[0];
+    }
+    catch(error){
+        if (error.code === '23503'){
+            console.log("Violacion de foreign key. El libro no existe");
+            return {status: 404, error: "El libro que quieres agregar no existe"};
+        }
+        if (error.code === '23505'){
+            console.log("Violacion de primary key. El libro ya esta en la biblioteca");
+            return {status: 401, error: "El libro que quieres agregar ya esta en la biblioteca"};
+        }
+        return {status: 400, error: "Error desconocido"};
+    }
 }
 
 async function eliminar_biblioteca(id_biblioteca) {

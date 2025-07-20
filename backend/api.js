@@ -6,6 +6,7 @@ const router_autores = require('./rutas/rutas_autores.js');
 const router_usuarios = require('./rutas/rutas_usuarios.js');
 const router_login = require('./rutas/rutas_login.js');
 const router_seguidos = require('./rutas/rutas_seguidos.js');
+const router_bibliotecas = require('./rutas/rutas_bibliotecas.js');
 
 const session = require('express-session');
 
@@ -30,6 +31,7 @@ app.use(router_login);
 app.use(router_autores);
 app.use(router_seguidos);
 app.use(router_usuarios);
+app.use(router_bibliotecas);
 
 
 app.listen(port, () =>{

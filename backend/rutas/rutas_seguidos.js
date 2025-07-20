@@ -42,7 +42,7 @@ router.get ('/api/:username/seguidores', async (req,res) => {
 
 // Seguir
 router.post ('/api/seguidos/:username', async (req,res) =>{ 
-    if (req.session,user.username === undefined){
+    if (req.session.user.username === undefined){
         return res.status(401).send("Debe iniciar sesion!");
     }
     const usuario_cliente = req.session.user.username;

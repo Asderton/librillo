@@ -14,7 +14,7 @@ const {
 const {validar_request_biblioteca} = require('../validaciones/validaciones_bibliotecas.js');
 
 
-// Get icono y nombre de las bibliotecas del usuario (LA IDEA ES ENTRAR EN UN USUARIO Y DAR CLICK EN VER SUS BIBLIOTECAS)
+// Get id,icono y nombre de las bibliotecas del usuario 
 router.get ('/api/:username/bibliotecas/', async (req,res) => {
     const username = req.params.username;
     try{
@@ -30,59 +30,65 @@ router.get ('/api/:username/bibliotecas/', async (req,res) => {
 });
 
 
-// Get iconos e imagenes de los libros en una biblioteca
-router.get ('/api/:usuario/bibliotecas/:id', async (req,res) => {
-    const id = req.params.id;
+// Get codigo, iconos e imagenes de los libros en una biblioteca
+router.get ('/api/bibliotecas/:id', async (req,res) => {
+    const id_biblioteca = req.params.id;
     try{
-        const libros = await get_libros_biblioteca(id);
+        const libros = await get_libros_biblioteca(id_biblioteca);
         if (libros === undefined){
             return res.status(404).json({error: "Biblioteca no encontrada"})
         }
         res.status(200).json(libros);
     }
     catch(error){
-        return res.status(500).json({error:'Error del servidor al obtener los libros de la biblioteca.'});
+        return res.status(500).json({error: "Error del servidor al obtener los libros de la biblioteca."});
     };
 });
 
 // Crear una biblioteca vacia
-router.post ('/api/:username/bibliotecas', async (req,res) => { 
+router.post ('/api/bibliotecas', async (req,res) => { 
+    if (req.session.user === undefined){
+        return res.status(401).send("Debe iniciar sesion!");
+    }
+    const username_cliente = req.session.user.username;
+
     const validacion = validar_request_biblioteca(req.body);
     if(!validacion.resultado){
         return res.status(validacion.status).json({ error: validacion.mensaje});
     };
-    const {
-        nombre_biblioteca,
-        icono,
-    } = req.body;
+    const { nombre_biblioteca, icono } = req.body;
 
-    const username_creador = req.params.username;
     try{
-        const biblioteca_creada = await crear_biblioteca(username_creador, nombre_biblioteca, icono);
+        const biblioteca_creada = await crear_biblioteca(username_cliente, nombre_biblioteca, icono); //deberia lidiar con foreign key inexistente?
         if (biblioteca_creada === undefined){
-            return res.status(400).json({error: "Biblioteca ya existe"})
+            return res.status(400).json({error: "Biblioteca ya existe"});//nunca pasaria
         }
-        res.status(200).json({mensaje: `Biblioteca "${nombre_biblioteca}" creada con exito`});
+        return res.status(200).json({mensaje: `Biblioteca "${nombre_biblioteca}" creada con exito`});
     }
     catch(error){
         console.log(error);
-        res.status(500).json({error:'Error del servidor al obtener los autores.'});
+        return res.status(500).json({error: "Error del servidor al crear la biblioteca"});
     };
 });
 
 //Agregar libro a biblioteca
-router.post ('/api/:username/bibliotecas/:id', async (req,res) => { 
-    const id = req.params.id;
-    const {isbn_code} = req.body;
+router.post ('/api/bibliotecas/:id', async (req,res) => { 
+    if (req.session.user === undefined){
+        return res.status(401).send("Debe iniciar sesion!");
+    }
+
+    const username_cliente = req.session.user.username;
+    const id_biblioteca = req.params.id;
+    const { isbn_code } = req.body;
     if (!Number.isInteger(Number(isbn_code))){
         return res.status(400).json({error: "El codigo ISBN debe ser un numero"});
     }
 
     try{
-        const relacion = await agregar_libro_biblioteca(id, isbn_code);
-        //
-        //libro ya en la biblio???
-        //
+        const relacion = await agregar_libro_biblioteca(username_cliente, id_biblioteca, isbn_code);
+        if (relacion.status !== undefined ){
+            return res.status(relacion.status).json({error: relacion.error});
+        }
         return res.status(200).json({mensaje: "Libro agregado a biblioteca"});
     }
     catch(error){
@@ -109,7 +115,6 @@ router.delete ('/api/bibliotecas/:id', async (req,res) => {
 });
 
 // Eliminar libro de biblioteca
-// curl -X DELETE http://localhost:3000/api/bibliotecas/5/1018
 router.delete ('/api/bibliotecas/:id/:isbn_code', async (req,res) => {
     const id_biblioteca = req.params.id;
     const isbn_code = req.params.isbn_code;
