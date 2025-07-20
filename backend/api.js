@@ -4,6 +4,7 @@ const port=3000;
 const router_autores = require('./rutas/rutas_autores.js');
 const router_usuarios = require('./rutas/rutas_usuarios.js');
 const router_login = require('./rutas/rutas_login.js');
+const router_seguidos = require('./rutas/rutas_seguidos.js');
 const session = require('express-session');
 
 
@@ -28,6 +29,7 @@ app.get( '/', (req,res)=>{
 
 app.use(router_login);
 app.use(router_autores);
+app.use(router_seguidos);
 app.use(router_usuarios);
 
 app.listen(port, () =>{
