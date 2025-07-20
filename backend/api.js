@@ -3,13 +3,30 @@ const app =express();
 const port=3000;
 const router_autores = require('./rutas/rutas_autores.js');
 const router_usuarios = require('./rutas/rutas_usuarios.js');
+const router_login = require('./rutas/rutas_login.js');
+const session = require('express-session');
+
+
 // const pool = require('./db');
 
 app.use(express.json());
-
-app.get( '/', (req,res)=>{ res.send ('hola mundo');
+app.use(session({
+    secret: "Camejo mejor catedra",
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: 60000 * 3600
+    }
+}
+));
+app.get( '/', (req,res)=>{ 
+    req.session.username = "Manolito Gonzales";
+    console.log(req.session);
+    console.log(req.sessionID);
+    res.send ('hola mundo');
 });
 
+app.use(router_login);
 app.use(router_autores);
 app.use(router_usuarios);
 

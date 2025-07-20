@@ -13,6 +13,8 @@ const {validar_request_autor} = require('../validaciones/validaciones_autores');
 
 router.get ('/api/autores', async (req,res) => {
     try{
+        console.log(req.session);
+        console.log(req.sessionID);
         const autores = await get_all_autores();
         res.status(200).json(autores);
     }
