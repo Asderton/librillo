@@ -88,7 +88,7 @@ router.delete('/api/autores/:nombre_usuario', async (req, res) => {
 
 // mas tarde cuando haya mas interfaz :)
 router.patch('/api/autores', async (req, res) => {
-    validar_patch_usuario(req,body);
+    validar_patch_usuario(req.body);
 
     const {
         nombre_usuario,
@@ -105,8 +105,5 @@ router.patch('/api/autores', async (req, res) => {
         return res.status(500).json({error: "Error del servidor", mensaje: "No se pudo eliminar el usuario"});
     };
 });
-
-
-
 
 module.exports = router;

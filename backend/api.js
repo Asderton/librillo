@@ -17,10 +17,10 @@ app.use(session({
     cookie: {
         maxAge: 60000 * 3600
     }
-}
-));
+}));
+
 app.get( '/', (req,res)=>{ 
-    req.session.username = "Manolito Gonzales";
+    // req.session.username = "Manolito Gonzales";
     console.log(req.session);
     console.log(req.sessionID);
     res.send ('hola mundo');

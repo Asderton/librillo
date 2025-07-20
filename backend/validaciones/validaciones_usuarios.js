@@ -2,9 +2,10 @@ const { get_un_usuario } = require("../modelos/modelos_usuarios");
 const { es_url_valido } = require('./validaciones_generales');
 
 
-function validar_tipo_data_usuario(nombre_usuario, contrasenia_encriptada, foto_perfil, nombre, bio){
-    if (nombre_usuario && typeof nombre_usuario !== 'string' || nombre_usuario.trim() === ''){
-        return {resultado: false, status: 400, mensaje: "Formato de nombre de usuario invalido"};
+function validar_tipo_data_usuario(nombre_usuario, foto_perfil, nombre, bio){
+    if (nombre_usuario.trim() === ''){
+        console.log(typeof nombre_usuario);
+        return {resultado: false, status: 400, mensaje: "Nombre de usuario no puede estar vacio"};
     }
     // Faltan validaciones para contrasenia
     if (foto_perfil && !es_url_valido(foto_perfil)){
@@ -16,6 +17,7 @@ function validar_tipo_data_usuario(nombre_usuario, contrasenia_encriptada, foto_
     if (bio && bio.trim() ===  ''){
         return {resultado: false, status: 400, mensaje: "La bio no puede estar compueta solo de espacios"};
     }
+    return {resultado: true};
 }
 
 
@@ -35,7 +37,6 @@ async function validar_request_usuario(body){
         nombre,
         bio
     } = body;
-
     // Validar campos obligatorios
     if (!nombre_usuario || !contrasenia_encriptada || !nombre){
         return {resultado: false, status: 400, mensaje: "Campos obligatorios faltantes!"};
@@ -45,7 +46,7 @@ async function validar_request_usuario(body){
         return {resultado: false, status: 409, mensaje: "El nombre de usuario escogido ya está en uso!"};
     }
     // Validar tipos de dato
-    const validacion = validar_tipo_data_usuario(body);
+    const validacion = validar_tipo_data_usuario(nombre_usuario, foto_perfil, nombre, bio);
     if (!validacion.resultado){
         return {validacion: false, status: validacion.status, mensaje: validacion.mensaje};
     }
@@ -66,7 +67,7 @@ function validar_patch_usuario(body){
         return {resultado: false, status: 409, mensaje: "El nombre de usuario no puede ser modificado"};
     }
 
-    const validacion = validar_tipo_data_usuario(body);
+    const validacion = validar_tipo_data_usuario(nombre_usuario, foto_perfil, nombre. bio);
     if (!validacion.resultado){
         return {validacion: false, status: validacion.status, mensaje: validacion.mensaje};
     }

@@ -6,4 +6,9 @@ async function encriptar_clave(clave_plana){
     return clave_hash;
 }
 
-module.exports = {encriptar_clave};
+async function comparar_claves(clave_plana, clave_hash){
+    const match = await bcrypt.compare(clave_plana, clave_hash);
+    return match;
+}
+
+module.exports = {encriptar_clave, comparar_claves};

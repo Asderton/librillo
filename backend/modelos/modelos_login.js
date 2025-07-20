@@ -1,3 +1,4 @@
+const { comparar_claves } = require('../scripts/encriptado');
 const db_client = require('./funciones_db');
 
 async function logear_usuario(username, clave_plana) {
@@ -5,11 +6,25 @@ async function logear_usuario(username, clave_plana) {
     if (usuario.rowCount === 0){
         return undefined;
     }
+    const clave_hash = usuario.rows[0].contrasenia_encriptada;
+    const match_clave = await comparar_claves(clave_plana, clave_hash);
+    if(!match_clave){
+        return false;  //que retorno aca?
+    }
+    const {
+        nombre_usuario,
+        foto_perfil,
+        nombre
+    } = usuario.rows[0]
 
-    
-    console.log(usuario.rows[0].contrasenia_encriptada);
-
-    return usuario.rows;
+    const logged_data = {
+        nombre_usuario: nombre_usuario,
+        foto_perfil: foto_perfil,
+        nombre: nombre
+    }
+    return logged_data;
 };
+
+
 
 module.exports = {logear_usuario};
