@@ -2,6 +2,7 @@ const express = require ("express");
 const app =express();
 const port=3000;
 
+const router_paises = require('./rutas/rutas_paises.js');
 const router_autores = require('./rutas/rutas_autores.js');
 const router_usuarios = require('./rutas/rutas_usuarios.js');
 const router_login = require('./rutas/rutas_login.js');
@@ -27,6 +28,7 @@ app.get( '/', (req,res)=>{
     res.send ('hola mundo');
 });
 
+app.use(router_paises);
 app.use(router_login);
 app.use(router_autores);
 app.use(router_seguidos);
