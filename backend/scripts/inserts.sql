@@ -116,9 +116,22 @@ INSERT INTO resenias (nombre_usuario, isbn_code, calificacion, body) VALUES
 ('clara_books', 1010, 10, 'Filosofía y literatura en su máximo nivel.');
 
 -- Biblioteca
-INSERT INTO biblioteca (nombre_usuario, isbn_code, nombre_biblioteca) VALUES
-('luna23', 1001, 'Favoritos'),
-('mario_dev', 1005, 'Distopías'),
-('susanita', 1014, 'Extraños'),
-('akira88', 1003, 'Japón'),
-('clara_books', 1010, 'Filosofía');
+INSERT INTO bibliotecas (nombre_usuario_propietario, nombre_biblioteca) VALUES
+('luna23', 'Favoritos'),
+('mario_dev', 'Distopías'),
+('susanita', 'Extraños'),
+('akira88', 'Japón'),
+('clara_books', 'Filosofía');
+
+--Biblioteca a libros
+
+INSERT INTO biblioteca_libro (id_biblioteca, isbn_code) VALUES
+(1, 1001),
+(1, 1010),
+(1, 1006),
+(2, 1020),
+(2, 1002),
+(3, 1005),
+(3, 1006),
+(4, 1017),
+(4, 1018);
