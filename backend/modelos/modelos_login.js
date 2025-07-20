@@ -6,11 +6,13 @@ async function logear_usuario(username, clave_plana) {
     if (usuario.rowCount === 0){
         return undefined;
     }
+
     const clave_hash = usuario.rows[0].contrasenia_encriptada;
     const match_clave = await comparar_claves(clave_plana, clave_hash);
     if(!match_clave){
         return false;  //que retorno aca?
     }
+
     const {
         nombre_usuario,
         foto_perfil,
@@ -18,7 +20,7 @@ async function logear_usuario(username, clave_plana) {
     } = usuario.rows[0]
 
     const logged_data = {
-        nombre_usuario: nombre_usuario,
+        username: nombre_usuario,
         foto_perfil: foto_perfil,
         nombre: nombre
     }

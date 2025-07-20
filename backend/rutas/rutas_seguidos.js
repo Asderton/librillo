@@ -3,7 +3,9 @@ const router = express.Router();
 
 const {
     get_all_seguidos,
-    get_all_seguidores
+    get_all_seguidores,
+    crear_seguidor,
+    eliminar_seguidor
 }= require('../modelos/modelos_seguidos.js');
 
 // Ver seguidos
@@ -38,6 +40,37 @@ router.get ('/api/:username/seguidores', async (req,res) => {
     };
 });
 
+// Seguir
+router.post ('/api/seguidos/:username', async (req,res) =>{ 
+    if (req.session,user.username === undefined){
+        return res.status(401).send("Debe iniciar sesion!");
+    }
+    const usuario_cliente = req.session.user.username;
+    const usuario_a_seguir = req.params.username;
+
+    const result = await crear_seguidor(usuario_cliente, usuario_a_seguir);
+    //validar que el seguimiento se haya producido
+    if (result === undefined){
+        return res.status(404).json({error: "El usuario al que quieres seguir no existe o no esta disponible"});
+    }
+    //returnear ahora sigues a tal
+    return res.status(200).send(`Ahora sigues a ${usuario_a_seguir}`);
+})
+
+// Dejar de seguir
+router.delete ('/api/seguidos/:username', async (req, res) => {
+    if (usuario_cliente === undefined){
+        return res.status(401).send("Debe iniciar sesion!");
+    }
+    const usuario_a_unfollow = req.params.username;
+    const usuario_cliente = req.session.user.username;
+
+    const usuario_eliminado = await eliminar_seguidor(usuario_cliente, usuario_a_unfollow);
+    if (usuario_eliminado === undefined){
+        return res.status(404).send(`No sigues a ${usuario_a_unfollow}`);
+    }
+    return res.status(200).send(`Ya no sigues a ${usuario_a_unfollow}`);
+})
 
 
 module.exports = router;

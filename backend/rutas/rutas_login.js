@@ -21,12 +21,13 @@ router.post ('/api/login', async (req, res) => {
         if (!usuario_logeado){
             return res.status(400).json({error: "Clave incorrecta"});
         }
+
         req.session.user = usuario_logeado;
-        console.log(req.session.user.nombre_usuario);
+        res.send("Sesion iniciada!");
         return res.status(200).json(usuario_logeado);
     }
     catch(error){
-        return res.status(500).json({error: 'Error del servidor', mensaje: 'No se pudo obtener la informacion de inicio de sesion'});
+        return res.status(500).json({error: "Error del servidor al iniciar sesion"});
     }
 });
 
@@ -37,9 +38,7 @@ router.post('/api/logout', (req,res) => {
             return res.status(500).json({error: "Error del servidor al cerrar sesion"});
         }
         res.send("Sesion cerrada!");
-    }
-
-    );
+    });
 })
 
 module.exports = router;

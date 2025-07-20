@@ -2,40 +2,42 @@ const db_client = require('./funciones_db');
 const {encriptar_clave} = require('../scripts/encriptado');
 
 async function get_all_usuarios() {
-    const result = await db_client.query('SELECT * FROM usuarios');
-    return (result.rows);
+    const usuarios = await db_client.query('SELECT * FROM usuarios');
+    return (usuarios.rows);
 };
 
-async function get_un_usuario(nombre_usuario) {
-    const result = await db_client.query(`SELECT * FROM usuarios WHERE nombre_usuario = $1`,[nombre_usuario]);
-    if (result.rowCount === 0){
+async function get_un_usuario(username) {
+    const usuario = await db_client.query(`SELECT * FROM usuarios WHERE nombre_usuario = $1`,[username]);
+    if (usuario.rowCount === 0){
         return undefined;
     }
-    console.log(result.rows[0]);
-    return (result.rows[0]);
+    return (usuario.rows[0]);
 };
 
-async function crear_usuario(nombre_usuario, contrasenia_plana, foto_perfil = null, nombre, bio = null) {
-
-    const contrasenia_encriptada = await encriptar_clave(contrasenia_plana);
-    console.log(contrasenia_encriptada);
-    const result = await db_client.query('INSERT INTO usuarios (nombre_usuario, contrasenia_encriptada, foto_perfil, nombre, bio) VALUES ($1, $2, $3, $4, $5)', [nombre_usuario, contrasenia_encriptada, foto_perfil, nombre, bio]);
-
-    if (result.rowCount === 0){
-        return undefined;
+async function crear_usuario(username, clave_plana, foto_perfil = null, nombre, bio = null) {
+    const clave_hash = await encriptar_clave(clave_plana);
+    try{
+        const result = await db_client.query('INSERT INTO usuarios (nombre_usuario, contrasenia_encriptada, foto_perfil, nombre, bio) VALUES ($1, $2, $3, $4, $5)', [username, clave_hash, foto_perfil, nombre, bio]);
+        if (result.rowCount === 0){
+            return undefined;
+        }
+        return result;
     }
-
-    return result; // analizar bien que returnear
+    catch(error){
+        if (error.code === 23505){
+            console.log("Violacion de primary key. Nombre de usuario duplicado");
+            return undefined;
+        }
+    }
 };
 
-async function eliminar_usuario(nombre_usuario){
-    const result = await db_client.query(`DELETE FROM usuarios WHERE nombre_usuario = $1`, [nombre_usuario]);
-
+async function eliminar_usuario(username){
+    const result = await db_client.query(`DELETE FROM usuarios WHERE nombre_usuario = $1`, [username]);
     if(result.rowCount === 0){
         return undefined;
     }
 
-    return result.rows[0];
+    return result;
 }
 
 module.exports = {

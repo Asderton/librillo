@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const {
-    validar_nombre_usuario, 
-    validar_request_usuario,
+const { 
+    validar_crear_usuario,
     validar_patch_usuario
 } = require('../validaciones/validaciones_usuarios');
 
@@ -14,94 +13,102 @@ const {
     eliminar_usuario
 } = require('../modelos/modelos_usuarios');
 
+// Obtener todos los usuarios
 router.get ('/api/usuarios', async (req,res) => {
     try{
         const usuarios = await get_all_usuarios();
         res.status(200).json(usuarios);
     }
     catch(error){
-        res.status(500).json({error:'Error del servidor al obtener los usuarios.'});
+        console.log(error);
+        res.status(500).json({error:"Error del servidor al obtener los usuarios."});
     };
 });
 
-
-router.get ('/api/usuarios/:nombre_usuario', async (req,res) => {
-    const nombre_usuario = req.params.nombre_usuario;
-    const validacion = validar_nombre_usuario(nombre_usuario); // Necesario?
-    if (!validacion.resultado){
-        res.status(validacion.status).json({error: validacion.mensaje});
-    }
-
+// Obtener un usuario
+router.get ('/api/usuarios/:username', async (req,res) => {
+    const username = req.params.username;
     try{    
-        const usuario = await get_un_usuario(nombre_usuario);
+        const usuario = await get_un_usuario(username);
         if (usuario === undefined){
-            return res.status(404).json({error: `El usuario ${nombre_usuario} no ha sido encontrado o no existe`});
+            return res.status(404).json({error: `El usuario ${username} no ha sido encontrado o no existe`});
         }
         return res.status(200).json(usuario);
     }
     catch(error){
+        console.log(error);
         return res.status(500).json({error: "Error del servidor al obtener al usuario"});
     };
 });
 
-// curl -X POST http://localhost:3000/api/usuarios -H "Content-Type: application/json" -d '{"nombre_usuario": "tostonsecreto", "contrasenia_encriptada": "denmepollito1", "nombre": "toston"}'
+// Crear un usuario
 router.post ('/api/usuarios', async (req,res) => { 
-    const validacion = await validar_request_usuario(req.body);
+    const validacion = await validar_crear_usuario(req.body);
     if(!validacion.resultado){
         return res.status(validacion.status).json({ error: validacion.mensaje});
     };
 
     const {
-        nombre_usuario,
-        contrasenia_encriptada,
+        username,
+        clave_plana,
         foto_perfil,
         nombre,
         bio
     } = req.body;
 
     try {
-        const usuario = await crear_usuario(nombre_usuario, contrasenia_encriptada, foto_perfil, nombre, bio);
-        if (usuario === undefined){
-            return res.status(409).json({error: "El usuario ya existe"}); //cambiar mensaje
+        const usuario_creado = await crear_usuario(username, clave_plana, foto_perfil, nombre, bio);
+        if (usuario_creado === undefined){
+            return res.status(409).json({error: "El usuario ya existe"});
         }
-        return res.status(201).json({mensaje: `Usuario ${nombre_usuario} creado con exito`});
+        return res.status(201).json({mensaje: `Usuario ${username} creado con exito`});
     }
     catch(error){
-        return res.status(500).json({error: 'Error del servidor', mensaje: 'No se pudo crear el usuario'}); 
+        console.log(error);
+        return res.status(500).json({error: "Error del servidor al crear al usuario"}); 
     }
 });
 
-router.delete('/api/autores/:nombre_usuario', async (req, res) => {
-    const nombre_usuario = req.params.nombre_usuario;
+// Eliminar un usuario
+router.delete('/api/usuarios', async (req, res) => {   
+    if (req.session.user === undefined){
+        return res.status(401).send("Debe iniciar sesion!");
+    }
+    const username_cliente = req.session.user.username;// CAMBIARRRRRR
     try {
-        const usuario_eliminado = await eliminar_usuario(nombre_usuario);
-        if (autor_eliminado === undefined){
-            return res.status(404).json({error: "El usuario que quieres eliminar no existe"});
+        const usuario_eliminado = await eliminar_usuario(username_cliente);
+        if (usuario_eliminado === undefined){
+            return res.status(404).json({error: "El usuario que quieres eliminar no existe"}); //No puede pasar pero weno no se (sami)
         }
-        return res.status(201).json({mensaje: `El usuario ${nombre_usuario} ha sido eliminado con exito.`});
+        
+/////////////////////////////////////////////////////////// FALTA HACER LOGOUT ACA
+
+        return res.status(201).json({mensaje: `El usuario ${username_cliente} ha sido eliminado con exito.`});  
     }
     catch(error){
-        return res.status(500).json({error: "Error del servidor", mensaje: "No se pudo eliminar el usuario"});
+        console.log(error);
+        return res.status(500).json({error: "Error del servidor al eliminar al usuario"});
     };
 });
 
 
 // mas tarde cuando haya mas interfaz :)
-router.patch('/api/autores', async (req, res) => {
+router.patch('/api/usuarios', async (req, res) => {
     validar_patch_usuario(req.body);
 
     const {
-        nombre_usuario,
+        username,
     } = req.body;
 
     try {
-        const usuario_eliminado = await eliminar_usuario(nombre_usuario);
-        if (autor_eliminado === undefined){
+        const usuario_eliminado = await eliminar_usuario(username);
+        if (usuario_eliminado === undefined){
             return res.status(404).json({error: "El usuario que quieres eliminar no existe"});
         }
-        return res.status(201).json({mensaje: `El usuario ${nombre_usuario} ha sido eliminado con exito.`});
+        return res.status(201).json({mensaje: `El usuario ${username} ha sido eliminado con exito.`});
     }
     catch(error){
+        console.log(error);
         return res.status(500).json({error: "Error del servidor", mensaje: "No se pudo eliminar el usuario"});
     };
 });

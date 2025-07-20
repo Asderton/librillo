@@ -1,14 +1,13 @@
 const express = require ("express");
 const app =express();
 const port=3000;
+
 const router_autores = require('./rutas/rutas_autores.js');
 const router_usuarios = require('./rutas/rutas_usuarios.js');
 const router_login = require('./rutas/rutas_login.js');
 const router_seguidos = require('./rutas/rutas_seguidos.js');
+
 const session = require('express-session');
-
-
-// const pool = require('./db');
 
 app.use(express.json());
 app.use(session({
