@@ -76,7 +76,6 @@ router.post ('/api/bibliotecas/:id', async (req,res) => {
     if (req.session.user === undefined){
         return res.status(401).send("Debe iniciar sesion!");
     }
-
     const username_cliente = req.session.user.username;
     const id_biblioteca = req.params.id;
     const { isbn_code } = req.body;
@@ -93,20 +92,27 @@ router.post ('/api/bibliotecas/:id', async (req,res) => {
     }
     catch(error){
         console.log(error);
-        return res.status(500).json({error:'Error del servidor al agregar libro.'});
+        return res.status(500).json({error:"Error del servidor al agregar libro."});
     };
 });
 
 // Eliminar biblioteca
 router.delete ('/api/bibliotecas/:id', async (req,res) => {
+    if (req.session.user === undefined){
+        return res.status(401).send("Debe iniciar sesion!");
+    }
+
+    const username_cliente = req.session.user.username;
     const id_biblioteca = req.params.id;
     try{
-        const biblioteca_eliminada = await eliminar_biblioteca(id_biblioteca);
+        const biblioteca_eliminada = await eliminar_biblioteca(username_cliente, id_biblioteca);
         if (biblioteca_eliminada === undefined){
-            return res.status(400).json({error: "La biblioteca que desea eliminar no existe!"})
+            return res.status(404).json({error: "La biblioteca que desea eliminar no esta disponible o no existe!"})
+        };
+        if (biblioteca_eliminada.status !== undefined){
+            return res.status(biblioteca_eliminada.status).json({error: biblioteca_eliminada.error});
         }
-        res.status(200).json({mensaje: `${biblioteca_eliminada} eliminada con exito`});
-        
+        return res.status(200).json({mensaje: `${biblioteca_eliminada} eliminada con exito`});
     }
     catch(error){
         console.log(error);
@@ -115,25 +121,39 @@ router.delete ('/api/bibliotecas/:id', async (req,res) => {
 });
 
 // Eliminar libro de biblioteca
-router.delete ('/api/bibliotecas/:id/:isbn_code', async (req,res) => {
+router.delete ('/api/bibliotecas/:id/libros/:isbn_code', async (req,res) => {
+    if (req.session.user === undefined){
+        return res.status(401).send("Debe iniciar sesion!");
+    }
+
+    const username_cliente = req.session.user.username;
     const id_biblioteca = req.params.id;
     const isbn_code = req.params.isbn_code;
     try{
-        const libro_eliminado = await eliminar_libro_biblioteca(id_biblioteca, isbn_code);
+        const libro_eliminado = await eliminar_libro_biblioteca(username_cliente, id_biblioteca, isbn_code);
         if (libro_eliminado === undefined){
-            return res.status(400).json({error: "El libro que desea eliminar no esta en la biblioteca!"})
+            return res.status(404).json({error: "El libro que desea eliminar no esta en la biblioteca!"})
         }
-        res.status(200).json({mensaje: `${libro_eliminado} eliminado con exito de la biblioteca`});
+        if (libro_eliminado.status !== undefined){
+            return res.status(libro_eliminado.status).json({error: libro_eliminado.error});
+        }
+        return res.status(200).json({mensaje: `${libro_eliminado} eliminado con exito de la biblioteca`});
         
     }
     catch(error){
         console.log(error);
-        return res.status(500).json({error: `Error del servidor al eliminar el libro`});
+        return res.status(500).json({error: "Error del servidor al eliminar el libro"});
     };
 });
 
 // Modificar nombre o icono de biblioteca
-router.put ('/api/bibliotecas/:id', async (req,res) => { 
+router.put ('/api/bibliotecas/:id', async (req,res) => {
+    if (req.session.user === undefined){
+        return res.status(401).send("Debe iniciar sesion!");
+    }
+
+    const username_cliente = req.session.user.username;
+    const id_biblioteca = req.params.id;
     const validacion = validar_request_biblioteca(req.body);
     if(!validacion.resultado){
         return res.status(validacion.status).json({ error: validacion.mensaje});
@@ -143,17 +163,19 @@ router.put ('/api/bibliotecas/:id', async (req,res) => {
         icono,
     } = req.body;
 
-    const id_biblioteca = req.params.id;
     try{
-        const biblioteca = await modificar_biblioteca(id_biblioteca, nombre_biblioteca, icono);
+        const biblioteca = await modificar_biblioteca(username_cliente, id_biblioteca, nombre_biblioteca, icono);
         if (biblioteca === undefined){
-            return res.status(400).json({error: "?"})
+            return res.status(404).json({error: "La biblioteca que desea modificar no esta disponible o no exise"});
         }
-        res.status(200).json({mensaje: `Biblioteca ${nombre_biblioteca}" actualizada con exito`});
+        if (biblioteca.status !== undefined){
+            return res.status(biblioteca.status).json({error: biblioteca.error});
+        }
+        return res.status(200).json({mensaje: `Biblioteca ${nombre_biblioteca}" actualizada con exito`});
     }
     catch(error){
         console.log(error);
-        res.status(500).json({error:'Error del servidor al modificar biblioteca.'});
+        return res.status(500).json({error:'Error del servidor al modificar biblioteca.'});
     };
 });
 
