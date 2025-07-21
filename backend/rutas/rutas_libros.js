@@ -34,9 +34,10 @@ router.get('/api/libros/:isbn_code', async (req, res)=>{
         if(libro===undefined){
             return res.status(404).json({error: 'Libro no encontrado'});
         }
-        res.status(200).json(libro);
+        return res.status(200).json(libro);
     }catch(error){
-        res.status(500).json({error:'Error del servidor al obtener el libro.'});
+        
+        return res.status(500).json({error:'Error del servidor al obtener el libro.'});
     }   
 });
 
@@ -106,7 +107,7 @@ router.post('/api/libros', async (req, res)=>{
     
 });
 
-app.delete('/api/libros/:isbn_code', async (req, res)=>{
+router.delete('/api/libros/:isbn_code', async (req, res)=>{
     if (!Number.isInteger(Number(req.params.isbn_code))) {
         return res.status(400).json({ error: 'isbn_code debe ser un número entero.' });
         }
@@ -125,7 +126,7 @@ app.delete('/api/libros/:isbn_code', async (req, res)=>{
 
 });
 
-app.put('/api/libros/:isbn_code', async (req, res)=> {
+router.put('/api/libros/:isbn_code', async (req, res)=> {
 
     if (!Number.isInteger(Number(req.params.isbn_code))) {
         return res.status(400).json({ error: 'isbn_code debe ser un número entero.' });

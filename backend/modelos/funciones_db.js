@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const dbclient = new Pool({
+const db_client = new Pool({
 user: 'postgres',       
 host: 'localhost',      
 database: 'librillo',  

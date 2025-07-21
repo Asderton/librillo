@@ -1,3 +1,4 @@
+/*
 const db_client = require('./funciones_db');
 
 async function get_all_autores() {
@@ -57,4 +58,6 @@ module.exports = {
     eliminar_autor,
     actualizar_autor
 };
+
+*/
 
