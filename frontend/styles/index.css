@@ -1,0 +1,91 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    display: grid;
+    background-color: black;
+}
+
+.container{
+    display: grid;
+}
+
+
+
+header{
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    grid-template-areas: 
+    'icon buttons';
+    grid-column-gap: 10px;
+    background-color: blue;
+}
+
+#logo_navbar{
+    height: 50px;
+    width: 50px;
+    grid-area: icon;
+    background-color: aqua;
+}
+
+#barra_navegacion {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    background-color: yellow;
+    grid-area: buttons;
+    place-items: center;
+    
+}
+
+a {
+    display: flex;
+    background-color: green;
+    height: 30px;
+    width: 12rem;
+    place-content: center;
+    border: 1px;
+    border-radius: 6px;
+}
+
+#buscador_container {
+    display: grid;
+    grid-template-columns: 1fr, 2rem;
+    grid-template-areas: 'busqueda submit';
+    height: 2rem;
+    width: 20rem;
+    grid-template-columns: 1fr, 2rem;
+    background-color: white;
+    border: 3px;
+    border-color: black;
+    border-radius: 10px;
+}
+
+#barra_busqueda{
+    display: grid;
+}
+
+#submit_buscador{
+    border: none;
+    background-color: white;
+    grid-area: submit;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
+
+#buscador {
+    padding-left: 0.4rem;
+    border: none;
+    height: 100%;
+    width: 100%;
+    grid-area: busqueda;
+    outline: none;
+    border-radius: 10px;
+}
+
+
+.hidden{
+    visibility: hidden;
+}
