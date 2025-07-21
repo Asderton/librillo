@@ -1,12 +1,12 @@
 const db_client = require('./funciones_db'); 
 
 async function Obtener_etiquetas() {
-    const result= await db_client.query('SELECT * FROM etiquetas');
+    const result= await db_client.query('SELECT nombre_etiqueta FROM etiquetas');
     return result.rows;
 }
 
 async function Obtener_etiqueta(id_etiqueta) {
-    const result= await db_client.query('SELECT * FROM etiquetas WHERE id_etiqueta=$1', [id_etiqueta]);
+    const result= await db_client.query('SELECT nombre_etiqueta FROM etiquetas WHERE id_etiqueta=$1', [id_etiqueta]);
     if (result.rowCount===0){ 
         return undefined;
     }
