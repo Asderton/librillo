@@ -104,15 +104,15 @@ async function Obtener_libro(isbn_code) {
 async function Crear_libro(
     isbn_code,
     titulo,
-    fecha_publicacion,
     descripcion,
+    fecha_publicacion,
     numero_de_paginas,
     imagen_portada,
-    idioma_id 
+    idioma_id
 ) {
     
     const result=await db_client.query(
-        'INSERT INTO libros (isbn_code,titulo,fecha_publicacion,descripcion,numero_de_paginas,imagen_portada,idioma_id ) VALUES ($1, $2, $3, $4, $5, $6, $7)  RETURNING *' , [isbn_code,titulo,fecha_publicacion,descripcion,numero_de_paginas,imagen_portada,idioma_id]
+        'INSERT INTO libros (isbn_code,titulo,descripcion,fecha_publicacion,numero_de_paginas,imagen_portada,idioma_id ) VALUES ($1, $2, $3, $4, $5, $6, $7)  RETURNING *' , [isbn_code,titulo,fecha_publicacion,descripcion,numero_de_paginas,imagen_portada,idioma_id]
     )
     if (result.rowCount === 0) {
         return undefined;
@@ -131,17 +131,25 @@ async function Eliminar_libro(isbn_code){
 }
    
 
-async function Actualizar_libro(isbn_code) {
+async function Actualizar_libro(
+    isbn_code,
+    titulo,
+    descripcion,
+    fecha_publicacion,
+    numero_de_paginas,
+    imagen_portada,
+    idioma_id
+) {
 
     const result = await db_client.query(
-    'UPDATE libros SET  titulo = $2, descripcion = $3, numero_de_paginas = $4, idioma_id = $5  WHERE isbn_libro = $1  RETURNING titulo',
-    [ titulo, descripcion, numero_de_paginas, idioma_id, isbn_code]
+    'UPDATE libros SET titulo = $2, descripcion = $3, fecha_publicacion=$4,numero_de_paginas = $5, imagen_portada=$6,idioma_id = $7  WHERE isbn_code = $1  RETURNING titulo',
+    [ titulo, descripcion, fecha_publicacion,numero_de_paginas,imagen_portada, idioma_id, isbn_code]
     );
     
     if (result.rowCount === 0) {
         return undefined;
     }
-    return rows[0].titulo;
+    return result.rows[0].titulo;
 }
 
 module.exports = {
