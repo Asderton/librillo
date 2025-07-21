@@ -35,7 +35,8 @@ router.get('/api/libros/:isbn_code', async (req, res)=>{
             return res.status(404).json({error: 'Libro no encontrado'});
         }
         return res.status(200).json(libro);
-    }catch(error){
+    }
+    catch(error){
         
         return res.status(500).json({error:'Error del servidor al obtener el libro.'});
     }   

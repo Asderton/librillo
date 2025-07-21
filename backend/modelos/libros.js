@@ -58,7 +58,7 @@ async function Obtener_libro(isbn_code) {
                 )
                  prom ON prom.isbn_code=l.isbn_code
 
-    Where l.isbn_code=$1
+     l.isbn_code=$1
     `;
     
 
