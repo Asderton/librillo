@@ -8,9 +8,13 @@ const router_usuarios = require('./rutas/rutas_usuarios.js');
 const router_login = require('./rutas/rutas_login.js');
 const router_seguidos = require('./rutas/rutas_seguidos.js');
 const router_bibliotecas = require('./rutas/rutas_bibliotecas.js');
-
+const cors = require('cors');
 const session = require('express-session');
 
+app.use(cors({
+    credentials: true,
+    origin: 'http://127.0.0.1:5500'
+}));
 app.use(express.json());
 app.use(session({
     secret: "Camejo mejor catedra",

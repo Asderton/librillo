@@ -5,23 +5,62 @@
 </head>
 <body>
     <header>
-        <div class="container" id="logo_container">
-            <img src="../images/logo_provi.png" alt="Logo Librillo" id="logo_navbar">
+        <div class="container" id="contenedor_barra_navegacion">
+            <div class="container" id="contenedor_logo">
+                <!-- <img src="../images/logo.svg" alt="Logo Librillo" id="logo_navbar"> -->
+            </div>
+            <nav class="container" id="barra_navegacion">
+                <a class="nav_button"><b>LIBROS</b></a>
+                <a class="nav_button"><b>BIBLIOTECAS</b></a>
+                <a class="nav_button"><b>AUTORES</b></a>
+                <a class="nav_button" href="login.html"><b>LOGIN</b></a>
+            </nav>
         </div>
-        <nav class="container" id="barra_navegacion">
-            <a class="nav_button">Libros</a>
-            <a class="nav_button">Bibliotecas</a>
-            <a class="nav_button">Tags</a>
-            <a class="nav_button">Iniciar Sesion</a>
-            <form action="" method="get" autocorrect="off">
-                <div class="container" id="buscador_container">
-                    <input type="text" id="buscador" name="buscador">
-                    <input type="submit" value="." id="submit_buscador">
-                </div>
-            </form>
-        </nav>
     </header>
     <main>
-
+        <div class="container contenedor_mensaje" id="contenedor_mensaje_bienvenida">
+            <h1>Bienvenido a Librillo</h1>
+            <h3>Donde podras buscar, guardar, agrupar e investigar tus libros favoritos</h3>
+        </div>
+        <div class="container" id="contenedor_recomendados">
+            <h3>Los creadores recomiendan:</h3>
+            <div class="contenedor_biblioteca">
+                <a href="index.html" class="contenedor_link_libro">
+                    <div class="contenedor_libro">
+                        <div class="imagen"><img src="../images/wayofkings.jpg" class="imagen_libro"></div>
+                        <div class="titulo"><p class="titulo_libro">El camino de los reyes</p></div>
+                    </div>
+                </a>
+                <a href="index.html">
+                    <div class="contenedor_libro">
+                        <div class="imagen"><img src="../images/buenwok.jpg" class="imagen_libro"></div>
+                        <div class="titulo"><p class="titulo_libro">El camino de los reyes y de las reinas</p></div>
+                    </div>
+                </a>
+                <a href="index.html">
+                    <div class="contenedor_libro">
+                        <div class="imagen"><img src="../images/buenwok.jpg" class="imagen_libro"></div>
+                        <div class="titulo"><p class="titulo_libro">Rayuela</p></div>
+                    </div>
+                </a>
+                <a href="index.html">
+                    <div class="contenedor_libro">
+                        <div class="imagen"><img src="../images/buenwok.jpg" class="imagen_libro"></div>
+                        <div class="titulo"><p class="titulo_libro">El imperio del silencio</p></div>
+                    </div>
+                </a>
+                <a href="index.html">
+                    <div class="contenedor_libro">
+                        <div class="imagen"><img src="../images/buenwok.jpg" class="imagen_libro"></div>
+                        <div class="titulo"><p class="titulo_libro">Robinson Crusoe</p></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="container contenedor_mensaje" id="contenedor_mensaje_login">
+            <a href="index.html"><h2>Inicia Sesion</h2></a>
+            <h3>Al iniciar sesion podras acceder a todas las funciones de Librillo</h3>
+        </div>
     </main>
+    <script src="../scripts/index.js"></script>
 </body>
