@@ -12,12 +12,18 @@ async function get_un_autor(id_autor) {
         INNER JOIN paises
         ON nacionalidad = id_pais
         WHERE id_autor = ${id_autor}
-        `)
+        `);
     if (autor.rowCount === 0){
         return undefined;
     }
 
-    return (autor.rows[0]);
+    const libros = await get_libros_autor(id_autor);
+    if (libros.rowCount === 0){
+        libros = null;
+    }
+
+    console.log(libros);
+    return {...autor.rows[0], libros: libros};
 };
 
 async function crear_autor(nombre_completo, nacionalidad, fecha_nacimiento = null, retrato = null){
@@ -64,6 +70,16 @@ async function actualizar_autor(id_autor, nombre_completo, nacionalidad, fecha_n
 }
 
 
+async function get_libros_autor(id_autor) {
+    const libros = await db_client.query(`
+        SELECT libros.isbn_code, titulo, imagen_portada 
+        FROM libros 
+        INNER JOIN libros_autor 
+        ON libros.isbn_code = libros_autor.isbn_code 
+        WHERE id_autor = $1`, [id_autor]
+    );
+        return (libros.rows);
+}
 
 
 module.exports = {
@@ -73,4 +89,3 @@ module.exports = {
     eliminar_autor,
     actualizar_autor
 };
-
