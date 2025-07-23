@@ -9,6 +9,7 @@ function validar_login(body){
         return {resultado: false, status: 400, mensaje: "Campos obligatorios faltantes!"};
     };
     //validar tipos de datos
+    console.log(typeof username);
     if (username.trim() === '' || clave_plana.trim() === ''){
         return {resultado: false, status: 400, mensaje: "Los campos no pueden estar vacios!"};
     };

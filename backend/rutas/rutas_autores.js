@@ -15,8 +15,12 @@ const {validar_request_autor} = require('../validaciones/validaciones_autores');
 router.get ('/api/autores', async (req,res) => {
     try{
         const autores = await get_all_autores();
+        autores.sort((a, b) => a.nombre_completo.localeCompare(b.nombre_completo));
+        console.log(autores);
+
         return res.status(200).json(autores);
     }
+
     catch(error){
         console.log(error);
         return res.status(500).json({error:"Error del servidor al obtener los autores."});
@@ -66,7 +70,8 @@ router.post ('/api/autores', async (req,res) => {
             return res.status(400).json({ error: "Datos de autor invalidos"});
 
         }; 
-        return res.status(201).json({mensaje: `Autor ${nombre_completo} creado con éxito`});
+        // return res.status(201).json({mensaje: `Autor ${nombre_completo} creado con éxito`});'
+        return res.redirect(302, 'http://127.0.0.1:5500/frontend/templates/');
     }
     catch(error){
 

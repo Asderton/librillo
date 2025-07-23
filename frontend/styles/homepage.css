@@ -123,7 +123,7 @@ main{
 
 .contenedor_libro{
     display: grid;
-    grid-template-rows: 8fr 1fr;
+    grid-template-rows: 20.5rem 2.5rem;
     grid-template-areas:
     'imagen'
     'titulo';
@@ -143,8 +143,8 @@ main{
 
 .imagen{
     grid-area: imagen;
-    background-color: white;
     overflow: hidden;
+    background-color: whitesmoke;
 }
 
 .imagen_libro{

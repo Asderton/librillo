@@ -12,9 +12,12 @@ const cors = require('cors');
 const session = require('express-session');
 
 app.use(cors({
-    credentials: true,
-    origin: 'http://127.0.0.1:5500'
+    origin: 'http://127.0.0.1:5500',
+    SameSite: 'lax'
 }));
+
+app.use(express.urlencoded({ extended: true }));
+
 app.use(express.json());
 app.use(session({
     secret: "Camejo mejor catedra",

@@ -4,7 +4,6 @@ const { es_url_valido } = require('./validaciones_generales');
 
 function validar_tipo_data_usuario(username, foto_perfil, nombre, bio){
     if (username.trim() === ''){
-        console.log(typeof username);
         return {resultado: false, status: 400, mensaje: "Nombre de usuario no puede estar vacio"};
     }
     // Faltan validaciones para contrasenia

@@ -3,11 +3,13 @@ const router = express.Router();
 const {logear_usuario} = require('../modelos/modelos_login.js');
 const {validar_login} = require('../validaciones/validaciones_login.js');
 
-router.post ('/api/login', async (req, res) => {
+router.post('/api/login', async (req, res) => {
+    console.log(req.body);
     const validacion = validar_login(req.body);
     if(!validacion.resultado){
         return res.status(validacion.status).json({ error: validacion.mensaje});
     };
+
     const {
         username,
         clave_plana
@@ -23,8 +25,7 @@ router.post ('/api/login', async (req, res) => {
         }
 
         req.session.user = usuario_logeado;
-        res.send("Sesion iniciada!");
-        return res.status(200).json(usuario_logeado);
+        return res.redirect(302, 'http://127.0.0.1:5500/frontend/templates/');
     }
     catch(error){
         return res.status(500).json({error: "Error del servidor al iniciar sesion"});
