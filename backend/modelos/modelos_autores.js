@@ -6,7 +6,13 @@ async function get_all_autores() {
 };
 
 async function get_un_autor(id_autor) {
-    const autor = await db_client.query(`SELECT * FROM autores WHERE id_autor = ${id_autor}`)
+    const autor = await db_client.query(`
+        SELECT nombre_completo, nombre_pais, fecha_nacimiento, retrato
+        FROM autores 
+        INNER JOIN paises
+        ON nacionalidad = id_pais
+        WHERE id_autor = ${id_autor}
+        `)
     if (autor.rowCount === 0){
         return undefined;
     }

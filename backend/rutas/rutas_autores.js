@@ -30,6 +30,7 @@ router.get ('/api/autores', async (req,res) => {
 // Ver autor por id
 router.get ('/api/autores/:id', async (req,res) => {
     const id_autor = req.params.id;
+    console.log(id_autor);
     if (!Number.isInteger(Number(id_autor))){
 
         return res.status(400).json({error: "Formato de ID invalido, debe ser un entero"});
