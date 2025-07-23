@@ -32,7 +32,6 @@ descripcion TEXT NOT NULL,
 numero_de_paginas INT NOT NULL,
 imagen_portada TEXT,
 idioma_id INT DEFAULT 1 NOT NULL REFERENCES idiomas (id_idioma) ON DELETE SET DEFAULT
-
 );
 
 CREATE TABLE bibliotecas (

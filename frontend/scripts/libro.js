@@ -1,10 +1,10 @@
 const urlParams = new URLSearchParams(window.location.search);
-const id_autor = urlParams.get('id_autor');
+const id_autor = urlParams.get('isbn_code');
 
-const url = `http://localhost:3000/api/autores/${id_autor}`;
+const url = `http://localhost:3000/api/libros/${isbn_code}`;
 const default_icon = 'https://www.ipburger.com/wp-content/uploads/2023/06/Untitled-36-%C3%97-36-in-2023-05-20T120139.136-1024x1024-1.webp';
 
-function crear_retrato(retrato){
+function crear_portada(retrato){
     const contenedor = document.getElementById('contenedor-retrato-autor');   
 
     const imagen = document.createElement('img');
@@ -65,75 +65,34 @@ function crear_info(autor){
     
 }
 
+// CREATE TABLE libros (
+// isbn_code INT PRIMARY KEY,  
+// titulo TEXT NOT NULL,
+// fecha_publicacion DATE,
+// descripcion TEXT NOT NULL,
+// numero_de_paginas INT NOT NULL,
+// imagen_portada TEXT,
+// idioma_id INT DEFAULT 1 NOT NULL REFERENCES idiomas (id_idioma) ON DELETE SET DEFAULT
+// );
 
-function crear_contenedor(autor) {
-    crear_retrato(autor.retrato);
-    crear_info(autor);
-    return;
-}
 
 
 async function fetch_data() {
     const response = await fetch(url);
-    const autor = await response.json();
-    crear_contenedor(autor);
-    llenar_biblioteca(autor.libros);
-    return;
-}
+    const libro = await response.json();
 
-function llenar_biblioteca(libros){
-    const biblioteca = document.getElementById('contenedor-biblioteca');
-    for (const libro of libros){
-        const libro_creado = crear_libro(libro);
-        biblioteca.appendChild(libro_creado);
-    }
-    return;
-}
-
-function crear_libro(libro){
     const {
         isbn_code,
         titulo,
-        imagen_portada
-    } = libro;
+        fecha_publicacion,
+        descripcion,
+        numero_de_paginas,
+        imagen_portada,
+        idioma
+    } = libro
 
-    const default_icon = 'https://www.ipburger.com/wp-content/uploads/2023/06/Untitled-36-%C3%97-36-in-2023-05-20T120139.136-1024x1024-1.webp';
-
-    const link = document.createElement('a');
-    link.href = (`../libro/?isbn_code=${isbn_code}`);
-
-    const contenedor_libro = document.createElement('div');
-    contenedor_libro.classList.add('contenedor_libro');
-    link.appendChild(contenedor_libro);
-
-    const contenedor_imagen_portada = document.createElement('div');
-    contenedor_imagen_portada.classList.add('imagen');
-    contenedor_libro.appendChild(contenedor_imagen_portada);
-
-    const portada = document.createElement('img');
-    portada.classList.add('imagen_libro');
-    if (imagen_portada === null){
-        portada.src = default_icon;
-    }
-    else{
-           portada.src = imagen_portada;
-    }
-    contenedor_imagen_portada.appendChild(portada);
-
-    const contenedor_nombre = document.createElement('div');
-    contenedor_nombre.classList.add('titulo');
-    contenedor_libro.appendChild(contenedor_nombre);
-
-    const titulo_libro = document.createElement('p');
-    titulo_libro.classList.add('titulo_libro');
-    titulo_libro.innerText = titulo;
-    contenedor_nombre.appendChild(titulo_libro);
-
-    return link;
+    crear_portada(libro);
+    crear_info(libro);
+    // llenar_resenias??
+    return;
 }
-
-
-
-window.addEventListener('load', fetch_data);
-
-
