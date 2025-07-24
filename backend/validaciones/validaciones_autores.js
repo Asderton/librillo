@@ -2,7 +2,6 @@ const {es_url_valido} = require('../validaciones/validaciones_generales');
 
 function validar_request_autor(body){
 
-
     const {
         nombre_completo,
         nacionalidad,
@@ -12,6 +11,7 @@ function validar_request_autor(body){
 
     //validar campos obligatorios
     if (!nombre_completo) {
+        console.log(nombre_completo);
         return {resultado: false, status: 400, mensaje: "Campos obligatorios faltantes!"};
     };
 

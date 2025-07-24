@@ -39,8 +39,12 @@ function crear_info(autor){
     nacionalidad.innerText = `Nacionalidad: ${nombre_pais}`;
 
     const nacimiento = document.createElement('h3');
-    console.log(typeof fecha_nacimiento)
-    nacimiento.innerText = `Fecha de nacimiento: ${fecha_nacimiento}`;
+    if (fecha_nacimiento === null){
+        nacimiento.innerText = `Fecha de nacimiento: Desconocida`;
+    }
+    else{
+         nacimiento.innerText = `Fecha de nacimiento: ${fecha_nacimiento}`;
+    }
    
     const informacion = document.createElement('div');
     informacion.classList.add('info-basica');

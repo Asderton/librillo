@@ -2,6 +2,7 @@
 <head>
     <title>Autores</title>
     <link rel="stylesheet" href="../styles/crear_autor.css">
+    <link rel="stylesheet" href="../styles/general.css">
     <script src="../scripts/fetchear.js"></script>
 </head>
 <body>
@@ -12,25 +13,42 @@
                 <!-- <img src="../images/logo.svg" alt="Logo Librillo" id="logo_navbar"> -->
             </div>
             <nav class="container" id="barra_navegacion">
-                <a class="nav_button"><b>LIBROS</b></a>
+                <a class="nav_button" href="../libros/"><b>LIBROS</b></a>
                 <a class="nav_button"><b>BIBLIOTECAS</b></a>
                 <a class="nav_button" href="../autores/"><b>AUTORES</b></a>
-                <a class="nav_button" href="login.html"><b>LOGIN</b></a>
+                <a class="nav_button" href="../login/"><b>LOGIN</b></a>
             </nav>
         </div>
     </header>
     <main>
-        <div class="container contenedor-autor" id="contenedor-autor">
-            <div class="container contenedor-retrato" id="contenedor-retrato-autor"></div>
-            <div class="container contenedor-informacion" id="contenedor-informacion"></div>
-        </div>
         
-        <div class="container" id="footer">
-            <div id="contenedor-libros-autor">
-                <h3>Libros del autor:</h3>
-                <div class="contenedor_biblioteca" id="contenedor-biblioteca"></div>
-            </div>
-        </div>
+            <form method="POST" action="http://localhost:3000/api/autores" onsubmit="manejar_submit(event)">
+                <div class="contenedor-campo">
+                    <label for="nombre-autor">NOMBRE</label>
+                    <input class="form-input" type="text" name="nombre_completo" id="nombre-autor" required autocomplete="off">
+                </div>
+                <div class="contenedor-campo">
+                    <label for="nacionalidades">NACIONALIDAD</label>
+                    <select class="form-input" name="nacionalidad" id="nacionalidades" required>
+                        <option value="">Desconocido</option> 
+                        </select>
+                </div>
+                <div class="contenedor-campo">
+                    <label for="fecha-nacimiento">FECHA DE NACIMIENTO</label>
+                    <input class="form-input" type="date" name="fecha_nacimiento" id="fecha-nacimiento">
+                </div>
+                <div class="contenedor-campo">
+                    <label for="retrato-autor">LINK A FOTO DEL AUTOR</label>
+                    <input class="form-input" type="url" name="retrato" id="retrato-autor" autocomplete="off">
+                </div>
+                <input type="submit" id="submit-button" name="submit" value="Crear autor">
+            </form>
+
     </main>
     <script src="../scripts/crear_autor.js"></script>
 </body>
+<!-- 
+nombre_completo TEXT NOT NULL,
+nacionalidad INT REFERENCES paises (id_pais) ON DELETE SET NULL,
+fecha_nacimiento DATE,
+retrato TEXT -->

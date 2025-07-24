@@ -71,8 +71,7 @@ router.post ('/api/autores', async (req,res) => {
             return res.status(400).json({ error: "Datos de autor invalidos"});
 
         }; 
-        // return res.status(201).json({mensaje: `Autor ${nombre_completo} creado con éxito`});'
-        return res.redirect(302, 'http://127.0.0.1:5500/frontend/templates/');
+        return res.status(201).json({mensaje: `Autor ${nombre_completo} creado con éxito`});
     }
     catch(error){
 
