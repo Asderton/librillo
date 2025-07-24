@@ -5,7 +5,7 @@ async function get_all_idiomas() {
     if (idiomas.rowCount === 0){
         return undefined;
     }
-    return idiomas.rows;
+    return (idiomas.rows);
 }
 
 module.exports = {get_all_idiomas};

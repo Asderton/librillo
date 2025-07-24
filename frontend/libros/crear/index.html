@@ -22,25 +22,40 @@
         <H1 id="mensaje-crear">Crear Libro</H1>
         <form method="POST" action="http://localhost:3000/api/libros" onsubmit="manejar_submit(event)">
             <div class="contenedor-campo">
-                <label for="nombre-autor">NOMBRE</label>
-                <input class="form-input" type="text" name="nombre_completo" id="nombre-autor" required autocomplete="off">
+                <label for="isbn_code">CODIGO ISBN</label>
+                <input class="form-input" type="text" name="isbn_code" id="isbn_code" required autocomplete="off">
             </div>
             <div class="contenedor-campo">
-                <label for="nacionalidades">NACIONALIDAD</label>
-                <select class="form-input" name="nacionalidad" id="nacionalidades" required>
+                <label for="titulo">TITULO</label>
+                <input class="form-input" type="text" name="titulo" id="titulo" required autocomplete="off">
+            </div>
+            <div class="contenedor-campo">
+                <label for="idiomas">IDIOMA ORIGINAL</label>
+                <select class="form-input" name="idioma_id" id="idiomas" required>
                     <option value="">Desconocido</option> 
-                    </select>
+                </select>
             </div>
             <div class="contenedor-campo">
-                <label for="fecha-nacimiento">FECHA DE NACIMIENTO</label>
-                <input class="form-input" type="date" name="fecha_nacimiento" id="fecha-nacimiento">
+                <label for="fecha-publicacion">FECHA DE PUBLICACION</label>
+                <input class="form-input" type="date" name="fecha_publicacion" id="fecha-publicacion">
             </div>
             <div class="contenedor-campo">
-                <label for="retrato-autor">LINK A FOTO DEL AUTOR</label>
-                <input class="form-input" type="url" name="retrato" id="retrato-autor" autocomplete="off">
+                <label for="n-paginas">NUMERO DE PAGINAS</label>
+                <input class="form-input" type="number" name="numero_de_paginas" id="n-paginas" required>
+            </div>
+            <div class="contenedor-campo">
+                <label for="portada-libro">LINK A PORTADA</label>
+                <input class="form-input" type="url" name="imagen_portada" id="portada-libro" autocomplete="off">
+            </div>
+            <div class="contenedor-campo">
+                <label for="descripcion">DESCRIPCION</label>
+                <input class="form-input" type="text" name="descripcion" id="descripcion" required autocomplete="off">
             </div>
             <input type="submit" id="submit-button" name="submit" value="Crear autor">
         </form>
     </main>
     <script src="./crear_libro.js"></script>
 </body>
+
+
+

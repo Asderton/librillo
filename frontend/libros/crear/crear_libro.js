@@ -1,38 +1,64 @@
 const url_idiomas = "http://localhost:3000/api/idiomas";
 
-function crear_opcion(pais){
-    const {id_pais, nombre_pais} = pais
+function crear_opcion(idioma){
+    const {id_idioma, nombre_idioma} = idioma
     const opcion = document.createElement('option');
-    opcion.value = id_pais;
-    opcion.innerText = nombre_pais;
+    opcion.value = id_idioma;
+    opcion.innerText = nombre_idioma;
     return opcion;
 }
 
 function validar_datos(datos){
-    const {nombre_completo} = datos;
+    const {
+        isbn_code,
+        titulo,
+        descripcion,
+        numero_de_paginas,
+        idioma_id
+    } = datos;
 
-    if (nombre_completo.trim() === ''){
-        alert('El nombre no puede estar vacio')
-        return false;
+    if (!isbn_code || !titulo || !descripcion || !numero_de_paginas || !idioma_id) {
+        return alert("Faltan campos obligatorios");
     }
+    if (!Number.isInteger(Number(isbn_code))) {
+        return alert("El codigo isbn debe ser un numero entero");
+    }
+    if (typeof titulo !== 'string' || titulo.trim() === '') {
+        return alert("El titulo debe ser un texto no vacio");
+    }   
+    if (typeof descripcion !== 'string' || descripcion.trim() === '') {
+        return alert("La descripcion debe ser un texto no vacio");
+    }
+    
+    if (!Number.isInteger(Number(numero_de_paginas)) || Number(numero_de_paginas) <= 0) {
+        return alert("El numero de paginas debe ser un entero positivo");
+    }
+
 }
 
 function estandarizar_datos(datos){
     const {
-        nacionalidad,
-        fecha_nacimiento,
-        retrato
+        fecha_publicacion,
+        imagen_portada
     } = datos;
 
-    if(retrato.trim() === ''){
+    let fecha_estandar;
+    let imagen_estandar;
+
+    if(imagen_portada.trim() === ''){
         retrato_estandar = null;
     }
-
-    if (fecha_nacimiento === ''){
-        fecha_nacimiento_estandar = null;
+    else {
+        imagen_estandar = imagen_portada;
     }
-    console.log(fecha_nacimiento);
-    return {...datos, retrato: retrato_estandar, fecha_nacimiento: fecha_nacimiento_estandar};
+
+    if (fecha_publicacion === ''){
+        fecha_estandar = null;
+    }
+    else{
+        fecha_estandar = fecha_publicacion;
+    }
+    return {...datos, imagen_portada: imagen_estandar, fecha_publicacion: fecha_estandar};
 }
 
 async function manejar_submit(event){
@@ -55,9 +81,9 @@ async function manejar_submit(event){
 
     console.log(typeof respuesta);
     if (respuesta.ok) {
-        window.location.href = '../autores/';
+        window.location.href = '../libros/';
         return;
-    } else {    
+    } else {
         const error = await respuesta.json();
         console.error(error);
         return;
@@ -65,10 +91,10 @@ async function manejar_submit(event){
 }
 
 
-async function llenar_dropdown(paises) {
-    const dropdown = document.getElementById("nacionalidades");
-    for (const pais of paises){
-        const opcion = crear_opcion(pais); 
+async function llenar_dropdown(idiomas) {
+    const dropdown = document.getElementById("idiomas");
+    for (const idioma of idiomas){
+        const opcion = crear_opcion(idioma); 
         dropdown.appendChild(opcion);
     }
     return;
@@ -76,10 +102,9 @@ async function llenar_dropdown(paises) {
 
 
 async function fetch_data() {
-    const response = await fetch(url);
-    const paises = await response.json();
-
-    llenar_dropdown(paises);
+    const response = await fetch(url_idiomas);
+    const idiomas = await response.json();
+    llenar_dropdown(idiomas);
 }
 
 window.addEventListener('load', fetch_data);

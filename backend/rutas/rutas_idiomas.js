@@ -10,7 +10,7 @@ router.get ('/api/idiomas', async (req,res) => {
         if (idiomas === undefined){
             return res.status(404).json({error: "No se encontraron idiomas"});
         }
-        return res.status(200).json({idiomas});
+        return res.status(200).json(idiomas);
     }
     catch (error){
         console.log(error);
