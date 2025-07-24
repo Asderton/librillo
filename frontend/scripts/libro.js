@@ -106,7 +106,7 @@ function linkear_botones(libro){
 
     const boton_borrar = document.getElementById('boton-borrar');
     boton_borrar.addEventListener("click", async () => {
-        const confirmado = confirm("Desea eliminar este autor?");
+        const confirmado = confirm("Desea eliminar este libro?");
         if (confirmado){
             const result = await fetch(url, {
                 method: 'DELETE'
