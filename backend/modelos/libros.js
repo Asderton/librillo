@@ -122,7 +122,7 @@ async function Actualizar_libro(
 
     const result = await db_client.query(
     'UPDATE libros SET titulo = $2, descripcion = $3, fecha_publicacion=$4,numero_de_paginas = $5, imagen_portada=$6,idioma_id = $7  WHERE isbn_code = $1  RETURNING titulo',
-    [ titulo, descripcion, fecha_publicacion,numero_de_paginas,imagen_portada, idioma_id, isbn_code]
+    [ isbn_code, titulo, descripcion, fecha_publicacion,numero_de_paginas,imagen_portada, idioma_id]
     );
     
     if (result.rowCount === 0) {

@@ -57,7 +57,6 @@ function crear_info(libro){
     const nombre_idioma = document.createElement('h3');
     nombre_idioma.innerText = `Idioma original: ${idioma}`;
     
-    
     informacion.appendChild(nombre_autor);
     informacion.appendChild(publicacion);
     informacion.appendChild(n_paginas);
@@ -101,14 +100,34 @@ function crear_info(libro){
     return;
 }
 
+function linkear_botones(libro){
+    const boton_editar = document.getElementById('boton-editar');
+    boton_editar.href = `./editar/?isbn_code=${libro.isbn_code}&titulo=${libro.titulo}`;
+
+    const boton_borrar = document.getElementById('boton-borrar');
+    boton_borrar.addEventListener("click", async () => {
+        const confirmado = confirm("Desea eliminar este autor?");
+        if (confirmado){
+            const result = await fetch(url, {
+                method: 'DELETE'
+            })
+            window.location.href = '../libros/'
+        }
+        else{ 
+            return;
+        }
+    });
+}
 
 async function fetch_data() {
     const response = await fetch(url);
     const libro = await response.json();
 
     crear_portada(libro.imagen_portada);
+    linkear_botones(libro);
     crear_info(libro);
     llenar_biblioteca(libro.libros_autor, libro.isbn_code);
+    
     return;
 }
 

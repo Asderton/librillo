@@ -128,16 +128,18 @@ router.delete('/api/libros/:isbn_code', async (req, res)=>{
 });
 
 router.put('/api/libros/:isbn_code', async (req, res)=> {
-
     if (!Number.isInteger(Number(req.params.isbn_code))) {
         return res.status(400).json({ error: 'isbn_code debe ser un número entero.' });
     }
+    const isbn_code = req.params.isbn_code;
+    
     const {
         titulo,
         descripcion,
         fecha_publicacion,
         numero_de_paginas,
         imagen_portada,
+        idioma_id
         } = req.body;
 
     if (typeof titulo !== 'string' || titulo.trim() === '') {
@@ -161,11 +163,13 @@ router.put('/api/libros/:isbn_code', async (req, res)=> {
     
     try{
         const libro = await Actualizar_libro(
+            isbn_code,
             titulo,
             descripcion,
             fecha_publicacion,
             numero_de_paginas,
             imagen_portada,
+            idioma_id
         );
         if(libro === undefined){
             return res.status(404).json({mensaje: "El libro no existe"});
@@ -173,6 +177,7 @@ router.put('/api/libros/:isbn_code', async (req, res)=> {
         return res.status(201).json({mensaje: `Libro ${libro} actualizado con éxito`});
     }
     catch(error){
+        console.log(error);
         res.status(500).send('Error del servidor, no se pudieron modificar los datos');
     };
 

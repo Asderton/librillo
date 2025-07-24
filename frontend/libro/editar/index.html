@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<head>
+    <title>Editor Libro</title>
+    <link rel="stylesheet" href="./editar_libro.css">
+    <link rel="stylesheet" href="../../styles/general.css">
+</head>
+<body>
+    <header>
+        <div class="container" id="contenedor_barra_navegacion">
+            <div class="container" id="contenedor_logo">
+                <!-- <img src="../images/logo.svg" alt="Logo Librillo" id="logo_navbar"> -->
+            </div>
+            <nav class="container" id="barra_navegacion">
+                <a class="nav_button" href="../../libros"><b>LIBROS</b></a>
+                <a class="nav_button"><b>BIBLIOTECAS</b></a>
+                <a class="nav_button" href="../../autores/"><b>AUTORES</b></a>
+                <a class="nav_button" href="../../login/"><b>LOGIN</b></a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <H1 id="mensaje-editar"></H1>
+        <form method="PUT"  onsubmit="manejar_submit(event)">
+            <div class="contenedor-campo">
+                <label for="titulo">TITULO</label>
+                <input class="form-input" type="text" name="titulo" id="titulo" required autocomplete="off">
+            </div>
+            <div class="contenedor-campo">
+                <label for="idiomas">IDIOMA ORIGINAL</label>
+                <select class="form-input" name="idioma_id" id="idiomas" required>
+                    <option value="">Desconocido</option> 
+                </select>
+            </div>
+            <div class="contenedor-campo">
+                <label for="fecha-publicacion">FECHA DE PUBLICACION</label>
+                <input class="form-input" type="date" name="fecha_publicacion" id="fecha-publicacion">
+            </div>
+            <div class="contenedor-campo">
+                <label for="n-paginas">NUMERO DE PAGINAS</label>
+                <input class="form-input" type="number" name="numero_de_paginas" id="n-paginas" required>
+            </div>
+            <div class="contenedor-campo">
+                <label for="portada-libro">LINK A PORTADA</label>
+                <input class="form-input" type="url" name="imagen_portada" id="portada-libro" autocomplete="off">
+            </div>
+            <div class="contenedor-campo">
+                <label for="descripcion">DESCRIPCION</label>
+                <input class="form-input" type="text" name="descripcion" id="descripcion" required autocomplete="off">
+            </div>
+            <input type="submit" id="submit-button" name="submit" value="Crear libro">
+        </form>
+    </main>
+    <script src="./editar_libro.js"></script>
+</body>
+
+
+
