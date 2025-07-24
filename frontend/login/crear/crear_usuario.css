@@ -4,17 +4,12 @@ main{
     grid-template-columns: 1fr 67rem 1fr;
     grid-template-rows: 4.5rem max-content 1fr;
     grid-template-areas:
-    'crear bienvenida aside2'
+    'aside bienvenida aside2'
     'aside form aside2'
     'aside bottom aside2';
     padding: 1.5rem;
     font-family: 'Times New Roman', Times, sans-serif;
     color: #A8B9CA;
-}
-
-#boton-crear{
-    grid-area: crear;
-    font-size: 20px;
 }
 
 #mensaje-crear{

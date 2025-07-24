@@ -64,7 +64,7 @@ function crear_info(usuario){
     contenedor.appendChild(contenedor_bio);
 }
 
-function linkear_botones(autor){
+function linkear_botones(usuario){
 
     const boton_logout = document.getElementById('cerrar-sesion');
     boton_logout.addEventListener("click", () => {
@@ -78,9 +78,8 @@ function linkear_botones(autor){
         }
     })
 
-
     const boton_editar = document.getElementById('boton-editar');
-    boton_editar.href = `./editar/?id_autor=${autor.id_autor}&nombre=${autor.username}`;
+    boton_editar.href = `./editar/?username=${usuario.username}`;
 
     const boton_borrar = document.getElementById('boton-borrar');
     boton_borrar.addEventListener("click", async () => {

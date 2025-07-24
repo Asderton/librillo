@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<head>
+    <title>Libro</title>
+    <link rel="stylesheet" href="./crear_usuario.css">
+    <link rel="stylesheet" href="../../styles/general.css">
+    <script src="../../scripts/fetchear.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container" id="contenedor_barra_navegacion">
+            <div class="container" id="contenedor_logo">
+                <a href="../homepage/"></a>
+                <!-- <img src="../images/logo.svg" alt="Logo Librillo" id="logo_navbar"> -->
+            </div>
+            <nav class="container" id="barra_navegacion">
+                <a class="nav_button"><b>LIBROS</b></a>
+                <a class="nav_button"><b>BIBLIOTECAS</b></a>
+                <a class="nav_button" href="../autores/"><b>AUTORES</b></a>
+                <a class="nav_button" href="login.html"><b>LOGIN</b></a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <H1 id="mensaje-crear">Crear usuario</H1>
+        <form method="POST" action="http://localhost:3000/api/usuarios" onsubmit="manejar_submit(event)">
+            <div class="contenedor-campo">
+                <label for="username">USERNAME</label>
+                <input class="form-input" type="text" name="username" id="username" required autocomplete="off">
+            </div>
+            <div class="contenedor-campo">
+                <label for="nombre">NOMBRE</label>
+                <input class="form-input" type="text" name="nombre" id="nombre" required autocomplete="off">
+            </div>            
+            <div class="contenedor-campo">
+                <label for="clave">CONTRASEÑA</label>
+                <input class="form-input" type="password" name="clave1" id="clave" required autocomplete="off">
+            </div>
+            <div class="contenedor-campo">
+                <label for="clave">CONFIRMAR CONTRASEÑA</label>
+                <input class="form-input" type="password" name="clave2" id="clave" required autocomplete="off">
+            </div>
+            <div class="contenedor-campo">
+                <label for="foto_perfil">LINK FOTO PERFIL</label>
+                <input class="form-input" type="url" name="foto_perfil" id="foto_perfil" autocomplete="off">
+            </div>
+            <div class="contenedor-campo">
+                <label for="username">BIOGRAFIA</label>
+                <input class="form-input" type="text" name="bio" id="bio" autocomplete="off">
+            </div>                        
+            <input type="submit" id="submit-button" name="submit" value="Crear Usuario">
+        </form>
+    </main>
+    <script src="./crear_usuario.js"></script>
+</body>
+
