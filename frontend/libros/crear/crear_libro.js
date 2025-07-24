@@ -81,7 +81,7 @@ async function manejar_submit(event){
 
     console.log(typeof respuesta);
     if (respuesta.ok) {
-        window.location.href = '../libros/';
+        window.location.href = '../../libros/';
         return;
     } else {
         const error = await respuesta.json();

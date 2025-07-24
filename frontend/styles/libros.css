@@ -4,15 +4,21 @@ main{
     grid-template-columns: 1fr 67rem 1fr;
     grid-template-rows: 4.5rem 30rem 1fr;
     grid-template-areas: 
-    'aside bienvenida aside2'
+    'aside bienvenida botones'
     'aside recomendaciones aside2'
     'aside espacio aside2';
     padding: 1.5rem;
 }
 
+
+#boton-crear-autor{
+    grid-area: botones;
+    font-size: 20px;
+}
+
+
 #contenedor_mensaje_bienvenida{
     grid-area: bienvenida;
-
 }
 
 .contenedor_mensaje{
