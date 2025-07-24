@@ -17,11 +17,11 @@ async function get_un_usuario(username) {
 async function crear_usuario(username, clave_plana, foto_perfil = null, nombre, bio = null) {
     const clave_hash = await encriptar_clave(clave_plana);
     try{
-        const result = await db_client.query('INSERT INTO usuarios (nombre_usuario, contrasenia_encriptada, foto_perfil, nombre, bio) VALUES ($1, $2, $3, $4, $5)', [username, clave_hash, foto_perfil, nombre, bio]);
+        const result = await db_client.query('INSERT INTO usuarios (nombre_usuario, contrasenia_encriptada, foto_perfil, nombre, bio) VALUES ($1, $2, $3, $4, $5) RETURNING nombre_usuario, foto_perfil', [username, clave_hash, foto_perfil, nombre, bio]);
         if (result.rowCount === 0){
             return undefined;
         }
-        return result;
+        return result.rows;
     }
     catch(error){
         if (error.code === 23505){

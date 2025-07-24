@@ -1,4 +1,5 @@
-async function manejar_login(event) {
+
+async function manejar_submit(event) {
     const form = event.target;
     event.preventDefault();
 
@@ -27,3 +28,20 @@ async function manejar_logout(event) {
     localStorage.removeItem('token');
     window.location.href = '../homepage/';
 }
+
+async function comprobar_sesion() {
+    const url = "http://localhost:3000/api/me";
+    const result = await fetchear(url);
+    if (result.ok){
+        const usuario = await result.json();
+        const { username, foto_perfil } = usuario;
+        console.log(`username: ${username} foto: ${foto_perfil}`);
+    }
+    else {
+        const error = await result.json();
+        console.log(error);
+    }
+}
+
+
+window.onload = comprobar_sesion;

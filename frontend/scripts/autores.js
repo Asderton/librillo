@@ -61,9 +61,29 @@ async function llenar_biblioteca(autores) {
 async function fetch_data() {
     const response = await fetch(url);
     const autores = await response.json();
+    comprobar_sesion();
 
     llenar_biblioteca(autores);
 }
+
+
+async function comprobar_sesion() {
+    const url = "http://localhost:3000/api/me";
+    const result = await fetchear(url);
+    if (result.ok){
+        const usuario = await result.json();
+        const { username, foto_perfil } = usuario;
+        console.log(`username: ${username} foto: ${foto_perfil}`);
+    }
+    else {
+        const error = await result.json();
+        console.log(error);
+    }
+}
+
+
+
+
 
 window.addEventListener('load', fetch_data);
 

@@ -78,8 +78,6 @@ router.delete('/api/usuarios', middleware_jwt, async (req, res) => {
         if (usuario_eliminado === undefined){
             return res.status(404).json({error: "El usuario que quieres eliminar no existe"}); //No puede pasar pero weno no se (sami)
         }
-        
-/////////////////////////////////////////////////////////// FALTA HACER LOGOUT ACA
 
         return res.status(201).json({mensaje: `El usuario ${username_cliente} ha sido eliminado con exito.`});  
     }
@@ -90,6 +88,7 @@ router.delete('/api/usuarios', middleware_jwt, async (req, res) => {
 });
 
 router.get('/api/me', middleware_jwt, (req, res) => {
+    
     return res.status(200).json(req.auth);
 });
 

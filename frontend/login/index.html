@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+    <title>Libro</title>
+    <link rel="stylesheet" href="./login.css">
+    <link rel="stylesheet" href="../styles/general.css">
+    <script src="../scripts/fetchear.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container" id="contenedor_barra_navegacion">
+            <div class="container" id="contenedor_logo">
+                <a href="../homepage/"></a>
+                <!-- <img src="../images/logo.svg" alt="Logo Librillo" id="logo_navbar"> -->
+            </div>
+            <nav class="container" id="barra_navegacion">
+                <a class="nav_button"><b>LIBROS</b></a>
+                <a class="nav_button"><b>BIBLIOTECAS</b></a>
+                <a class="nav_button" href="../autores/"><b>AUTORES</b></a>
+                <a class="nav_button" href="login.html"><b>LOGIN</b></a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <H1 id="mensaje-crear">Inicio de sesion</H1>
+        <form method="POST" action="http://localhost:3000/api/login" onsubmit="manejar_submit(event)">
+            <div class="contenedor-campo">
+                <label for="username">NOMBRE USUARIO</label>
+                <input class="form-input" type="text" name="username" id="username" required autocomplete="off">
+            </div>
+            <div class="contenedor-campo">
+                <label for="clave">CONTRASEÑA</label>
+                <input class="form-input" type="password" name="clave_plana" id="clave" required autocomplete="off">
+            </div>
+            <input type="submit" id="submit-button" name="submit" value="Iniciar Sesion">
+        </form>
+    </main>
+    <script src="../scripts/login.js"></script>
+</body>
