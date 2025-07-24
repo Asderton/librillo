@@ -23,10 +23,6 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 
 
-
-
-
-
 app.use(express.json());
 app.use(session({
     secret: "Camejo mejor catedra",
