@@ -36,6 +36,7 @@ async function comprobar_sesion() {
         const usuario = await result.json();
         const { username, foto_perfil } = usuario;
         console.log(`username: ${username} foto: ${foto_perfil}`);
+        window.location.href = `../usuario/?username=${username}`;
     }
     else {
         const error = await result.json();

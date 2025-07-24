@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+    <title>Usuario</title>
+    <link rel="stylesheet" href="../styles/general.css">
+    <link rel="stylesheet" href="./usuario.css">
+    <script src="../scripts//fetchear.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container" id="contenedor_barra_navegacion">
+            <div class="container" id="contenedor_logo">
+                <a href="../homepage/"></a>
+            </div>
+            <nav class="container" id="barra_navegacion">
+                <a class="nav_button" href="../libros"><b>LIBROS</b></a>
+                <a class="nav_button"><b>BIBLIOTECAS</b></a>
+                <a class="nav_button" href="../autores/"><b>AUTORES</b></a>
+                <a class="nav_button"><b>LOGIN</b></a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <a id="cerrar-sesion">Cerrar Sesion</a>
+        <div class="contenedor-botones">
+            <a id="boton-editar">Editar</a>
+            <a id="boton-borrar">Borrar</a>
+        </div>
+        <div class="container contenedor-autor" id="contenedor-autor">
+            <div class="container contenedor-retrato" id="contenedor-imagen-usuario"></div>
+            <div class="container contenedor-informacion" id="contenedor-informacion"></div>
+        </div>
+        <div class="container" id="footer">
+            <div id="contenedor-libros-autor">
+                <h3>Libros Favoritos: (Implementar luego de bibliotecas)</h3>
+                <div class="contenedor_biblioteca" id="contenedor-biblioteca"></div>
+            </div>
+        </div>
+    </main>
+    <script src="./usuario.js"></script>
+</body>

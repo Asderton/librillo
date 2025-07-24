@@ -7,7 +7,7 @@ async function get_all_usuarios() {
 };
 
 async function get_un_usuario(username) {
-    const usuario = await db_client.query(`SELECT * FROM usuarios WHERE nombre_usuario = $1`,[username]);
+    const usuario = await db_client.query(`SELECT nombre_usuario AS username, foto_perfil, nombre, bio FROM usuarios WHERE nombre_usuario = $1`,[username]);
     if (usuario.rowCount === 0){
         return undefined;
     }
