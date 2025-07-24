@@ -10,7 +10,7 @@ function crear_contenedor(autor){
     const default_icon = 'https://www.ipburger.com/wp-content/uploads/2023/06/Untitled-36-%C3%97-36-in-2023-05-20T120139.136-1024x1024-1.webp';
 
     const link = document.createElement('a');
-    link.href = (`../autor/?isbn_code=${isbn_code}`);
+    link.href = (`../libro/?isbn_code=${isbn_code}`);
 
     const contenedor_libro = document.createElement('div');
     contenedor_libro.classList.add('contenedor_libro');
@@ -43,7 +43,7 @@ function crear_contenedor(autor){
 }
 
 
-async function llenar_biblioteca(autores) {
+function llenar_biblioteca(autores) {
     const biblioteca = document.getElementById("contenedor_biblioteca");
     for (const autor of autores){
         const contenedor = crear_contenedor(autor); 

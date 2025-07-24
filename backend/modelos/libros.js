@@ -27,8 +27,6 @@ async function get_libros_autor(id_autor) {
     return libros.rows;
 }
 
-
-
 async function Obtener_libros() {
 
     const query=`
@@ -51,13 +49,12 @@ async function Obtener_libros() {
 
     const result= await db_client.query(query);
     return result.rows.map(row => ({
-        isbn: row.isbn_code,
+        isbn_code: row.isbn_code,
         titulo: row.titulo,
         fechaPublicacion: row.fecha_publicacion,
         numeroDePaginas: row.numero_de_paginas,
-        imagen: row.imagen_portada,
+        imagen_portada: row.imagen_portada,
         autor: row.autor,
-        calificacionPromedio: row.promedio_calificacion || 0
     }));
 }
 
