@@ -69,12 +69,23 @@ function crear_info(autor){
     
 }
 
-
 function linkear_botones(autor){
     const boton_editar = document.getElementById('boton-editar');
     boton_editar.href = `./editar/?id_autor=${autor.id_autor}&nombre=${autor.nombre_completo}`;
+
     const boton_borrar = document.getElementById('boton-borrar');
-    boton_borrar.href = `./borrar/?id_autor=${autor.id_autor}&nombre=${autor.nombre_completo}`;
+    boton_borrar.addEventListener("click", async () => {
+        const confirmado = confirm("Desea eliminar este autor?");
+        if (confirmado){
+            const result = await fetch(url, {
+                method: 'DELETE'
+            })
+            window.location.href = '../autores/'
+        }
+        else{ 
+            return;
+        }
+    });
 }
 
 function crear_contenedor(autor) {
