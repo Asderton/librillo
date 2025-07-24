@@ -7,7 +7,6 @@ const {
     Crear_libro,
     Eliminar_libro,
     Actualizar_libro
-
 } = require('../modelos/libros');
 
 //const {validar_request_autor} = require('../validaciones/validaciones_autores');
@@ -18,6 +17,7 @@ router.get('/api/libros', async (req, res)=>{
         const libros=await Obtener_libros();
         res.status(200).json(libros);
     }catch(error){
+        console.log(error)
         res.status(500).json({error:'Error del servidor al obtener los libros.'});
     }  
 });
@@ -30,14 +30,14 @@ router.get('/api/libros/:isbn_code', async (req, res)=>{
     }
 
     try{
-        const libro=await Obtener_libro(req.params.isbn_code);
+        const libro=await Obtener_libro(isbn_code);
         if(libro===undefined){
             return res.status(404).json({error: 'Libro no encontrado'});
         }
         return res.status(200).json(libro);
     }
     catch(error){
-        
+        console.log(error);
         return res.status(500).json({error:'Error del servidor al obtener el libro.'});
     }   
 });

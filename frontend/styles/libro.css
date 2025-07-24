@@ -95,13 +95,13 @@ main{
     color: #A8B9CA;
 }
 
-.contenedor-autor{
+.contenedor-libro{
     grid-area: info;
     grid-template-columns: 10% min-content 1fr;
     grid-template-areas: 'aside retrato info';
 }
 
-.contenedor-retrato{
+.contenedor-portada{
     grid-area: retrato;
     height: 345px;
     width: 230px;
@@ -109,7 +109,7 @@ main{
     overflow: hidden;
 }
 
-.imagen-retrato{
+.imagen-portada{
     height: 100%;
     width: 100%;
     object-fit: cover;
@@ -125,12 +125,19 @@ main{
     padding: 0.5rem;
 }
 
-.nombre-autor{
+.titulo-libro{
+    grid-area: nombre;
     height: 100%;
     width: 100%;
     text-align: center;
     place-content: top;
 }
+
+#contenedor-generos{
+    display: flex;
+    gap: 0.5rem;
+}
+
 
 
 

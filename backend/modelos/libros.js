@@ -1,11 +1,38 @@
 const db_client = require('./funciones_db'); 
 
+async function get_etiquetas_libro(isbn_code) {
+    const etiquetas = await db_client.query(`
+        SELECT a.id_etiqueta, a.nombre_etiqueta
+        FROM etiquetas a
+        INNER JOIN etiquetas_libros b ON a.id_etiqueta = b.id_etiqueta
+        WHERE b.isbn_code = $1`,[isbn_code]);
+    
+    if (etiquetas.rowCount === 0){
+        return null;
+    }
+    return etiquetas.rows;
+};
+
+async function get_libros_autor(id_autor) {
+    const libros = await db_client.query(`
+        SELECT l.isbn_code, imagen_portada, titulo
+        FROM libros l
+        INNER JOIN libros_autor l_a ON l.isbn_code = l_a.isbn_code 
+        WHERE l_a.id_autor = $1`, [id_autor]);
+    
+    if (libros.rowCount === 0){
+        return null;
+    }
+
+    return libros.rows;
+}
+
+
 
 async function Obtener_libros() {
 
     const query=`
-    SELECT l.isbn_code, l.titulo, l.fecha_publicacion, l.numero_de_paginas, l.imagen_portada, i.nombre_idioma AS idioma, a.nombre_completo AS autor, 
-    ROUND(AVG(r.calificacion),2) AS promedio_calificacion
+    SELECT l.isbn_code, l.titulo, l.fecha_publicacion, l.numero_de_paginas, l.imagen_portada, i.nombre_idioma AS idioma, a.nombre_completo AS autor
     FROM libros l
     LEFT JOIN libros_autor la ON l.isbn_code=la.isbn_code
     LEFT JOIN autores a ON a.id_autor=la.id_autor
@@ -18,7 +45,7 @@ async function Obtener_libros() {
     l.imagen_portada,
     i.nombre_idioma,
     a.nombre_completo
-    ORDER BY l.fecha_publicacion DESC
+    ORDER BY l.titulo
     `;
 
 
@@ -36,69 +63,23 @@ async function Obtener_libros() {
 
 async function Obtener_libro(isbn_code) {
 
-    const query=`
-    SELECT l.isbn_code, l.titulo, l.descripcion,l.fecha_publicacion, l.numero_de_paginas, l.imagen_portada, e.nombre_etiqueta,
-    i.nombre_idioma AS idioma, a.nombre_completo AS autor, 
-    r.nombre_usuario, r.calificacion, r.body, prom.promedio 
+    const result = await db_client.query(`
+    SELECT l.isbn_code, l.titulo, l.descripcion, l.fecha_publicacion, l.numero_de_paginas, l.imagen_portada, a.id_autor, i.nombre_idioma AS idioma, a.nombre_completo AS autor
     FROM libros l
-    JOIN libros_autor la ON l.isbn_code=la.isbn_code
+    LEFT JOIN libros_autor la ON l.isbn_code=la.isbn_code
     LEFT JOIN autores a ON a.id_autor=la.id_autor
     LEFT JOIN idiomas i ON i.id_idioma=l.idioma_id
-    LEFT JOIN etiquetas_libros el ON l.isbn_code=el.isbn_code
-    LEFT JOIN etiquetas e ON e.id_etiqueta=el.id_etiqueta
-    LEFT JOIN (SELECT * FROM resenias
-                 WHERE isbn_code=$1
-                 ORDER BY nombre_usuario ASC
-                 LIMIT 10)
-                 r ON r.isbn_code=l.isbn_code
-    LEFT JOIN (SELECT isbn_code, ROUND(AVG(calificacion),2)AS promedio
-                FROM resenias
-                 WHERE isbn_code=$1
-                 GROUP BY isbn_code
-                )
-                 prom ON prom.isbn_code=l.isbn_code
+    WHERE l.isbn_code = $1`, [isbn_code]);
 
-     l.isbn_code=$1
-    `;
-    
-
-    const result= await db_client.query(query, [isbn_code]);
-    if (result.rowCount===0){ 
+    if (result.rowCount === 0){ 
         return undefined;
     }
-    const libro = {
-        isbnCode: result.rows[0].isbn_code,
-        titulo: result.rows[0].titulo,
-        descripcion: result.rows[0].descripcion,
-        FechaPublicacion: result.rows[0].fecha_publicacion,
-        numeroDePaginas: result.rows[0].numero_de_paginas,
-        imagen: result.rows[0].imagen_portada,
-        idioma: result.rows[0].idioma,
-        autor: result.rows[0].autor,
-        etiquetas: [],
-        resenias: []
-        };
-        
-        const etiquetasSet = new Set();
-        const reseniasSet = new Set();
-        
-        result.rows.forEach(row => {
-            if (row.nombre_etiqueta && !etiquetasSet.has(row.nombre_etiqueta)) {
-            etiquetasSet.add(row.nombre_etiqueta);
-            libro.etiquetas.push(row.nombre_etiqueta);
-            }
 
-            if (row.nombre_usuario && !reseniasSet.has(row.nombre_usuario)) {
-                reseniasSet.add(row.nombre_usuario);
-                libro.resenias.push({
-                  NombreUsuario: row.nombre_usuario,
-                  calificacion: row.calificacion,
-                  body: row.body
-                });
-            }
-        });
+    const etiquetas = await get_etiquetas_libro(isbn_code);
+    const libros_autor = await get_libros_autor(result.rows[0].id_autor);
 
-    return libro;
+
+    return {...result.rows[0], etiquetas, libros_autor};
 }
 
 async function Crear_libro(

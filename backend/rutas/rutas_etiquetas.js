@@ -26,7 +26,7 @@ router.get('/api/etiquetas/:id_etiqueta', async (req, res)=>{
     }
 
     try{
-        const etiqueta=await Obtener_etiqueta(req.params.isbn_code);
+        const etiqueta=await Obtener_etiqueta(req.params.id_etiqueta);
         if(etiqueta===undefined){
             return res.status(404).json({error: 'etiqueta no encontrada'});
         }
