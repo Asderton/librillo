@@ -4,7 +4,7 @@ main{
     grid-template-columns: 1fr 67rem 1fr;
     grid-template-rows: 4.5rem max-content 1fr;
     grid-template-areas:
-    'blank bienvenida aside2'
+    'blank bienvenida botones'
     'retrato info aside2'
     'aside libros aside2';
     padding: 1.5rem;
@@ -12,6 +12,12 @@ main{
     color: #A8B9CA;
 }
 
+.contenedor-botones{
+    display: flex;
+    gap: 10px;
+    grid-area: botones;
+    font-size: 20px;
+}
 
 .contenedor-autor{
     grid-area: info;
