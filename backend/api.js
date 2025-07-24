@@ -6,7 +6,7 @@ const router_autores = require('./rutas/rutas_autores.js');
 const router_libros=require('./rutas/rutas_libros.js');
 const router_etiquetas=require('./rutas/rutas_etiquetas.js');
 const router_etiquetas_libros=require('./rutas/rutas_etiquetas_libros.js');
-
+const router_resenias=require('./rutas/rutas_resenias.js');
 
 
 
@@ -20,6 +20,8 @@ app.use(router_autores);
 app.use(router_libros);
 app.use(router_etiquetas);
 app.use(router_etiquetas_libros);
+app.use(router_resenias);
+
 
 
 app.listen(port, () =>{

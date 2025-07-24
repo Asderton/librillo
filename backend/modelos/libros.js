@@ -4,12 +4,11 @@ const db_client = require('./funciones_db');
 async function Obtener_libros() {
 
     const query=`
-    SELECT l.isbn_code, l.titulo, l.fecha_publicacion, l.numero_de_paginas, l.imagen_portada, i.nombre_idioma AS idioma, a.nombre_completo AS autor, 
-    ROUND(AVG(r.calificacion),2) AS promedio_calificacion
+    SELECT l.isbn_code, l.titulo, l.fecha_publicacion, l.numero_de_paginas, l.imagen_portada, i.nombre_idioma AS idioma, a.nombre_completo AS autor
     FROM libros l
-    LEFT JOIN libros_autor la ON l.isbn_code=la.isbn_code
-    LEFT JOIN autores a ON a.id_autor=la.id_autor
-    LEFT JOIN idiomas i ON i.id_idioma=l.idioma_id
+    JOIN libros_autor la ON l.isbn_code=la.isbn_code
+    JOIN autores a ON a.id_autor=la.id_autor
+    JOIN idiomas i ON i.id_idioma=l.idioma_id
     GROUP BY 
     l.isbn_code,
     l.titulo,
@@ -21,7 +20,6 @@ async function Obtener_libros() {
     ORDER BY l.fecha_publicacion DESC
     `;
 
-
     const result= await db_client.query(query);
     return result.rows.map(row => ({
         isbn: row.isbn_code,
@@ -30,7 +28,6 @@ async function Obtener_libros() {
         numeroDePaginas: row.numero_de_paginas,
         imagen: row.imagen_portada,
         autor: row.autor,
-        calificacionPromedio: row.promedio_calificacion || 0
     }));
 }
 
@@ -58,7 +55,7 @@ async function Obtener_libro(isbn_code) {
                 )
                  prom ON prom.isbn_code=l.isbn_code
 
-     l.isbn_code=$1
+    WHERE l.isbn_code=$1
     `;
     
 
@@ -110,19 +107,19 @@ async function Crear_libro(
     imagen_portada,
     idioma_id
 ) {
+    const query=`INSERT INTO libros (isbn_code,titulo,descripcion,fecha_publicacion,numero_de_paginas,imagen_portada,idioma_id )
+     VALUES ($1, $2, $3, $4, $5, $6, $7)  RETURNING *`
+
+    const result=await db_client.query(query, [isbn_code,titulo,descripcion,fecha_publicacion,numero_de_paginas,imagen_portada,idioma_id]);
     
-    const result=await db_client.query(
-        'INSERT INTO libros (isbn_code,titulo,descripcion,fecha_publicacion,numero_de_paginas,imagen_portada,idioma_id ) VALUES ($1, $2, $3, $4, $5, $6, $7)  RETURNING *' , [isbn_code,titulo,fecha_publicacion,descripcion,numero_de_paginas,imagen_portada,idioma_id]
-    )
-    if (result.rowCount === 0) {
-        return undefined;
-        }
     return result.rows[0];
 }
 
 async function Eliminar_libro(isbn_code){
 
-    const result=await db_client.query('DELETE FROM libros WHERE isbn_code=$1 RETURNING titulo' , [isbn_code]);
+    const query=`DELETE FROM libros WHERE isbn_code=$1 RETURNING titulo`;
+
+    const result=await db_client.query(query , [isbn_code]);
     
     if (result.rowCount === 0) {
         return undefined;
@@ -141,9 +138,10 @@ async function Actualizar_libro(
     idioma_id
 ) {
 
-    const result = await db_client.query(
-    'UPDATE libros SET titulo = $2, descripcion = $3, fecha_publicacion=$4,numero_de_paginas = $5, imagen_portada=$6,idioma_id = $7  WHERE isbn_code = $1  RETURNING titulo',
-    [ titulo, descripcion, fecha_publicacion,numero_de_paginas,imagen_portada, idioma_id, isbn_code]
+    const query=`UPDATE libros SET titulo = $2, descripcion = $3, fecha_publicacion=$4,numero_de_paginas = $5, imagen_portada=$6,idioma_id = $7 
+     WHERE isbn_code = $1  RETURNING titulo`; 
+
+    const result = await db_client.query(query,[ isbn_code,titulo, descripcion, fecha_publicacion,numero_de_paginas,imagen_portada, idioma_id]
     );
     
     if (result.rowCount === 0) {
