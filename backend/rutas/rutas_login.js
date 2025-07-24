@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {logear_usuario} = require('../modelos/modelos_login.js');
 const {validar_login} = require('../validaciones/validaciones_login.js');
+const {firmar_objeto} = require('../middleware.js')
 
 router.post('/api/login', async (req, res) => {
     console.log(req.body);
@@ -24,22 +25,13 @@ router.post('/api/login', async (req, res) => {
             return res.status(400).json({error: "Clave incorrecta"});
         }
 
-        req.session.user = usuario_logeado;
-        return res.redirect(302, 'http://127.0.0.1:5500/frontend/templates/');
+        const token = firmar_objeto(usuario_logeado);
+        return res.status(200).json({ token });
     }
     catch(error){
+        console.log(error);
         return res.status(500).json({error: "Error del servidor al iniciar sesion"});
     }
 });
-
-router.post('/api/logout', (req,res) => {
-    req.session.destroy( error => {
-        if (error){
-            console.log(error);
-            return res.status(500).json({error: "Error del servidor al cerrar sesion"});
-        }
-        res.send("Sesion cerrada!");
-    });
-})
 
 module.exports = router;

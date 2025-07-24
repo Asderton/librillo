@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { middleware_jwt } = require('../middleware.js');
 
 const {
     get_bibliotecas_username, 
@@ -15,8 +16,8 @@ const {validar_request_biblioteca} = require('../validaciones/validaciones_bibli
 
 
 // Get id,icono y nombre de las bibliotecas del usuario 
-router.get ('/api/:username/bibliotecas/', async (req,res) => {
-    const username = req.params.username;
+router.get ('/api/bibliotecas/', middleware_jwt, async (req,res) => {
+    const username = req.auth.username;
     try{
         const bibliotecas = await get_bibliotecas_username(username);
         if (bibliotecas === undefined){
@@ -46,12 +47,8 @@ router.get ('/api/bibliotecas/:id', async (req,res) => {
 });
 
 // Crear una biblioteca vacia
-router.post ('/api/bibliotecas', async (req,res) => { 
-    if (req.session.user === undefined){
-        return res.status(401).send("Debe iniciar sesion!");
-    }
-    const username_cliente = req.session.user.username;
-
+router.post ('/api/bibliotecas', middleware_jwt, async (req,res) => { 
+    const username_cliente = req.auth.username;
     const validacion = validar_request_biblioteca(req.body);
     if(!validacion.resultado){
         return res.status(validacion.status).json({ error: validacion.mensaje});
@@ -72,11 +69,8 @@ router.post ('/api/bibliotecas', async (req,res) => {
 });
 
 //Agregar libro a biblioteca
-router.post ('/api/bibliotecas/:id', async (req,res) => { 
-    if (req.session.user === undefined){
-        return res.status(401).send("Debe iniciar sesion!");
-    }
-    const username_cliente = req.session.user.username;
+router.post ('/api/bibliotecas/:id', middleware_jwt, async (req,res) => { 
+    const username_cliente = req.auth.username;
     const id_biblioteca = req.params.id;
     const { isbn_code } = req.body;
     if (!Number.isInteger(Number(isbn_code))){
@@ -97,12 +91,8 @@ router.post ('/api/bibliotecas/:id', async (req,res) => {
 });
 
 // Eliminar biblioteca
-router.delete ('/api/bibliotecas/:id', async (req,res) => {
-    if (req.session.user === undefined){
-        return res.status(401).send("Debe iniciar sesion!");
-    }
-
-    const username_cliente = req.session.user.username;
+router.delete ('/api/bibliotecas/:id', middleware_jwt, async (req,res) => {
+    const username_cliente = req.auth.username;
     const id_biblioteca = req.params.id;
     try{
         const biblioteca_eliminada = await eliminar_biblioteca(username_cliente, id_biblioteca);
@@ -122,11 +112,7 @@ router.delete ('/api/bibliotecas/:id', async (req,res) => {
 
 // Eliminar libro de biblioteca
 router.delete ('/api/bibliotecas/:id/libros/:isbn_code', async (req,res) => {
-    if (req.session.user === undefined){
-        return res.status(401).send("Debe iniciar sesion!");
-    }
-
-    const username_cliente = req.session.user.username;
+    const username_cliente = req.auth.username;
     const id_biblioteca = req.params.id;
     const isbn_code = req.params.isbn_code;
     try{
@@ -148,11 +134,7 @@ router.delete ('/api/bibliotecas/:id/libros/:isbn_code', async (req,res) => {
 
 // Modificar nombre o icono de biblioteca
 router.put ('/api/bibliotecas/:id', async (req,res) => {
-    if (req.session.user === undefined){
-        return res.status(401).send("Debe iniciar sesion!");
-    }
-
-    const username_cliente = req.session.user.username;
+    const username_cliente = req.auth.username;
     const id_biblioteca = req.params.id;
     const validacion = validar_request_biblioteca(req.body);
     if(!validacion.resultado){

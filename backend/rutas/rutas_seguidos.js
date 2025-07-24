@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { middleware_jwt } = require('../middleware.js');
 
 const {
     get_all_seguidos,
@@ -41,11 +42,8 @@ router.get ('/api/:username/seguidores', async (req,res) => {
 });
 
 // Seguir
-router.post ('/api/seguidos/:username', async (req,res) =>{ 
-    if (req.session.user.username === undefined){
-        return res.status(401).send("Debe iniciar sesion!");
-    }
-    const usuario_cliente = req.session.user.username;
+router.post ('/api/seguidos/:username', middleware_jwt, async (req,res) =>{ 
+    const usuario_cliente = req.auth.username;
     const usuario_a_seguir = req.params.username;
 
     const result = await crear_seguidor(usuario_cliente, usuario_a_seguir);
@@ -58,12 +56,9 @@ router.post ('/api/seguidos/:username', async (req,res) =>{
 })
 
 // Dejar de seguir
-router.delete ('/api/seguidos/:username', async (req, res) => {
-    if (usuario_cliente === undefined){
-        return res.status(401).send("Debe iniciar sesion!");
-    }
+router.delete ('/api/seguidos/:username', middleware_jwt, async (req, res) => {
     const usuario_a_unfollow = req.params.username;
-    const usuario_cliente = req.session.user.username;
+    const usuario_cliente = req.auth.username;
 
     const usuario_eliminado = await eliminar_seguidor(usuario_cliente, usuario_a_unfollow);
     if (usuario_eliminado === undefined){

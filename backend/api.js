@@ -13,7 +13,7 @@ const router_libros=require('./rutas/rutas_libros.js');
 const router_etiquetas=require('./rutas/rutas_etiquetas.js');
 const router_etiquetas_libros=require('./rutas/rutas_etiquetas_libros.js');
 const cors = require('cors');
-const session = require('express-session');
+const { middleware_error } = require("./middleware.js");
 
 app.use(cors({
     origin: 'http://127.0.0.1:5500',
@@ -21,25 +21,7 @@ app.use(cors({
 }));
 
 app.use(express.urlencoded({ extended: true }));
-
-
 app.use(express.json());
-app.use(session({
-    secret: "Camejo mejor catedra",
-    saveUninitialized: false,
-    resave: false,
-    cookie: {
-        maxAge: 60000 * 3600
-    }
-}));
-
-app.get( '/', (req,res)=>{ 
-    // req.session.username = "Manolito Gonzales";
-    console.log(req.session);
-    console.log(req.sessionID);
-    res.send ('hola mundo');
-});
-
 
 app.use(router_paises);
 app.use(router_login);
@@ -50,8 +32,7 @@ app.use(router_bibliotecas);
 app.use(router_libros);
 app.use(router_etiquetas);
 app.use(router_etiquetas_libros);
-
-
+app.use(middleware_error);
 
 app.listen(port, () =>{
 console.log (`servidor escuchando en el puerto: ${port}`);

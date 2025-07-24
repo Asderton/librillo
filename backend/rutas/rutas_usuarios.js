@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { middleware_jwt } = require('../middleware.js');
 
 const { 
     validar_crear_usuario,
@@ -70,11 +71,8 @@ router.post ('/api/usuarios', async (req,res) => {
 });
 
 // Eliminar un usuario
-router.delete('/api/usuarios', async (req, res) => {   
-    if (req.session.user === undefined){
-        return res.status(401).send("Debe iniciar sesion!");
-    }
-    const username_cliente = req.session.user.username;// CAMBIARRRRRR
+router.delete('/api/usuarios', middleware_jwt, async (req, res) => {   
+    const username_cliente = req.auth.username;// CAMBIARRRRRR
     try {
         const usuario_eliminado = await eliminar_usuario(username_cliente);
         if (usuario_eliminado === undefined){
@@ -89,6 +87,10 @@ router.delete('/api/usuarios', async (req, res) => {
         console.log(error);
         return res.status(500).json({error: "Error del servidor al eliminar al usuario"});
     };
+});
+
+router.get('/api/me', middleware_jwt, (req, res) => {
+    return res.status(200).json(req.auth);
 });
 
 
