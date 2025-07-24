@@ -12,6 +12,7 @@ const router_bibliotecas = require('./rutas/rutas_bibliotecas.js');
 const router_libros=require('./rutas/rutas_libros.js');
 const router_etiquetas=require('./rutas/rutas_etiquetas.js');
 const router_etiquetas_libros=require('./rutas/rutas_etiquetas_libros.js');
+const router_idiomas = require('./rutas/rutas_idiomas.js');
 const cors = require('cors');
 const { middleware_error } = require("./middleware.js");
 
@@ -32,6 +33,7 @@ app.use(router_bibliotecas);
 app.use(router_libros);
 app.use(router_etiquetas);
 app.use(router_etiquetas_libros);
+app.use(router_idiomas);
 app.use(middleware_error);
 
 app.listen(port, () =>{
