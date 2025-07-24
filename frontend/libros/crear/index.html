@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+    <title>Libros</title>
+    <link rel="stylesheet" href="./crear_libro.css">
+    <link rel="stylesheet" href="../../styles/general.css">
+</head>
+<body>
+    <header>
+        <div class="container" id="contenedor_barra_navegacion">
+            <div class="container" id="contenedor_logo">
+                <!-- <img src="../images/logo.svg" alt="Logo Librillo" id="logo_navbar"> -->
+            </div>
+            <nav class="container" id="barra_navegacion">
+                <a class="nav_button" href="../../libros"><b>LIBROS</b></a>
+                <a class="nav_button"><b>BIBLIOTECAS</b></a>
+                <a class="nav_button" href="../../autores/"><b>AUTORES</b></a>
+                <a class="nav_button" href="../../login/"><b>LOGIN</b></a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <H1 id="mensaje-crear"></H1>
+        <form method="POST" action="http://localhost:3000/api/libros" onsubmit="manejar_submit(event)">
+            <div class="contenedor-campo">
+                <label for="nombre-autor">NOMBRE</label>
+                <input class="form-input" type="text" name="nombre_completo" id="nombre-autor" required autocomplete="off">
+            </div>
+            <div class="contenedor-campo">
+                <label for="nacionalidades">NACIONALIDAD</label>
+                <select class="form-input" name="nacionalidad" id="nacionalidades" required>
+                    <option value="">Desconocido</option> 
+                    </select>
+            </div>
+            <div class="contenedor-campo">
+                <label for="fecha-nacimiento">FECHA DE NACIMIENTO</label>
+                <input class="form-input" type="date" name="fecha_nacimiento" id="fecha-nacimiento">
+            </div>
+            <div class="contenedor-campo">
+                <label for="retrato-autor">LINK A FOTO DEL AUTOR</label>
+                <input class="form-input" type="url" name="retrato" id="retrato-autor" autocomplete="off">
+            </div>
+            <input type="submit" id="submit-button" name="submit" value="Crear autor">
+        </form>
+    </main>
+    <script src="./crear_libro.js"></script>
+</body>

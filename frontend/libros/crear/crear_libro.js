@@ -1,4 +1,4 @@
-const url = "http://localhost:3000/api/paises";
+const url_idiomas = "http://localhost:3000/api/idiomas";
 
 function crear_opcion(pais){
     const {id_pais, nombre_pais} = pais
@@ -78,8 +78,6 @@ async function llenar_dropdown(paises) {
 async function fetch_data() {
     const response = await fetch(url);
     const paises = await response.json();
-    const bienvenida = document.getElementById('mensaje-crear');
-    bienvenida.innerText = "Crear Autor";
 
     llenar_dropdown(paises);
 }

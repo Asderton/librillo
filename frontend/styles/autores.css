@@ -4,12 +4,17 @@ main{
     grid-template-columns: 1fr 67rem 1fr;
     grid-template-rows: 4.5rem max-content 1fr;
     grid-template-areas:
-    'aside bienvenida aside2'
+    'aside bienvenida botones'
     'aside recomendaciones aside2'
     'aside relleno aside2';
     padding: 1.5rem;
     font-family: 'Times New Roman', Times, sans-serif;
     color: #A8B9CA;
+}
+
+#boton-crear-autor{
+    grid-area: botones;
+    font-size: 20px;
 }
 
 
