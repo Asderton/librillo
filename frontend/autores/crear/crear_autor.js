@@ -55,7 +55,7 @@ async function manejar_submit(event){
 
     console.log(typeof respuesta);
     if (respuesta.ok) {
-        window.location.href = '../autores/';
+        window.location.href = '../';
         return;
     } else {    
         const error = await respuesta.json();
