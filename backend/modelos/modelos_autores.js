@@ -22,7 +22,6 @@ async function get_un_autor(id_autor) {
         libros = null;
     }
 
-    console.log(libros);
     return {...autor.rows[0], libros: libros};
 };
 
@@ -32,7 +31,6 @@ async function crear_autor(nombre_completo, nacionalidad, fecha_nacimiento = nul
         if (autor_creado.rowCount === 0) {
             return undefined;
         }
-        console.log(autor_creado);
         return autor_creado;
     }
     catch (error){

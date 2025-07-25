@@ -12,6 +12,10 @@ main{
     color: #A8B9CA;
 }
 
+.opciones{
+    visibility: hidden;
+}
+
 #cerrar-sesion {
     grid-area: logout;
     font-size: 20px;

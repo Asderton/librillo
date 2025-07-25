@@ -21,6 +21,12 @@ app.use(cors({
     SameSite: 'lax'
 }));
 
+
+app.use(cors({
+    origin: 'http://localhost:5500',
+}));
+
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

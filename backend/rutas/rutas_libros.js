@@ -103,6 +103,7 @@ router.post('/api/libros', async (req, res)=>{
         return res.status(201).json({mensaje: `Libro ${titulo} creado con éxito`});
     }
     catch(error){
+        console.log(error);
         return res.status(500).json({error: 'Error del servidor no se pudo crear el libro'});
     };
     

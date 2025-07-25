@@ -1,8 +1,8 @@
 const urlParams = new URLSearchParams(window.location.search);
-const username = urlParams.get('username');
+const username_perfil = urlParams.get('username');
 
 const url_logout = "http://localhost:3000/api/logout"
-const url_info_usuario = `http://localhost:3000/api/usuarios/${username}`;
+const url_info_usuario = `http://localhost:3000/api/usuarios/${username_perfil}`;
 const default_icon = 'https://www.ipburger.com/wp-content/uploads/2023/06/Untitled-36-%C3%97-36-in-2023-05-20T120139.136-1024x1024-1.webp';
 
 function crear_retrato(retrato){
@@ -64,8 +64,7 @@ function crear_info(usuario){
     contenedor.appendChild(contenedor_bio);
 }
 
-function linkear_botones(usuario){
-
+async function linkear_botones(usuario){
     const boton_logout = document.getElementById('cerrar-sesion');
     boton_logout.addEventListener("click", () => {
         const confirmado = confirm("Desea cerrar sesion?");
@@ -156,27 +155,40 @@ function crear_libro(libro){
 async function fetch_data() {
     const response = await fetch(url_info_usuario);
     const usuario = await response.json();
+    await comprobar_sesion();
     linkear_botones(usuario);
     crear_contenedor(usuario);
     // llenar_biblioteca(autor.libros);
     return;
 }
 
-async function comprobar_sesion() {
-    const url = "http://localhost:3000/api/me";
-    const result = await fetchear(url);
-    if (result.ok){
-        const usuario = await result.json();
-        const { username, foto_perfil } = usuario;
-        console.log(`username: ${username} foto: ${foto_perfil}`);
-    }
-    else {
-        const error = await result.json();
-        console.log(error);
+function mostrar_opciones(){
+    const opciones = document.getElementsByClassName('opciones');
+    for (const opcion of opciones){
+        opcion.style.visibility = 'visible';
     }
 }
 
-
+async function comprobar_sesion() {
+    if (localStorage.getItem('token')){
+        const url = "http://localhost:3000/api/me";
+        const result = await fetchear(url);
+        if (result.ok){
+            const usuario = await result.json();
+            const { username } = usuario;
+            if (username === username_perfil){
+                console.log('entro');
+                mostrar_opciones();
+                return;
+            }
+        }
+        else {
+            const error = await result.json();
+            console.log(error);
+            return null;
+        }
+    }
+}
 
 window.addEventListener('load', fetch_data);
 
