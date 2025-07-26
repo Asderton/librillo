@@ -3,6 +3,7 @@ const username_perfil = urlParams.get('username');
 
 const url_logout = "http://localhost:3000/api/logout"
 const url_info_usuario = `http://localhost:3000/api/usuarios/${username_perfil}`;
+const url_delete_usuario = "http://localhost:3000/api/usuarios"
 const default_icon = 'https://www.ipburger.com/wp-content/uploads/2023/06/Untitled-36-%C3%97-36-in-2023-05-20T120139.136-1024x1024-1.webp';
 
 function crear_retrato(retrato){
@@ -82,12 +83,13 @@ async function linkear_botones(usuario){
 
     const boton_borrar = document.getElementById('boton-borrar');
     boton_borrar.addEventListener("click", async () => {
-        const confirmado = confirm("Desea eliminar este autor?");
+        const confirmado = confirm("Desea eliminar este usuario?");
         if (confirmado){
-            const result = await fetch(url_info_usuario, {
+            const result = await fetchear(url_delete_usuario, {
                 method: 'DELETE'
             })
-            window.location.href = '../autores/'
+            localStorage.removeItem('token');
+            window.location.href = '/frontend/homepage/'
         }
         else{ 
             return;

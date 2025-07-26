@@ -20,7 +20,6 @@
         </div>
     </header>
     <main>
-        <a href="./crear/" id="boton-crear">Crear Usuario</a>
         <H1 id="mensaje-crear">Inicio de sesion</H1>
         <form method="POST" action="http://localhost:3000/api/login" onsubmit="manejar_submit(event)">
             <div class="contenedor-campo">
@@ -31,7 +30,8 @@
                 <label for="clave">CONTRASEÑA</label>
                 <input class="form-input" type="password" name="clave_plana" id="clave" required autocomplete="off">
             </div>
-            <input type="submit" id="submit-button" name="submit" value="Iniciar Sesion">
+            <input type="submit" id="submit-button" name="submit" value="Iniciar Sesion" class="boton-inferior">
+            <a href="./crear/" id="boton-crear" class="boton-inferior">Crear Usuario</a>
         </form>
     </main>
     <script src="./login.js"></script>
