@@ -1,7 +1,8 @@
 const express = require ("express");
 const app =express();
 const port=3000;
-
+const cors = require('cors');
+const { middleware_error } = require("./middleware.js");
 
 const router_paises = require('./rutas/rutas_paises.js');
 const router_autores = require('./rutas/rutas_autores.js');
@@ -13,22 +14,12 @@ const router_libros=require('./rutas/rutas_libros.js');
 const router_etiquetas=require('./rutas/rutas_etiquetas.js');
 const router_etiquetas_libros=require('./rutas/rutas_etiquetas_libros.js');
 const router_idiomas = require('./rutas/rutas_idiomas.js');
-const cors = require('cors');
-const { middleware_error } = require("./middleware.js");
-
-app.use(cors({
-    origin: 'http://127.0.0.1:5500',
-    SameSite: 'lax'
-}));
 
 
-app.use(cors({
-    origin: 'http://localhost:5500',
-}));
-
-
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(middleware_error);
 
 app.use(router_paises);
 app.use(router_login);
@@ -40,7 +31,8 @@ app.use(router_libros);
 app.use(router_etiquetas);
 app.use(router_etiquetas_libros);
 app.use(router_idiomas);
-app.use(middleware_error);
+
+
 
 app.listen(port, () =>{
 console.log (`servidor escuchando en el puerto: ${port}`);
