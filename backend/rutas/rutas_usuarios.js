@@ -4,14 +4,15 @@ const { middleware_jwt } = require('../middleware.js');
 
 const { 
     validar_crear_usuario,
-    validar_patch_usuario
+    validar_put_usuario
 } = require('../validaciones/validaciones_usuarios');
 
 const {
     get_all_usuarios, 
     get_un_usuario, 
     crear_usuario, 
-    eliminar_usuario
+    eliminar_usuario,
+    editar_usuario
 } = require('../modelos/modelos_usuarios');
 
 // Obtener todos los usuarios
@@ -93,20 +94,26 @@ router.get('/api/me', middleware_jwt, (req, res) => {
 });
 
 
-// mas tarde cuando haya mas interfaz :)
-router.patch('/api/usuarios', async (req, res) => {
-    validar_patch_usuario(req.body);
+
+router.put('/api/usuarios', middleware_jwt, async (req, res) => {
+    const username_cliente = req.auth.username;// CAMBIARRRRRR
+    const validacion = validar_put_usuario(req.body);
+    if (!validacion.resultado){
+        return res.status(validacion.status).json({error: validacion.mensaje});
+    }
 
     const {
-        username,
-    } = req.body;
-
+        nombre,
+        foto_perfil,
+        bio
+        } = req.body
+    
     try {
-        const usuario_eliminado = await eliminar_usuario(username);
-        if (usuario_eliminado === undefined){
-            return res.status(404).json({error: "El usuario que quieres eliminar no existe"});
+        const usuario_editado = await editar_usuario(username_cliente, nombre, foto_perfil, bio);
+        if (usuario_editado === undefined){
+            return res.status(404).json({error: "El usuario que quieres editar no existe"});
         }
-        return res.status(201).json({mensaje: `El usuario ${username} ha sido eliminado con exito.`});
+        return res.status(201).json({mensaje: `El usuario ${username_cliente} ha sido editado con exito.`});
     }
     catch(error){
         console.log(error);

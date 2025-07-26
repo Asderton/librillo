@@ -40,10 +40,21 @@ async function eliminar_usuario(username){
     return result;
 }
 
+async function editar_usuario(username, nombre, foto_perfil = null, bio = null) {
+
+    const usuario_creado = await db_client.query('UPDATE usuarios SET nombre = $1, foto_perfil = $2, bio = $3 WHERE nombre_usuario = $4 RETURNING nombre_usuario', [nombre, foto_perfil, bio, username]);
+    if (usuario_creado.rowCount === 0){
+        return undefined;
+    }
+
+    return usuario_creado.rows[0].nombre_usuario;
+}
+
 module.exports = {
     get_un_usuario,
     crear_usuario,
     get_all_usuarios,
-    eliminar_usuario
+    eliminar_usuario,
+    editar_usuario
 };
 

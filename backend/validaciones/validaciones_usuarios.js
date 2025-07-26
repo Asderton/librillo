@@ -2,10 +2,8 @@ const { get_un_usuario } = require("../modelos/modelos_usuarios");
 const { es_url_valido } = require('./validaciones_generales');
 
 
-function validar_tipo_data_usuario(username, foto_perfil, nombre, bio){
-    if (username.trim() === ''){
-        return {resultado: false, status: 400, mensaje: "Nombre de usuario no puede estar vacio"};
-    }
+function validar_tipo_data_usuario(foto_perfil, nombre, bio){
+    
     // Faltan validaciones para contrasenia
     if (foto_perfil && !es_url_valido(foto_perfil)){
         return {resultado: false, status: 400, mensaje: "La foto de perfil no es un URL valido"};
@@ -34,6 +32,9 @@ async function validar_crear_usuario(body){
     if (!username || !clave_plana || !nombre){
         return {resultado: false, status: 400, mensaje: "Campos obligatorios faltantes!"};
     }
+        if (username.trim() === ''){
+        return {resultado: false, status: 400, mensaje: "Nombre de usuario no puede estar vacio"};
+    }
     // Validar nombre de usuario unico
     if ((await get_un_usuario(username)) !== undefined){
         return {resultado: false, status: 409, mensaje: "El nombre de usuario escogido ya está en uso!"};
@@ -47,10 +48,9 @@ async function validar_crear_usuario(body){
     return {resultado: true, status: 200, mensaje: "OK"};
 }
 
-function validar_patch_usuario(body){
+function validar_put_usuario(body){
     const {
         username,
-        clave_plana,
         foto_perfil,
         nombre,
         bio
@@ -60,7 +60,7 @@ function validar_patch_usuario(body){
         return {resultado: false, status: 409, mensaje: "El nombre de usuario no puede ser modificado"};
     }
 
-    const validacion = validar_tipo_data_usuario(username, foto_perfil, nombre, bio);
+    const validacion = validar_tipo_data_usuario(foto_perfil, nombre, bio);
     if (!validacion.resultado){
         return {validacion: false, status: validacion.status, mensaje: validacion.mensaje};
     }
@@ -68,4 +68,4 @@ function validar_patch_usuario(body){
     return {resultado: true, status: 200, mensaje: "OK"};
 }
 
-module.exports = {validar_crear_usuario, validar_patch_usuario};
+module.exports = {validar_crear_usuario, validar_put_usuario};
