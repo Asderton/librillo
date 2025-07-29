@@ -56,6 +56,17 @@ label{
     font-size: 30px;
 }
 
+#descripcion {
+    width: 100%;
+    font-size: 16px;
+    padding: 0.5rem ;
+    text-align: justify;
+    align-items: left;
+    height: 6rem;
+    white-space: normal;   
+    word-wrap: break-word;
+}
+
 option{
     font-size: 15px;
 }

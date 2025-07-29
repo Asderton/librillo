@@ -30,7 +30,7 @@ isbn_code INT PRIMARY KEY,
 titulo TEXT NOT NULL,
 id_autor INT REFERENCES autores(id_autor) ON DELETE SET NULL,
 fecha_publicacion DATE,
-descripcion TEXT NOT NULL,
+descripcion TEXT,
 numero_de_paginas INT,
 imagen_portada TEXT,
 idioma_id INT REFERENCES idiomas (id_idioma) ON DELETE SET NULL
