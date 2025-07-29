@@ -21,17 +21,19 @@ id_autor SERIAL PRIMARY KEY,
 nombre_completo TEXT NOT NULL,
 nacionalidad INT REFERENCES paises (id_pais) ON DELETE SET NULL,
 fecha_nacimiento DATE,
-retrato TEXT
+retrato TEXT,
+biografia TEXT
 );
 
 CREATE TABLE libros (
 isbn_code INT PRIMARY KEY,  
 titulo TEXT NOT NULL,
+id_autor INT REFERENCES autores(id_autor) ON DELETE SET NULL,
 fecha_publicacion DATE,
 descripcion TEXT NOT NULL,
-numero_de_paginas INT NOT NULL,
+numero_de_paginas INT,
 imagen_portada TEXT,
-idioma_id INT DEFAULT 1 NOT NULL REFERENCES idiomas (id_idioma) ON DELETE SET DEFAULT
+idioma_id INT REFERENCES idiomas (id_idioma) ON DELETE SET NULL
 );
 
 CREATE TABLE bibliotecas (
@@ -66,11 +68,6 @@ calificacion INT NOT NULL CHECK (calificacion >= 0 AND calificacion <= 10),
 body TEXT 
 );
 
-CREATE TABLE libros_autor (
-id_autor INT DEFAULT 1 REFERENCES autores (id_autor) ON DELETE SET DEFAULT,
-isbn_code int REFERENCES libros(isbn_code) ON DELETE CASCADE,
-PRIMARY KEY (id_autor, isbn_code)
-);
 
 CREATE TABLE etiquetas_libros (
 id_etiqueta INT REFERENCES etiquetas (id_etiqueta) ON DELETE CASCADE,

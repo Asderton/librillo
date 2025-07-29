@@ -9,8 +9,7 @@ const {
     Actualizar_libro
 } = require('../modelos/modelos_libros');
 
-const {asignar_autor_a_libro} = require('../modelos/modelos_autores_libros');
-
+//Obtener Libros
 router.get('/api/libros', async (req, res)=>{
     try{
         const libros=await Obtener_libros();
@@ -21,6 +20,7 @@ router.get('/api/libros', async (req, res)=>{
     }  
 });
 
+//Obtener libro por isbn_code
 router.get('/api/libros/:isbn_code', async (req, res)=>{
 
     const isbn_code=Number(req.params.isbn_code);

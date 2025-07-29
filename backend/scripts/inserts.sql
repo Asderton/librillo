@@ -36,51 +36,29 @@ INSERT INTO autores (nombre_completo, nacionalidad, fecha_nacimiento, retrato) V
 ('Margaret Atwood', 2, '1939-11-18', NULL),
 ('Borges', 1, '1899-08-24', NULL);
 
--- Libros
-INSERT INTO libros (isbn_code, titulo, fecha_publicacion, descripcion, numero_de_paginas, imagen_portada, idioma_id) VALUES
-(1001, 'Cien Años de Soledad', '1967-06-05', 'Realismo mágico en Macondo', 417, NULL, 1),
-(1002, 'Harry Potter y la piedra filosofal', '1997-06-26', 'Un niño descubre que es mago', 223, NULL, 1),
-(1003, 'Kafka en la orilla', '2002-09-12', 'Realismo mágico japonés', 505, NULL, 4),
-(1004, 'Rayuela', '1963-06-28', 'Una novela abierta a la interpretación', 600, NULL, 1),
-(1005, '1984', '1949-06-08', 'Distopía totalitaria', 328, NULL, 2),
-(1006, 'Orgullo y prejuicio', '1813-01-28', 'Romance y crítica social', 432, NULL, 2),
-(1007, 'El extranjero', '1942-01-01', 'Existencialismo francés', 123, NULL, 3),
-(1008, 'Fahrenheit 451', '1953-10-19', 'Sociedad sin libros', 158, NULL, 2),
-(1009, 'El cuento de la criada', '1985-08-01', 'Distopía feminista', 311, NULL, 2),
-(1010, 'Ficciones', '1944-01-01', 'Relatos filosóficos', 170, NULL, 1),
-(1011, 'Crónica de una muerte anunciada', '1981-01-01', 'Una muerte anticipada', 120, NULL, 1),
-(1012, 'Harry Potter y la cámara secreta', '1998-07-02', 'Segunda entrega del mago', 251, NULL, 1),
-(1013, 'Tokio Blues', '1987-09-04', 'Amor y pérdida', 296, NULL, 4),
-(1014, 'Bestiario', '1951-01-01', 'Relatos de lo extraño', 180, NULL, 1),
-(1015, 'Rebelión en la granja', '1945-08-17', 'Fábula política', 112, NULL, 2),
-(1016, 'Emma', '1815-12-23', 'Retrato de una mujer joven', 474, NULL, 2),
-(1017, 'La peste', '1947-06-10', 'Peste en Argel', 308, NULL, 3),
-(1018, 'El hombre ilustrado', '1951-01-01', 'Cuentos de ciencia ficción', 270, NULL, 2),
-(1019, 'Oryx y Crake', '2003-05-01', 'Biotecnología y catástrofe', 376, NULL, 2),
-(1020, 'El Aleph', '1949-01-01', 'Un punto que contiene todo', 157, NULL, 1);
-
--- Libros por autor
-INSERT INTO libros_autor (id_autor, isbn_code) VALUES
-(1, 1001),
-(2, 1002),
-(3, 1003),
-(4, 1004),
-(5, 1005),
-(6, 1006),
-(7, 1007),
-(8, 1008),
-(9, 1009),
-(10, 1010),
-(1, 1011),
-(2, 1012),
-(3, 1013),
-(4, 1014),
-(5, 1015),
-(6, 1016),
-(7, 1017),
-(8, 1018),
-(9, 1019),
-(10, 1020);
+INSERT INTO libros (
+  isbn_code, titulo, id_autor, fecha_publicacion, descripcion, numero_de_paginas, imagen_portada, idioma_id
+) VALUES
+(1001, 'Cien Años de Soledad', 1, '1967-06-05', 'Realismo mágico en Macondo', 417, NULL, 1),
+(1002, 'Harry Potter y la piedra filosofal', 2, '1997-06-26', 'Un niño descubre que es mago', 223, NULL, 1),
+(1003, 'Kafka en la orilla', 3, '2002-09-12', 'Realismo mágico japonés', 505, NULL, 4),
+(1004, 'Rayuela', 4, '1963-06-28', 'Una novela abierta a la interpretación', 600, NULL, 1),
+(1005, '1984', 5, '1949-06-08', 'Distopía totalitaria', 328, NULL, 2),
+(1006, 'Orgullo y prejuicio', 6, '1813-01-28', 'Romance y crítica social', 432, NULL, 2),
+(1007, 'El extranjero', 7, '1942-01-01', 'Existencialismo francés', 123, NULL, 3),
+(1008, 'Fahrenheit 451', 8, '1953-10-19', 'Sociedad sin libros', 158, NULL, 2),
+(1009, 'El cuento de la criada', 9, '1985-08-01', 'Distopía feminista', 311, NULL, 2),
+(1010, 'Ficciones', 10, '1944-01-01', 'Relatos filosóficos', 170, NULL, 1),
+(1011, 'Crónica de una muerte anunciada', 1, '1981-01-01', 'Una muerte anticipada', 120, NULL, 1),
+(1012, 'Harry Potter y la cámara secreta', 2, '1998-07-02', 'Segunda entrega del mago', 251, NULL, 1),
+(1013, 'Tokio Blues', 3, '1987-09-04', 'Amor y pérdida', 296, NULL, 4),
+(1014, 'Bestiario', 4, '1951-01-01', 'Relatos de lo extraño', 180, NULL, 1),
+(1015, 'Rebelión en la granja', 5, '1945-08-17', 'Fábula política', 112, NULL, 2),
+(1016, 'Emma', 6, '1815-12-23', 'Retrato de una mujer joven', 474, NULL, 2),
+(1017, 'La peste', 7, '1947-06-10', 'Peste en Argel', 308, NULL, 3),
+(1018, 'El hombre ilustrado', 8, '1951-01-01', 'Cuentos de ciencia ficción', 270, NULL, 2),
+(1019, 'Oryx y Crake', 9, '2003-05-01', 'Biotecnología y catástrofe', 376, NULL, 2),
+(1020, 'El Aleph', 10, '1949-01-01', 'Un punto que contiene todo', 157, NULL, 1);
 
 -- Etiquetas
 INSERT INTO etiquetas (nombre_etiqueta) VALUES

@@ -15,15 +15,14 @@ async function get_etiquetas_libro(isbn_code) {
 
 async function get_libros_autor(id_autor) {
     const libros = await db_client.query(`
-        SELECT l.isbn_code, imagen_portada, titulo
-        FROM libros l
-        INNER JOIN libros_autor l_a ON l.isbn_code = l_a.isbn_code 
-        WHERE l_a.id_autor = $1`, [id_autor]);
+        SELECT isbn_code, imagen_portada, titulo
+        FROM libros 
+        INNER JOIN autores ON libros.id_autor = autores.id_autor
+        WHERE autores.id_autor = $1`, [id_autor]);
     
     if (libros.rowCount === 0){
         return null;
     }
-
     return libros.rows;
 }
 
@@ -32,8 +31,7 @@ async function Obtener_libros() {
     const query=`
     SELECT l.isbn_code, l.titulo, l.fecha_publicacion, l.numero_de_paginas, l.imagen_portada, i.nombre_idioma AS idioma, a.nombre_completo AS autor
     FROM libros l
-    LEFT JOIN libros_autor la ON l.isbn_code=la.isbn_code
-    LEFT JOIN autores a ON a.id_autor=la.id_autor
+    LEFT JOIN autores a ON l.id_autor=a.id_autor
     LEFT JOIN idiomas i ON i.id_idioma=l.idioma_id
     GROUP BY 
     l.isbn_code,
@@ -61,12 +59,12 @@ async function Obtener_libros() {
 async function Obtener_libro(isbn_code) {
 
     const result = await db_client.query(`
-    SELECT l.isbn_code, l.titulo, l.descripcion, l.fecha_publicacion, l.numero_de_paginas, l.imagen_portada, a.id_autor, i.nombre_idioma AS idioma, a.nombre_completo AS autor
+    SELECT l.isbn_code, l.titulo, l.descripcion, l.fecha_publicacion, l.numero_de_paginas, l.imagen_portada, l.id_autor, a.nombre_completo AS autor, i.nombre_idioma AS idioma
     FROM libros l
-    LEFT JOIN libros_autor la ON l.isbn_code=la.isbn_code
-    LEFT JOIN autores a ON a.id_autor=la.id_autor
-    LEFT JOIN idiomas i ON i.id_idioma=l.idioma_id
-    WHERE l.isbn_code = $1`, [isbn_code]);
+    LEFT JOIN autores a ON a.id_autor = l.id_autor
+    LEFT JOIN idiomas i ON i.id_idioma = l.idioma_id
+    WHERE l.isbn_code = $1;
+    `, [isbn_code]);
 
     if (result.rowCount === 0){ 
         return undefined;

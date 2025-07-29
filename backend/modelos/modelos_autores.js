@@ -72,8 +72,8 @@ async function get_libros_autor(id_autor) {
     const libros = await db_client.query(`
         SELECT libros.isbn_code, titulo, imagen_portada 
         FROM libros 
-        INNER JOIN libros_autor 
-        ON libros.isbn_code = libros_autor.isbn_code 
+        INNER JOIN autores 
+        ON libros.id_autor = autores.id_autor 
         WHERE id_autor = $1`, [id_autor]
     );
         return (libros.rows);
