@@ -6,7 +6,8 @@ function validar_request_autor(body){
         nombre_completo,
         nacionalidad,
         fecha_nacimiento,
-        retrato
+        retrato, 
+        biografia
     } = body;
 
     //validar campos obligatorios
@@ -25,6 +26,9 @@ function validar_request_autor(body){
 
 
     };
+    if (biografia && biografia.trim() === ''){
+        return {resultado: false, status: 400, mensaje: "La biografia no puede ser un texto vacio"};
+    }
     if (fecha_nacimiento && !Number.isInteger(Number(Date.parse(fecha_nacimiento)))){
         return {resultado: false, status: 400, mensaje: "Formato de fecha invalido!"};
     };

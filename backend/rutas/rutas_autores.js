@@ -15,9 +15,6 @@ const {validar_request_autor} = require('../validaciones/validaciones_autores');
 router.get ('/api/autores', async (req,res) => {
     try{
         const autores = await get_all_autores();
-        autores.sort((a, b) => a.nombre_completo.localeCompare(b.nombre_completo));
-        console.log(autores);
-
         return res.status(200).json(autores);
     }
 
@@ -63,10 +60,11 @@ router.post ('/api/autores', async (req,res) => {
         nacionalidad,
         fecha_nacimiento,
         retrato,
+        biografia
     } = req.body;
 
     try{
-        const autor_creado = await crear_autor(nombre_completo, nacionalidad, fecha_nacimiento, retrato);
+        const autor_creado = await crear_autor(nombre_completo, nacionalidad, fecha_nacimiento, retrato, biografia);
         if (autor_creado === undefined) {
             return res.status(400).json({ error: "Datos de autor invalidos"});
 
@@ -99,11 +97,12 @@ router.put('/api/autores/:id', async (req, res)=> {
         nombre_completo,
         nacionalidad,
         fecha_nacimiento,
-        retrato
+        retrato,
+        biografia
     } = req.body;
 
     try{
-        const autor_actualizado = await actualizar_autor(id_autor, nombre_completo, nacionalidad, fecha_nacimiento, retrato);
+        const autor_actualizado = await actualizar_autor(id_autor, nombre_completo, nacionalidad, fecha_nacimiento, retrato, biografia);
         if(autor_actualizado === undefined){
 
             return res.status(404).json({error: "Datos de autor invalidos"});

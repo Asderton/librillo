@@ -56,6 +56,16 @@ label{
     font-size: 30px;
 }
 
+#biografia-autor {
+    width: 100%;
+    font-size: 16px;
+    text-align: justify;
+    align-items: left;
+    height: 6rem;
+    white-space: normal;   /* Allows wrapping */
+    word-wrap: break-word;
+}
+
 option{
     font-size: 15px;
 }

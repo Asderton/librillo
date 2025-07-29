@@ -28,8 +28,8 @@
                 </div>
                 <div class="contenedor-campo">
                     <label for="nacionalidades">NACIONALIDAD</label>
-                    <select class="form-input" name="nacionalidad" id="nacionalidades" required>
-                        <option value="">Desconocido</option> 
+                    <select class="form-input" name="nacionalidad" id="nacionalidades">
+                        <option value="">Desconocido</option>
                         </select>
                 </div>
                 <div class="contenedor-campo">
@@ -40,14 +40,13 @@
                     <label for="retrato-autor">LINK A FOTO DEL AUTOR</label>
                     <input class="form-input" type="url" name="retrato" id="retrato-autor" autocomplete="off">
                 </div>
+                <div class="contenedor-campo">
+                    <label for="biografia-autor">BIOGRAFIA</label>
+                    <textarea class="form-input" name="biografia" id="biografia-autor"  autocomplete="off"></textarea>
+                </div>
                 <input type="submit" id="submit-button" name="submit" value="Crear autor">
             </form>
 
     </main>
     <script src="./crear_autor.js"></script>
 </body>
-<!-- 
-nombre_completo TEXT NOT NULL,
-nacionalidad INT REFERENCES paises (id_pais) ON DELETE SET NULL,
-fecha_nacimiento DATE,
-retrato TEXT -->

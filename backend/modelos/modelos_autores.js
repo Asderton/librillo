@@ -1,13 +1,13 @@
 const db_client = require('./funciones_db');
 
 async function get_all_autores() {
-    const autores = await db_client.query('SELECT * FROM autores');
+    const autores = await db_client.query('SELECT * FROM autores ORDER BY nombre_completo ASC');
     return (autores.rows);
 };
 
 async function get_un_autor(id_autor) {
     const autor = await db_client.query(`
-        SELECT id_autor, nombre_completo, nombre_pais, fecha_nacimiento, retrato
+        SELECT id_autor, nombre_completo, nombre_pais, fecha_nacimiento, retrato, biografia
         FROM autores 
         INNER JOIN paises
         ON nacionalidad = id_pais
@@ -25,9 +25,9 @@ async function get_un_autor(id_autor) {
     return {...autor.rows[0], libros: libros};
 };
 
-async function crear_autor(nombre_completo, nacionalidad, fecha_nacimiento = null, retrato = null){
+async function crear_autor(nombre_completo, nacionalidad, fecha_nacimiento = null, retrato = null, biografia = null){
     try{    
-        const autor_creado = await db_client.query(`INSERT INTO autores (nombre_completo, nacionalidad, fecha_nacimiento, retrato) VALUES ($1, $2, $3, $4)`, [nombre_completo, nacionalidad, fecha_nacimiento, retrato]);
+        const autor_creado = await db_client.query(`INSERT INTO autores (nombre_completo, nacionalidad, fecha_nacimiento, retrato, biografia) VALUES ($1, $2, $3, $4, $5)`, [nombre_completo, nacionalidad, fecha_nacimiento, retrato, biografia]);
         if (autor_creado.rowCount === 0) {
             return undefined;
         }
@@ -50,9 +50,9 @@ async function eliminar_autor(id_autor) {
     return result.rows[0].nombre_completo; 
 }
 
-async function actualizar_autor(id_autor, nombre_completo, nacionalidad, fecha_nacimiento = null, retrato = null) {
+async function actualizar_autor(id_autor, nombre_completo, nacionalidad, fecha_nacimiento = null, retrato = null, biografia = null) {
     try{
-        const result = await db_client.query(`UPDATE autores SET nombre_completo = $1, nacionalidad = $2, fecha_nacimiento = $3, retrato = $4 WHERE id_autor = $5 RETURNING nombre_completo`, [nombre_completo, nacionalidad, fecha_nacimiento, retrato, id_autor]);
+        const result = await db_client.query(`UPDATE autores SET nombre_completo = $1, nacionalidad = $2, fecha_nacimiento = $3, retrato = $4, biografia = $5 WHERE id_autor = $6 RETURNING nombre_completo`, [nombre_completo, nacionalidad, fecha_nacimiento, retrato, biografia, id_autor]);
         if (result.rowCount === 0){
             return undefined;
         };
