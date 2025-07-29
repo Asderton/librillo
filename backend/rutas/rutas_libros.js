@@ -7,10 +7,9 @@ const {
     Crear_libro,
     Eliminar_libro,
     Actualizar_libro
-} = require('../modelos/libros');
+} = require('../modelos/modelos_libros');
 
-//const {validar_request_autor} = require('../validaciones/validaciones_autores');
-//cosas que faltan: verificación de autenticación en crear y eliminar libro
+const {asignar_autor_a_libro} = require('../modelos/modelos_autores_libros');
 
 router.get('/api/libros', async (req, res)=>{
     try{
@@ -47,6 +46,7 @@ router.post('/api/libros', async (req, res)=>{
     const {
         isbn_code,
         titulo,
+        id_autor,
         descripcion,
         fecha_publicacion,
         numero_de_paginas,
@@ -59,13 +59,15 @@ router.post('/api/libros', async (req, res)=>{
         error: 'Faltan campos obligatorios. Asegurate de enviar isbn_code, titulo, descripcion, numero_de_paginas e idioma_id.'
         });
     }
+    
     if (!Number.isInteger(Number(isbn_code))) {
         return res.status(400).json({ error: 'isbn_code debe ser un número entero.' });
     }
+
     if (typeof titulo !== 'string' || titulo.trim() === '') {
     return res.status(400).json({ error: 'titulo debe ser un texto no vacío.' });
     }
-    
+
     if (fecha_publicacion && isNaN(Date.parse(fecha_publicacion))) {
     return res.status(400).json({ error: 'fecha_publicacion debe tener formato de fecha válido (año-mes-dia).' });
     }
@@ -85,7 +87,6 @@ router.post('/api/libros', async (req, res)=>{
     if (!Number.isInteger(Number(idioma_id)) || Number(idioma_id) < 0) {
     return res.status(400).json({ error: 'idioma_id debe ser un número entero.' });
     }
-
  
     try{
         const libro=await Crear_libro(
@@ -100,8 +101,16 @@ router.post('/api/libros', async (req, res)=>{
         if (libro === undefined) {
             return res.status(409).json({ error: 'El libro que intentas crear ya existe'});
         };
-        return res.status(201).json({mensaje: `Libro ${titulo} creado con éxito`});
+
+        if (id_autor){
+            const resultado = await asignar_autor_a_libro(isbn_code, id_autor);
+            if(resultado.status){
+                return res.status(resultado.status).json({error: resultado.error});
+            }
+        }
+            return res.status(201).json({mensaje: `Libro ${titulo} creado con éxito`});
     }
+
     catch(error){
         console.log(error);
         return res.status(500).json({error: 'Error del servidor no se pudo crear el libro'});

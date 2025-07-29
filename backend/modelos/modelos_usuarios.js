@@ -24,7 +24,7 @@ async function crear_usuario(username, clave_plana, foto_perfil = null, nombre, 
         return result.rows;
     }
     catch(error){
-        if (error.code === 23505){
+        if (error.code === '23505'){
             console.log("Violacion de primary key. Nombre de usuario duplicado");
             return undefined;
         }

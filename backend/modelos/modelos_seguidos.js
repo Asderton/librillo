@@ -22,7 +22,7 @@ async function crear_seguidor(usuario_seguidor, usuario_a_seguir) {
         return seguido;
     }
     catch(error){
-        if (error.code === 23503){
+        if (error.code === '23503'){
             console.log("Referencia a usuario no existente");
             return undefined
         }

@@ -1,6 +1,10 @@
 run_back:
 	@npm run dev
 
+run_front:
+	@cd frontend
+	@http-server
+
 # Correr y detener la base de datos
 run_db:
 	@cd ./backend && sudo docker compose up -d

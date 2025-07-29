@@ -34,7 +34,7 @@ async function crear_autor(nombre_completo, nacionalidad, fecha_nacimiento = nul
         return autor_creado;
     }
     catch (error){
-        if (error.code === 23503){
+        if (error.code === '23503'){
             console.log("Error de violacion de clave foranea. Nacionalidad no existe");
             return undefined;
         }
@@ -60,7 +60,7 @@ async function actualizar_autor(id_autor, nombre_completo, nacionalidad, fecha_n
         return result.rows[0].nombre_completo;
     }
     catch(error){
-        if (error.code === 23503){
+        if (error.code === '23503'){
             console.log("Error de violacion de clave foranea. Nacionalidad no existe");
             return undefined;
         }

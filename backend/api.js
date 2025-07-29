@@ -14,6 +14,7 @@ const router_libros=require('./rutas/rutas_libros.js');
 const router_etiquetas=require('./rutas/rutas_etiquetas.js');
 const router_etiquetas_libros=require('./rutas/rutas_etiquetas_libros.js');
 const router_idiomas = require('./rutas/rutas_idiomas.js');
+const router_autores_libros = require('./rutas/rutas_autores_libros.js');
 
 
 app.use(cors());
@@ -31,6 +32,7 @@ app.use(router_libros);
 app.use(router_etiquetas);
 app.use(router_etiquetas_libros);
 app.use(router_idiomas);
+app.use(router_autores_libros);
 
 
 
