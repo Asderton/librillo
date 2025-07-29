@@ -40,7 +40,7 @@ async function validar_crear_usuario(body){
         return {resultado: false, status: 409, mensaje: "El nombre de usuario escogido ya está en uso!"};
     }
     // Validar tipos de dato
-    const validacion = validar_tipo_data_usuario(username, foto_perfil, nombre, bio);
+    const validacion = validar_tipo_data_usuario(foto_perfil, nombre, bio);
     if (!validacion.resultado){
         return {validacion: false, status: validacion.status, mensaje: validacion.mensaje};
     }
