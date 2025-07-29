@@ -1,4 +1,4 @@
-const url = "http://localhost:3000/api/paises";
+const url_paises = "http://localhost:3000/api/paises";
 
 function crear_opcion(pais){
     const {id_pais, nombre_pais} = pais
@@ -15,24 +15,43 @@ function validar_datos(datos){
         alert('El nombre no puede estar vacio')
         return false;
     }
+
+    return true;
 }
 
 function estandarizar_datos(datos){
     const {
-        nacionalidad,
         fecha_nacimiento,
-        retrato
+        retrato, 
+        biografia
     } = datos;
+
+    let retrato_estandar;
+    let fecha_estandar;
+    let biografia_estandar;
 
     if(retrato.trim() === ''){
         retrato_estandar = null;
     }
+    else {
+        retrato_estandar = retrato;
+    }
 
     if (fecha_nacimiento === ''){
-        fecha_nacimiento_estandar = null;
+        fecha_estandar = null;
     }
-    console.log(fecha_nacimiento);
-    return {...datos, retrato: retrato_estandar, fecha_nacimiento: fecha_nacimiento_estandar};
+    else {
+        fecha_estandar = fecha_nacimiento
+    }
+    
+    if (biografia.trim() === ''){
+        biografia_estandar = null;
+    }
+    else {
+        biografia_estandar = biografia;
+    }
+
+    return {...datos, retrato: retrato_estandar, fecha_nacimiento: fecha_estandar, biografia: biografia_estandar};
 }
 
 async function manejar_submit(event){
@@ -42,9 +61,11 @@ async function manejar_submit(event){
 
     const info_form = new FormData(form);
     const datos_form = Object.fromEntries(info_form.entries());
-    validar_datos(datos_form);
+    if(!validar_datos(datos_form)){
+        console.log("Error gallo")
+        return;
+    }
     const datos_estandatizados = estandarizar_datos(datos_form);
-
 
     const respuesta = await fetch(url_post,{
         method: 'POST',
@@ -52,8 +73,6 @@ async function manejar_submit(event){
         body: JSON.stringify(datos_estandatizados)
     });
 
-
-    console.log(typeof respuesta);
     if (respuesta.ok) {
         window.location.href = '../';
         return;
@@ -76,11 +95,8 @@ async function llenar_dropdown(paises) {
 
 
 async function fetch_data() {
-    const response = await fetch(url);
+    const response = await fetch(url_paises);
     const paises = await response.json();
-    const bienvenida = document.getElementById('mensaje-crear');
-    bienvenida.innerText = "Crear Autor";
-
     llenar_dropdown(paises);
 }
 
