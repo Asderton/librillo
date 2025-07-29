@@ -2,7 +2,7 @@ const db_client = require('./funciones_db');
 const {encriptar_clave} = require('../scripts/encriptado');
 
 async function get_all_usuarios() {
-    const usuarios = await db_client.query('SELECT * FROM usuarios');
+    const usuarios = await db_client.query('SELECT nombre_usuario AS username, foto_perfil, nombre, bio FROM usuarios ORDER BY username ASC');
     return (usuarios.rows);
 };
 
