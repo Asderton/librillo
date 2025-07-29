@@ -92,6 +92,7 @@ router.post('/api/libros', async (req, res)=>{
         const libro=await Crear_libro(
             isbn_code,
             titulo,
+            id_autor,
             descripcion,
             fecha_publicacion ||null,
             numero_de_paginas,
@@ -101,16 +102,8 @@ router.post('/api/libros', async (req, res)=>{
         if (libro === undefined) {
             return res.status(409).json({ error: 'El libro que intentas crear ya existe'});
         };
-
-        if (id_autor){
-            const resultado = await asignar_autor_a_libro(isbn_code, id_autor);
-            if(resultado.status){
-                return res.status(resultado.status).json({error: resultado.error});
-            }
-        }
-            return res.status(201).json({mensaje: `Libro ${titulo} creado con éxito`});
+        return res.status(201).json({mensaje: "Libro creado con exito"});
     }
-
     catch(error){
         console.log(error);
         return res.status(500).json({error: 'Error del servidor no se pudo crear el libro'});

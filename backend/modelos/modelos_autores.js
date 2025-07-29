@@ -74,7 +74,7 @@ async function get_libros_autor(id_autor) {
         FROM libros 
         INNER JOIN autores 
         ON libros.id_autor = autores.id_autor 
-        WHERE id_autor = $1`, [id_autor]
+        WHERE autores.id_autor = $1`, [id_autor]
     );
         return (libros.rows);
 }

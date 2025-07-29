@@ -81,15 +81,16 @@ async function Obtener_libro(isbn_code) {
 async function Crear_libro(
     isbn_code,
     titulo,
+    id_autor,
     descripcion,
     fecha_publicacion,
     numero_de_paginas,
     imagen_portada,
     idioma_id
-){
-    
+)
+{
     const result=await db_client.query(
-        'INSERT INTO libros (isbn_code,titulo,descripcion,fecha_publicacion,numero_de_paginas,imagen_portada,idioma_id ) VALUES ($1, $2, $3, $4, $5, $6, $7)  RETURNING *' , [isbn_code,titulo,descripcion,fecha_publicacion,numero_de_paginas,imagen_portada,idioma_id]
+        'INSERT INTO libros (isbn_code,titulo, id_autor, descripcion,fecha_publicacion,numero_de_paginas,imagen_portada,idioma_id ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)  RETURNING *' , [isbn_code,titulo,id_autor,descripcion,fecha_publicacion,numero_de_paginas,imagen_portada,idioma_id]
     )
     if (result.rowCount === 0) {
         return undefined;
