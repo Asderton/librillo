@@ -16,8 +16,8 @@ const {validar_request_biblioteca} = require('../validaciones/validaciones_bibli
 
 
 // Get id,icono y nombre de las bibliotecas del usuario 
-router.get ('/api/bibliotecas/', middleware_jwt, async (req,res) => {
-    const username = req.auth.username;
+router.get ('/api/bibliotecas/:username', async (req,res) => {
+    const username = req.params.username;
     try{
         const bibliotecas = await get_bibliotecas_username(username);
         if (bibliotecas === undefined){

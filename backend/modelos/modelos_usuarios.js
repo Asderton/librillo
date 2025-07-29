@@ -1,4 +1,5 @@
 const db_client = require('./funciones_db');
+const { crear_biblioteca } = require('./modelos_bibliotecas');
 const {encriptar_clave} = require('../scripts/encriptado');
 
 async function get_all_usuarios() {
@@ -21,6 +22,7 @@ async function crear_usuario(username, clave_plana, foto_perfil = null, nombre, 
         if (result.rowCount === 0){
             return undefined;
         }
+        await crear_biblioteca (username, "Favoritos", null);
         return result.rows;
     }
     catch(error){
