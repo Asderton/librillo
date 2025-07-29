@@ -23,7 +23,8 @@ function crear_info(autor){
     const {
         nombre_completo,
         nombre_pais,
-        fecha_nacimiento
+        fecha_nacimiento, 
+        biografia
     } = autor;
 
     const contenedor = document.getElementById('contenedor-informacion');
@@ -61,7 +62,7 @@ function crear_info(autor){
 
     const bio = document.createElement('p');
     bio.id = 'biografia-autor';
-    bio.innerText = " AUN NO ESTA IMPLEMENTADA LA BIO EN LA BDD XD";
+    bio.innerText = biografia;
 
     contenedor_bio.appendChild(titulo);
     contenedor_bio.appendChild(bio);
