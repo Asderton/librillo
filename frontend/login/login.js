@@ -16,7 +16,7 @@ async function manejar_submit(event) {
     if (respuesta.ok) {
         const { token } = await respuesta.json();
         localStorage.setItem('token', token);
-        window.location.href = '../homepage/';
+        window.location.href = '/';
     } else {    
         const error = await respuesta.json();
         console.error(error);
@@ -26,7 +26,7 @@ async function manejar_submit(event) {
 async function manejar_logout(event) {
     event.preventDefault();
     localStorage.removeItem('token');
-    window.location.href = '../homepage/';
+    window.location.href = '/';
 }
 
 async function comprobar_sesion() {

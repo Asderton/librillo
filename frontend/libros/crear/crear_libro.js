@@ -88,7 +88,7 @@ async function manejar_submit(event){
     });
 
     if (respuesta.ok) {
-        window.location.href = '/frontend/libros/';
+        window.location.href = '/libros/';
         return;
     } else {
         const error = await respuesta.json();

@@ -61,7 +61,7 @@ async function manejar_submit(event){
 
     if (respuesta.ok) {
         alert('Usuario editado con exito')
-        window.location.href = '/frontend/homepage/';
+        window.location.href = '/';
     } else {    
         const error = await respuesta.json();
         if(respuesta.status === 409){

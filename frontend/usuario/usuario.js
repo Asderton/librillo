@@ -71,7 +71,7 @@ async function linkear_botones(usuario){
         const confirmado = confirm("Desea cerrar sesion?");
         if (confirmado){
             localStorage.removeItem('token');
-            window.location.href = '../homepage/';
+            window.location.href = '/';
         }
         else{ 
             return;
@@ -89,7 +89,7 @@ async function linkear_botones(usuario){
                 method: 'DELETE'
             })
             localStorage.removeItem('token');
-            window.location.href = '/frontend/homepage/'
+            window.location.href = '/'
         }
         else{ 
             return;

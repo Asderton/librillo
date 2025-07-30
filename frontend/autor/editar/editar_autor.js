@@ -89,7 +89,7 @@ async function manejar_submit(event){
     });
 
     if (respuesta.ok) {
-        window.location.href = '/frontend/autores/';
+        window.location.href = '/autores/';
         return;
     } else {    
         const error = await respuesta.json();
