@@ -72,7 +72,7 @@ router.post('/api/libros', async (req, res)=>{
     return res.status(400).json({ error: 'fecha_publicacion debe tener formato de fecha válido (año-mes-dia).' });
     }
     
-    if (descripcion && (descripcion !== 'string' || descripcion.trim() === '')) {
+    if (descripcion && (typeof descripcion !== 'string' || descripcion.trim() === '')) {
     return res.status(400).json({ error: 'descripcion debe ser un texto no vacío.' });
     }
     

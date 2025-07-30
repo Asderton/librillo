@@ -150,6 +150,7 @@ async function llenar_biblioteca(libros, libro_actual){
         const mensaje = document.createElement('h4');
         mensaje.innerText = "El autor no tiene mas libros";
         biblioteca.append(mensaje);
+        return;
     }
     for (const libro of libros){
         if (libro.isbn_code !== libro_actual){

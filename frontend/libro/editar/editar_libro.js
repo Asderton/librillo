@@ -3,6 +3,7 @@ const isbn_code = urlParams.get('isbn_code');
 const titulo = urlParams.get('titulo');
 
 const url_idiomas = "http://localhost:3000/api/idiomas";
+const url_libro = `http://localhost:3000/api/libros/${isbn_code}`;
 
 function crear_opcion(idioma){
     const {id_idioma, nombre_idioma} = idioma
@@ -86,7 +87,30 @@ async function manejar_submit(event){
     }
 }
 
+async function llenar_defaults(libro){
+    const titulo = document.getElementById('titulo');
+    titulo.value = libro.titulo;
 
+    if (libro.fecha_publicacion !== null){
+        const fecha = document.getElementById('fecha-publicacion');
+        fecha_formateada = libro.fecha_publicacion.split("T")[0];
+        fecha.value = fecha_formateada;
+    }
+
+    const idioma = document.getElementById('idiomas');
+    idioma.value = libro.idioma_id;
+
+    const n_paginas = document.getElementById('n-paginas');
+    n_paginas.value = libro.numero_de_paginas;
+
+    const portada_libro = document.getElementById('portada-libro');
+    portada_libro.value = libro.imagen_portada;
+
+    const descripcion = document.getElementById('descripcion');
+    descripcion.value = libro.descripcion;
+
+    return;
+} 
 
 async function llenar_dropdown(idiomas) {
     const dropdown = document.getElementById("idiomas");
@@ -99,12 +123,19 @@ async function llenar_dropdown(idiomas) {
 
 
 async function fetch_data() {
-    const response = await fetch(url_idiomas);
-    const idiomas = await response.json();
+    const respuesta_idiomas = await fetch(url_idiomas);
+    const idiomas = await respuesta_idiomas.json();
+    llenar_dropdown(idiomas);
+
+
+    const respuesta_libro = await fetch(url_libro);
+    const libro = await respuesta_libro.json();
+    llenar_defaults(libro);
+
     const mensaje_bienvenida = document.getElementById('mensaje-editar');
     mensaje_bienvenida.innerHTML = `Editando a ${titulo}`;
 
-    llenar_dropdown(idiomas);
+    
 }
 
 window.addEventListener('load', fetch_data);

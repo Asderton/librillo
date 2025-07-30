@@ -59,7 +59,7 @@ async function Obtener_libros() {
 async function Obtener_libro(isbn_code) {
 
     const result = await db_client.query(`
-    SELECT l.isbn_code, l.titulo, l.descripcion, l.fecha_publicacion, l.numero_de_paginas, l.imagen_portada, l.id_autor, a.nombre_completo AS autor, i.nombre_idioma AS idioma
+    SELECT l.isbn_code, l.titulo, l.descripcion, l.fecha_publicacion, l.numero_de_paginas, l.imagen_portada, l.id_autor, a.nombre_completo AS autor, i.nombre_idioma AS idioma, l.idioma_id
     FROM libros l
     LEFT JOIN autores a ON a.id_autor = l.id_autor
     LEFT JOIN idiomas i ON i.id_idioma = l.idioma_id
