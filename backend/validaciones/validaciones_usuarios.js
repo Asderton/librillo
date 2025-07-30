@@ -32,12 +32,16 @@ async function validar_crear_usuario(body){
     if (!username || !clave_plana || !nombre){
         return {resultado: false, status: 400, mensaje: "Campos obligatorios faltantes!"};
     }
-        if (username.trim() === ''){
+    if (username.trim() === ''){
         return {resultado: false, status: 400, mensaje: "Nombre de usuario no puede estar vacio"};
     }
     // Validar nombre de usuario unico
     if ((await get_un_usuario(username)) !== undefined){
         return {resultado: false, status: 409, mensaje: "El nombre de usuario escogido ya está en uso!"};
+    }
+    const regex_username = /^[a-zA-Z0-9_.-]{3,30}$/;
+    if (!regex_username.test(username)){
+        return {resultado: false, status: 400, mensaje: "El username debe tener entre 3 y 30 caracteres, permite _ . - como caracteres especiales"};
     }
     // Validar tipos de dato
     const validacion = validar_tipo_data_usuario(foto_perfil, nombre, bio);

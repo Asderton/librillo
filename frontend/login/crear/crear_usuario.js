@@ -1,66 +1,25 @@
-
-
-
-function validar_datos(datos){
-    const {
-        username,
-        clave1,
-        clave2,
-        nombre,
-        bio
-    } = datos;
-
-    if(clave1 !== clave2){
-        return alert("Las contraseñas no coinciden");
+function validar_claves(datos){
+    if(datos.clave1 !== datos.clave2){
+        alert("Las contraseñas no coinciden");
+        return false;
     }
-
-    if (username.trim() === ''){
-        return alert("El nombre de usuario no puede ser vacio");
-    }
-    if (nombre.trim() === ''){
-        return alert("El nombre no puede estar vacio");
-    }
-    if (bio && bio.trim() ===  ''){
-        return alert("La bio no puede ser un texto vacio");
-    }
-    // Validar campos obligatorios
-    if (!username || !clave1 || !clave2 || !nombre){
-        return alert("Campos obligatorios faltantes");
-    }
-
+    return true;
 }
 
 function estandarizar_datos(datos){
     const {
-        username,
         clave1,
-        foto_perfil,
-        bio
     } = datos;
 
-    let foto_estandar;
-    let bio_estandar;
+    campos = ["foto_perfil", "bio"];
+    for (const campo of campos){
+        if (datos[campo] === ''){
+            datos[campo] = null;
+        }
+    }
+
     const clave_plana = clave1;
-    const regex_username = /^[a-zA-Z0-9_.-]{3,30}$/;
-
-    if (!regex_username.test(username)){
-        return alert("El username debe tener entre 3 y 30 caracteres, permite _ . - como caracteres especiales");
-    }
-    if (foto_perfil === ''){
-      foto_estandar = null;
-    }
-    else {
-        foto_estandar = foto_perfil;
-    }
-
-    if (bio === ''){
-        bio_estandar = null;
-    }
-    else{
-        bio_estandar = bio;
-    }
-
-    return {...datos, foto_perfil: foto_estandar, bio: bio_estandar, clave_plana: clave_plana};
+    return {...datos, clave_plana: clave_plana};
 }
 
 async function manejar_submit(event){
@@ -70,7 +29,9 @@ async function manejar_submit(event){
 
     const info_form = new FormData(form);
     const datos_form = Object.fromEntries(info_form.entries());
-    validar_datos(datos_form);
+    if(!validar_claves(datos_form)){
+        return;
+    }
     const datos_estandatizados = estandarizar_datos(datos_form);
 
     const respuesta = await fetch(url_post,{
@@ -78,16 +39,13 @@ async function manejar_submit(event){
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datos_estandatizados)
     });
-    console.log(respuesta);
 
     if (respuesta.ok) {
         alert('Usuario creado con exito')
         window.location.href = '../';
     } else {    
         const error = await respuesta.json();
-        if(respuesta.status === 409){
-            alert("Nombre de usuario en uso");
-        }
+        alert(error.error);
         console.error(error);
         return;
     }

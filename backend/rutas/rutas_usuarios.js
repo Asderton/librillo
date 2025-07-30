@@ -89,11 +89,8 @@ router.delete('/api/usuarios', middleware_jwt, async (req, res) => {
 });
 
 router.get('/api/me', middleware_jwt, (req, res) => {
-    
     return res.status(200).json(req.auth);
 });
-
-
 
 router.put('/api/usuarios', middleware_jwt, async (req, res) => {
     const username_cliente = req.auth.username;// CAMBIARRRRRR

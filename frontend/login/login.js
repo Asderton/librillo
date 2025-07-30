@@ -6,19 +6,20 @@ async function manejar_submit(event) {
     const info_form = new FormData(form);
     const datos_login = Object.fromEntries(info_form.entries());
     const url = form.action;
-    const parametros = {
+
+    const respuesta = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datos_login)
-    };
+    });
 
-    const respuesta = await fetch(url, parametros);
     if (respuesta.ok) {
         const { token } = await respuesta.json();
         localStorage.setItem('token', token);
         window.location.href = '/';
     } else {    
         const error = await respuesta.json();
+        alert(error.error);
         console.error(error);
     }
 }
@@ -40,7 +41,9 @@ async function comprobar_sesion() {
     }
     else {
         const error = await result.json();
-        console.log(error);
+        console.error(error);
+        return;
+
     }
 }
 
