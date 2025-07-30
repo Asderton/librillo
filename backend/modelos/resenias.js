@@ -39,23 +39,15 @@ async function Obtener_resenias(isbn_code) {
 }
 
 async function Crear_resenia(nombre_usuario, isbn_code, calificacion, body) {
-
-    const result = await db_client.query(
-    'INSERT INTO resenias (nombre_usuario, isbn_code, calificacion, body) VALUES ($1, $2, $3, $4) RETURNING *',
-    [nombre_usuario, isbn_code, calificacion, body]
-    );
+    const query='INSERT INTO resenias (nombre_usuario, isbn_code, calificacion, body) VALUES ($1, $2, $3, $4) RETURNING *';
+    const result = await db_client.query(query, [nombre_usuario, isbn_code, calificacion, body]);
     
-    if (result.rowCount === 0) {
-    return undefined;
-    }
     return result.rows[0];
 }
     
 async function Eliminar_resenia(nombre_usuario, isbn_code) {
-    const result = await db_client.query(
-    'DELETE FROM resenias  WHERE nombre_usuario=$1 AND isbn_code=$2 RETURNING nombre_usuario',
-    [nombre_usuario, isbn_code]
-    );
+    const query='DELETE FROM resenias  WHERE nombre_usuario=$1 AND isbn_code=$2 RETURNING nombre_usuario';
+    const result = await db_client.query(query,[nombre_usuario, isbn_code]);
 
     if (result.rowCount === 0) {
     return undefined;

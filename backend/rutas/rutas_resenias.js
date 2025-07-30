@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 
 const {
-    Obtener_resenias
+    Obtener_resenias,
+    Crear_resenia,
+    Eliminar_resenia,
+    Actualizar_resenia
 
 } = require('../modelos/resenias');
 
@@ -15,7 +18,7 @@ router.get('/api/libros/:isbn_code/resenias', async (req, res)=>{
     }
 
     try{
-        const resenia=await Obtener_resenias(req.params.isbn_code);
+        const resenia=await Obtener_resenias(isbn_code);
         if(resenia===undefined){
             return res.status(404).json({error: 'El libro no tine ninguna reseña'});
         }
@@ -28,11 +31,17 @@ router.get('/api/libros/:isbn_code/resenias', async (req, res)=>{
 });
 
 
-router.post('/api/resenias', async (req, res) => {
+router.post('/api/resenias', async (req, res) => {//cambiar ruta
     const { nombre_usuario, isbn_code, calificacion, body } = req.body;
     
     if (!nombre_usuario || !isbn_code || calificacion === undefined ) {
         return res.status(400).json({ error: 'Faltan campos obligatorios: nombre_usuario, isbn_code, calificacion' });
+    }
+    if(!Number.isInteger(isbn_code)){
+        return res.status(400).json({error: 'isbn_code inválido, debe ser un número entero.'});
+    }
+    if (typeof nombre_usuario !== 'string' || nombre_usuario.trim() === '') {
+        return res.status(400).json({ error: 'nombre_usuario debe ser un texto no vacío.' });
     }
     
     if (!Number.isInteger(Number(calificacion)) || calificacion < 0 || calificacion > 10) {
@@ -41,34 +50,44 @@ router.post('/api/resenias', async (req, res) => {
     
     try {
         const resenia = await Crear_resenia(nombre_usuario, isbn_code, calificacion, body|| null);
-    if (!resenia) {
-        return res.status(409).json({ error: 'La reseña ya existe.' });
-    }
         return res.status(201).json({ mensaje: 'Reseña creada con éxito.' });
     } 
     catch (error) {
+        if (error.code==='23505') {
+            return res.status(409).json({ error: 'La reseña ya existe.' });
+        }
         return res.status(500).json({ error: 'Error del servidor al crear reseña.' });
     }
 });
     
-router.delete('/api/resenias/:nombre_usuario/:isbn_code', async (req, res) => {
-    const { nombre_usuario, isbn_code } = req.params;
+router.delete('/api/libros/:isbn_code/resenias', async (req, res) => {
+    const isbn_code = req.params.isbn_code;
+    const nombre_usuario=req.body.nombre_usuario;
+    if (!nombre_usuario || !isbn_code ) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios: nombre_usuario, isbn_code.' });
+    }
+    if(!Number.isInteger(Number(isbn_code))){
+        return res.status(400).json({error: 'isbn_code inválido, debe ser un número entero.'});
+    }
+    if (typeof nombre_usuario !== 'string' || nombre_usuario.trim() === '') {
+        return res.status(400).json({ error: 'nombre_usuario debe ser un texto no vacío.' });
+    }
     
     try {
-        const eliminado = await Eliminar_resenia(nombre_usuario, isbn_code);
-    if (!eliminado) {
+        const resenia = await Eliminar_resenia(nombre_usuario, isbn_code);
+    if (resenia==undefined) {
         return res.status(404).json({ error: 'La reseña no existe.' });
     }
-    return res.status(200).json({ mensaje: `Reseña de ${eliminado} eliminada con éxito.` });
+    return res.status(200).json({ mensaje: `Reseña de ${resenia} eliminada con éxito.` });
     } 
     catch (error) {
-    return res.status(500).json({ error: 'Error del servidor al eliminar reseña.' });
+        return res.status(500).json({ error: 'Error del servidor al eliminar reseña.' });
     }
 });
     
-router.put('/api/resenias/:nombre_usuario/:isbn_code', async (req, res) => {
-    const { nombre_usuario, isbn_code } = req.params;
-    const { calificacion, body } = req.body;
+router.put('/api/libros/:isbn_code/resenias', async (req, res) => {
+    const isbn_code = req.params.isbn_code;
+    const { nombre_usuario,calificacion, body } = req.body;
     
     if (calificacion === undefined) {
         return res.status(400).json({ error: 'Falta campo obligatorio: calificacion.' });
@@ -79,13 +98,14 @@ router.put('/api/resenias/:nombre_usuario/:isbn_code', async (req, res) => {
     }
     
     try {
-        const actualizado = await Actualizar_resenia(nombre_usuario, isbn_code, calificacion, body || null);
-    if (!actualizado) {
+        const resenia = await Actualizar_resenia(nombre_usuario, isbn_code, calificacion, body || null);
+    if (resenia===undefined) {
         return res.status(404).json({ error: 'La reseña no existe y no se puede actualizar.' });
     }
-    return res.status(200).json({ mensaje: `Reseña de ${actualizado} actualizada con éxito.` });
+    return res.status(200).json({ mensaje: `Reseña de ${resenia} actualizada con éxito.` });
     } 
     catch (error) {
+        console.log(error);
         return res.status(500).json({ error: 'Error del servidor al actualizar reseña.' });
     }
 });
