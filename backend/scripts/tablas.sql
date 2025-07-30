@@ -51,7 +51,7 @@ PRIMARY KEY (id_biblioteca, isbn_code)
 
 CREATE TABLE etiquetas (
 id_etiqueta SERIAL PRIMARY KEY,
-nombre_etiqueta VARCHAR(20) NOT NULL
+nombre_etiqueta VARCHAR(20) NOT NULL --UNICODE
 );
 
 CREATE TABLE seguidos (

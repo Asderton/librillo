@@ -37,14 +37,11 @@ router.get('/api/etiquetas/:id_etiqueta', async (req, res)=>{
     }   
 });
 
-router.post('/api/etiqueta', async (req, res)=>{
+router.post('/api/etiquetas', async (req, res)=>{
 
-    if (!req.body.id_etiqueta  || !req.body.nombre_etiqueta ) {
-        return res.status(400).json({error: 'Faltan campos obligatorios. Asegurate de enviar id_etiqueta, nombre_etiqueta.'});
+    if ( !req.body.nombre_etiqueta ) {
+        return res.status(400).json({error: 'Faltan campos obligatorios. Asegurate de enviar  nombre_etiqueta.'});
     }
-    if (!Number.isInteger(Number(req.body.id_etiqueta))) {
-        return res.status(400).json({ error: 'id_etiqueta debe ser un número entero.' });
-        }
     if (typeof  req.body.nombre_etiqueta!== 'string' || req.body.nombre_etiqueta.trim() === '') {
         return res.status(400).json({ error: 'nombre etiqueta debe ser un texto no vacío.' });
     }
@@ -52,22 +49,22 @@ router.post('/api/etiqueta', async (req, res)=>{
     try{
         
         const etiqueta=await Crear_etiqueta(
-            req.body.id_etiqueta ,
             req.body.nombre_etiqueta
         );
 
-        if (libro === undefined) {
-            return res.status(409).json({ error: 'La etiqueta que intentas crear ya existe'});
-        };
-        return res.status(201).json({mensaje: `Etiqueta ${etiqueta} creado con éxito`});
+            return res.status(201).json({mensaje: `Etiqueta creado con éxito`,etiqueta});
+            
     }
     catch(error){
+        if (error.code=== '23505') {
+            return res.status(409).json({ error: 'La etiqueta que intentas crear ya existe'});
+        };
         return res.status(500).json({error: 'Error del servidor no se pudo crear el libro'});
     };   
 });
 
 
-router.delete('/api/libros/:id_etiqueta', async (req, res)=>{
+router.delete('/api/etiquetas/:id_etiqueta', async (req, res)=>{
 
     if (!Number.isInteger(Number(req.params.id_etiqueta))) {
         return res.status(400).json({ error: 'id_etiqueta debe ser un número entero.' });
@@ -78,7 +75,7 @@ router.delete('/api/libros/:id_etiqueta', async (req, res)=>{
             return res.status(404).json({error: 'La etiqueta que intentas eliminar no existe'});
         }
 
-        return res.status(201).json({mensaje: 'La etiqueta ${etiqueta} ha sido eliminada con éxito.'});
+        return res.status(201).json({mensaje: `La etiqueta ${etiqueta} ha sido eliminada con éxito.`});
 
     }catch(error){
         return res.status(500).json({error: 'Error en el servidor al eliminar la etiqueta.'});

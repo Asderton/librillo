@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  librillo_db:
+    image: postgres:17
+    container_name: librillo_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=librillo
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/scripts/tablas.sql:/docker-entrypoint-initdb.d/01-tablas.sql:ro
+      - ./backend/scripts/inserts.sql:/docker-entrypoint-initdb.d/02-inserts.sql:ro
+
+  backend:
+    build:
+        context: ./backend
+    container_name: librillo_backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - librillo_db
+    environment:
+      DB_HOST: librillo_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: librillo
+
+  frontend:
+    image: nginx:alpine
+    container_name: librillo_frontend
+    ports:
+      - "8080:80"
+    volumes:
+     - ./frontend:/usr/share/nginx/html:ro
+
+volumes:
+  pgdata:

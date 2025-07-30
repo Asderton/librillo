@@ -9,18 +9,19 @@ const {
     Actualizar_libro
 } = require('../modelos/modelos_libros');
 
-//Obtener Libros
+
 router.get('/api/libros', async (req, res)=>{
     try{
         const libros=await Obtener_libros();
         res.status(200).json(libros);
-    }catch(error){
-        console.log(error)
+    }
+    catch(error){
+        console.log(error);
         res.status(500).json({error:'Error del servidor al obtener los libros.'});
     }  
 });
 
-//Obtener libro por isbn_code
+
 router.get('/api/libros/:isbn_code', async (req, res)=>{
 
     const isbn_code=Number(req.params.isbn_code);
@@ -40,7 +41,6 @@ router.get('/api/libros/:isbn_code', async (req, res)=>{
         return res.status(500).json({error:'Error del servidor al obtener el libro.'});
     }   
 });
-
 
 router.post('/api/libros', async (req, res)=>{
     const {
@@ -99,14 +99,14 @@ router.post('/api/libros', async (req, res)=>{
             imagen_portada ||null,
             idioma_id
         );
-        if (libro === undefined) {
-            return res.status(409).json({ error: 'El libro que intentas crear ya existe'});
-        };
-        return res.status(201).json({mensaje: "Libro creado con exito"});
+        
+        return res.status(201).json({mensaje: `Libro ${titulo} creado con éxito`});
     }
     catch(error){
-        console.log(error);
-        return res.status(500).json({error: 'Error del servidor no se pudo crear el libro'});
+        if (error.code==='23505') {
+            return res.status(409).json({ error: 'El libro que intentas crear ya existe'});
+        };
+        return res.status(500).json({error: 'Error del servidor no se pudo crear el libro.'});
     };
     
 });
@@ -114,14 +114,14 @@ router.post('/api/libros', async (req, res)=>{
 router.delete('/api/libros/:isbn_code', async (req, res)=>{
     if (!Number.isInteger(Number(req.params.isbn_code))) {
         return res.status(400).json({ error: 'isbn_code debe ser un número entero.' });
-        }
+    }
     try {
         const libro=await Eliminar_libro(req.params.isbn_code);
         if(libro===undefined){
             return res.status(404).json({error: 'El libro que intentas eliminar no existe'});
         }
         else{
-            return res.status(201).json({mensaje: 'El libro ${libro} ha sido eliminado con éxito.'});
+            return res.status(201).json({mensaje: `El libro ${libro} ha sido eliminado con éxito.`});
         }
     }
     catch(error){
@@ -131,12 +131,13 @@ router.delete('/api/libros/:isbn_code', async (req, res)=>{
 });
 
 router.put('/api/libros/:isbn_code', async (req, res)=> {
-    if (!Number.isInteger(Number(req.params.isbn_code))) {
+    const isbn_code=req.params.isbn_code;
+    if (!Number.isInteger(Number(isbn_code))) {
         return res.status(400).json({ error: 'isbn_code debe ser un número entero.' });
     }
-    const isbn_code = req.params.isbn_code;
     
     const {
+
         titulo,
         descripcion,
         fecha_publicacion,
@@ -169,9 +170,9 @@ router.put('/api/libros/:isbn_code', async (req, res)=> {
             isbn_code,
             titulo,
             descripcion,
-            fecha_publicacion,
+            fecha_publicacion ||null,
             numero_de_paginas,
-            imagen_portada,
+            imagen_portada ||null,
             idioma_id
         );
         if(libro === undefined){
@@ -180,8 +181,8 @@ router.put('/api/libros/:isbn_code', async (req, res)=> {
         return res.status(201).json({mensaje: `Libro ${libro} actualizado con éxito`});
     }
     catch(error){
-        console.log(error);
-        res.status(500).send('Error del servidor, no se pudieron modificar los datos');
+        
+        res.status(500).json({error:'Error del servidor, no se pudieron modificar los datos'});
     };
 
 });
