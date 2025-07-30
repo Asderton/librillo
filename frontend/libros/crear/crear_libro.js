@@ -1,29 +1,6 @@
 const url_idiomas = "http://localhost:3000/api/idiomas";
 const url_autores = "http://localhost:3000/api/autores";
 
-
-function validar_datos(datos){
-    const {
-        isbn_code,
-        titulo,
-        imagen_portada
-    } = datos;
-
-    if (!isbn_code || !titulo) {
-        return alert('Faltan campos obligatorios. Asegurate de enviar isbn_code, titulo');
-    }
-    if (!Number.isInteger(Number(isbn_code))) {
-        return alert('isbn_code debe ser un número entero.');
-    }
-    if (typeof titulo !== 'string' || titulo.trim() === '') {
-        return alert('El titulo debe ser un texto no vacio');
-    }
-    if (imagen_portada && typeof imagen_portada !== 'string') {
-    return alert("La imagen de portada debe ser un URL a la imagen")
-    }
-    
-}
-
 function estandarizar_datos(datos){
 
     if (datos.id_autor === ''){
@@ -55,7 +32,6 @@ async function manejar_submit(event){
 
     const info_form = new FormData(form);
     const datos_form = Object.fromEntries(info_form.entries());
-    validar_datos(datos_form);
     const datos_estandatizados = estandarizar_datos(datos_form);
 
     const respuesta = await fetch(url_post,{
@@ -110,7 +86,6 @@ function llenar_autores(autores){
     return;
 }
 
-
 async function fetch_data() {
     const respuesta_idiomas = await fetch(url_idiomas);
     const idiomas = await respuesta_idiomas.json();
@@ -119,9 +94,6 @@ async function fetch_data() {
     const respuesta_autores = await fetch(url_autores);
     const autores = await respuesta_autores.json();
     llenar_autores(autores);
-
-
-
 }
 
 window.addEventListener('load', fetch_data);

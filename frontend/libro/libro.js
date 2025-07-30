@@ -11,6 +11,10 @@ function estandarizar_info(libro){
         if (libro[campo] === null){
             libro[campo] = "Desconocido";
         }
+        else if (campo === "fecha_publicacion"){
+            libro[campo] = libro[campo].split("T")[0];
+        }
+
     }
     return {...libro};
 }
