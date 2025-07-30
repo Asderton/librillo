@@ -2,63 +2,37 @@ const urlParams = new URLSearchParams(window.location.search);
 const isbn_code = urlParams.get('isbn_code');
 const titulo = urlParams.get('titulo');
 
+
 const url_idiomas = "http://localhost:3000/api/idiomas";
 const url_libro = `http://localhost:3000/api/libros/${isbn_code}`;
+const url_autores = "http://localhost:3000/api/autores";
 
-function crear_opcion(idioma){
-    const {id_idioma, nombre_idioma} = idioma
-    const opcion = document.createElement('option');
-    opcion.value = id_idioma;
-    opcion.innerText = nombre_idioma;
-    return opcion;
-}
 
-function validar_datos(datos){
-    const {
-        titulo,
-        descripcion,
-        numero_de_paginas,
-        idioma_id
-    } = datos;
-
-    if (!titulo || !descripcion || !numero_de_paginas || !idioma_id) {
-        return alert("Faltan campos obligatorios");
-    }
-    if (typeof titulo !== 'string' || titulo.trim() === '') {
-        return alert("El titulo debe ser un texto no vacio");
-    }   
-    if (typeof descripcion !== 'string' || descripcion.trim() === '') {
-        return alert("La descripcion debe ser un texto no vacio");
-    }
-    
-    if (!Number.isInteger(Number(numero_de_paginas)) || Number(numero_de_paginas) <= 0) {
-        return alert("El numero de paginas debe ser un entero positivo");
-    }
-}
 
 function estandarizar_datos(datos){
-    const {
-        fecha_publicacion,
-        imagen_portada
-    } = datos;
 
-    let fecha_estandar;
-    let imagen_estandar;
+    if (datos.id_autor === ''){
+        datos.id_autor = null;
+    }
+    if (datos.idioma_id === ''){
+        datos.idioma_id = null;
+    }
+    if (datos.fecha_publicacion === ''){
+        datos.fecha_publicacion = null;
+    }
+    if (datos.numero_de_paginas === ''){
+        datos.numero_de_paginas = null;
+    }
+    if (datos.imagen_portada === ''){
+        datos.imagen_portada = null;
+    }
+    if (datos.descripcion === ''){
+        datos.descripcion = null;
+    }
 
-    if(imagen_portada.trim() === ''){
-        retrato_estandar = null;
-    }
-    else {
-        imagen_estandar = imagen_portada;
-    }
-    if (fecha_publicacion === ''){
-        fecha_estandar = null;
-    }
-    else{
-        fecha_estandar = fecha_publicacion;
-    }
-    return {...datos, imagen_portada: imagen_estandar, fecha_publicacion: fecha_estandar};
+    return {...datos};
 }
+
 
 async function manejar_submit(event){
     const form = event.target;
@@ -67,7 +41,6 @@ async function manejar_submit(event){
 
     const info_form = new FormData(form);
     const datos_form = Object.fromEntries(info_form.entries());
-    validar_datos(datos_form);
     const datos_estandatizados = estandarizar_datos(datos_form);
 
     const respuesta = await fetch(url_put,{
@@ -82,7 +55,8 @@ async function manejar_submit(event){
     }
     else {    
         const error = await respuesta.json();
-        console.log(error);
+        console.error(error);
+        alert(error.error);
         return;
     }
 }
@@ -96,6 +70,10 @@ async function llenar_defaults(libro){
         fecha_formateada = libro.fecha_publicacion.split("T")[0];
         fecha.value = fecha_formateada;
     }
+
+    const autor = document.getElementById('autores');
+    autor.value = libro.id_autor;
+    
 
     const idioma = document.getElementById('idiomas');
     idioma.value = libro.idioma_id;
@@ -112,10 +90,36 @@ async function llenar_defaults(libro){
     return;
 } 
 
-async function llenar_dropdown(idiomas) {
+function crear_opcion_idioma(idioma){
+    const {id_idioma, nombre_idioma} = idioma
+    const opcion = document.createElement('option');
+    opcion.value = id_idioma;
+    opcion.innerText = nombre_idioma;
+    return opcion;
+}
+
+function llenar_idiomas(idiomas) 
+{
     const dropdown = document.getElementById("idiomas");
     for (const idioma of idiomas){
-        const opcion = crear_opcion(idioma); 
+        const opcion = crear_opcion_idioma(idioma); 
+        dropdown.appendChild(opcion);
+    }
+    return;
+}
+
+function crear_opcion_autor(autor){
+    const {id_autor, nombre_completo} = autor
+    const opcion = document.createElement('option');
+    opcion.value = id_autor;
+    opcion.innerText = nombre_completo;
+    return opcion;
+}
+
+function llenar_autores(autores){
+    const dropdown = document.getElementById("autores");
+    for (const autor of autores){
+        const opcion = crear_opcion_autor(autor); 
         dropdown.appendChild(opcion);
     }
     return;
@@ -125,7 +129,11 @@ async function llenar_dropdown(idiomas) {
 async function fetch_data() {
     const respuesta_idiomas = await fetch(url_idiomas);
     const idiomas = await respuesta_idiomas.json();
-    llenar_dropdown(idiomas);
+    llenar_idiomas(idiomas);
+
+    const respuesta_autores = await fetch(url_autores);
+    const autores = await respuesta_autores.json();
+    llenar_autores(autores);
 
 
     const respuesta_libro = await fetch(url_libro);
@@ -134,9 +142,8 @@ async function fetch_data() {
 
     const mensaje_bienvenida = document.getElementById('mensaje-editar');
     mensaje_bienvenida.innerHTML = `Editando a ${titulo}`;
-
-    
 }
+
 
 window.addEventListener('load', fetch_data);
 

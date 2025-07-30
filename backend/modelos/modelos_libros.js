@@ -111,6 +111,7 @@ async function Eliminar_libro(isbn_code){
 async function Actualizar_libro(
     isbn_code,
     titulo,
+    id_autor,
     descripcion,
     fecha_publicacion,
     numero_de_paginas,
@@ -119,8 +120,8 @@ async function Actualizar_libro(
 ) {
 
     const result = await db_client.query(
-    'UPDATE libros SET titulo = $2, descripcion = $3, fecha_publicacion=$4,numero_de_paginas = $5, imagen_portada=$6,idioma_id = $7  WHERE isbn_code = $1  RETURNING titulo',
-    [ isbn_code, titulo, descripcion, fecha_publicacion,numero_de_paginas,imagen_portada, idioma_id]
+    'UPDATE libros SET titulo = $2, id_autor= $8, descripcion = $3, fecha_publicacion=$4,numero_de_paginas = $5, imagen_portada=$6,idioma_id = $7  WHERE isbn_code = $1  RETURNING titulo',
+    [ isbn_code, titulo, descripcion, fecha_publicacion,numero_de_paginas,imagen_portada, idioma_id, id_autor]
     );
     
     if (result.rowCount === 0) {
