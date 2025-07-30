@@ -4,107 +4,6 @@ const id_autor = urlParams.get('id_autor');
 const url = `http://localhost:3000/api/autores/${id_autor}`;
 const default_icon = 'https://www.ipburger.com/wp-content/uploads/2023/06/Untitled-36-%C3%97-36-in-2023-05-20T120139.136-1024x1024-1.webp';
 
-function crear_retrato(retrato){
-    const contenedor = document.getElementById('contenedor-retrato-autor');   
-
-    const imagen = document.createElement('img');
-    imagen.classList.add('imagen-retrato');
-
-    if (retrato === null){
-        retrato = default_icon;
-    }
-    imagen.src = retrato;
-    
-    contenedor.appendChild(imagen);
-    return;
-}
-
-function crear_info(autor){
-    const {
-        nombre_completo,
-        nombre_pais,
-        fecha_nacimiento, 
-        biografia
-    } = autor;
-
-    const contenedor = document.getElementById('contenedor-informacion');
-
-    // Nombre autor
-    const nombre = document.createElement('h1');
-    nombre.classList.add('nombre-autor');
-    nombre.innerText = nombre_completo;
-    contenedor.appendChild(nombre);
-
-    // Fecha nacimiento y nacionalidad
-    const nacionalidad = document.createElement('h3');
-    nacionalidad.innerText = `Nacionalidad: ${nombre_pais}`;
-
-    const nacimiento = document.createElement('h3');
-    if (fecha_nacimiento === null){
-        nacimiento.innerText = `Fecha de nacimiento: Desconocida`;
-    }
-    else{
-         nacimiento.innerText = `Fecha de nacimiento: ${fecha_nacimiento}`;
-    }
-   
-    const informacion = document.createElement('div');
-    informacion.classList.add('info-basica');
-    informacion.appendChild(nacionalidad);
-    informacion.appendChild(nacimiento);
-    contenedor.appendChild(informacion);
-
-    //biografia
-    const contenedor_bio = document.createElement('div');
-    contenedor_bio.id = 'contenedor-bio';
-
-    const titulo = document.createElement('h3');
-    titulo.innerText = 'Biografia:';
-
-    const bio = document.createElement('p');
-    bio.id = 'biografia-autor';
-    bio.innerText = biografia;
-
-    contenedor_bio.appendChild(titulo);
-    contenedor_bio.appendChild(bio);
-    contenedor.appendChild(contenedor_bio);
-    
-}
-
-function linkear_botones(autor){
-    const boton_editar = document.getElementById('boton-editar');
-    boton_editar.href = `./editar/?id_autor=${autor.id_autor}&nombre=${autor.nombre_completo}`;
-
-    const boton_borrar = document.getElementById('boton-borrar');
-    boton_borrar.addEventListener("click", async () => {
-        const confirmado = confirm("Desea eliminar este autor?");
-        if (confirmado){
-            const result = await fetch(url, {
-                method: 'DELETE'
-            })
-            window.location.href = '../autores/'
-        }
-        else{ 
-            return;
-        }
-    });
-}
-
-function crear_contenedor(autor) {
-    
-    crear_retrato(autor.retrato);
-    crear_info(autor);
-    return;
-}
-
-
-async function fetch_data() {
-    const response = await fetch(url);
-    const autor = await response.json();
-    linkear_botones(autor);
-    crear_contenedor(autor);
-    llenar_biblioteca(autor.libros);
-    return;
-}
 
 function llenar_biblioteca(libros){
     const biblioteca = document.getElementById('contenedor-biblioteca');
@@ -155,6 +54,122 @@ function crear_libro(libro){
     contenedor_nombre.appendChild(titulo_libro);
 
     return link;
+}
+
+
+function estandarizar_info(autor){
+    const campos  = ["fecha_nacimiento", "nombre_pais", "retrato", "biografia"];
+
+    for (const campo of campos){
+        if (autor[campo] === null){
+            autor[campo] = "Desconocido";
+        }
+        else if (campo === "fecha_nacimiento"){
+            autor[campo] = autor[campo].split("T")[0];
+        }
+    }
+    return {...autor};
+}
+
+function crear_info(autor){
+    const autor_estandar = estandarizar_info(autor);
+    const {
+        nombre_completo,
+        nombre_pais,
+        fecha_nacimiento, 
+        biografia
+    } = autor_estandar;
+
+    const contenedor = document.getElementById('contenedor-informacion');
+
+    // Nombre autor
+    const nombre = document.createElement('h1');
+    nombre.classList.add('nombre-autor');
+    nombre.innerText = nombre_completo;
+    contenedor.appendChild(nombre);
+
+    // Fecha nacimiento y nacionalidad
+    const nacionalidad = document.createElement('h3');
+    nacionalidad.innerText = `Nacionalidad: ${nombre_pais}`;
+
+    const nacimiento = document.createElement('h3');
+    if (fecha_nacimiento === null){
+        nacimiento.innerText = `Fecha de nacimiento: Desconocida`;
+    }
+    else{
+         nacimiento.innerText = `Fecha de nacimiento: ${fecha_nacimiento}`;
+    }
+   
+    const informacion = document.createElement('div');
+    informacion.classList.add('info-basica');
+    informacion.appendChild(nacionalidad);
+    informacion.appendChild(nacimiento);
+    contenedor.appendChild(informacion);
+
+    //biografia
+    const contenedor_bio = document.createElement('div');
+    contenedor_bio.id = 'contenedor-bio';
+
+    const titulo = document.createElement('h3');
+    titulo.innerText = 'Biografia:';
+
+    const bio = document.createElement('p');
+    bio.id = 'biografia-autor';
+    bio.innerText = biografia;
+
+    contenedor_bio.appendChild(titulo);
+    contenedor_bio.appendChild(bio);
+    contenedor.appendChild(contenedor_bio);
+    
+}
+
+function crear_retrato(retrato){
+    const contenedor = document.getElementById('contenedor-retrato-autor');   
+
+    const imagen = document.createElement('img');
+    imagen.classList.add('imagen-retrato');
+
+    if (retrato === null){
+        retrato = default_icon;
+    }
+    imagen.src = retrato;
+    
+    contenedor.appendChild(imagen);
+    return;
+}
+
+function crear_contenedor(autor) {
+    crear_retrato(autor.retrato);
+    crear_info(autor);
+    return;
+}
+
+function linkear_botones(autor){
+    const boton_editar = document.getElementById('boton-editar');
+    boton_editar.href = `./editar/?id_autor=${autor.id_autor}&nombre=${autor.nombre_completo}`;
+
+    const boton_borrar = document.getElementById('boton-borrar');
+    boton_borrar.addEventListener("click", async () => {
+        const confirmado = confirm("Desea eliminar este autor?");
+        if (confirmado){
+            const result = await fetch(url, {
+                method: 'DELETE'
+            })
+            window.location.href = '/autores/'
+        }
+        else{ 
+            return;
+        }
+    });
+}
+
+async function fetch_data() {
+    const response = await fetch(url);
+    const autor = await response.json();
+    linkear_botones(autor);
+    crear_contenedor(autor);
+    // llenar_biblioteca(autor.libros);
+    return;
 }
 
 
