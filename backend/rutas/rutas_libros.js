@@ -54,9 +54,9 @@ router.post('/api/libros', async (req, res)=>{
         idioma_id
         } = req.body;
 
-    if (!isbn_code || !titulo || !descripcion || !numero_de_paginas || !idioma_id) {
+    if (!isbn_code || !titulo) {
         return res.status(400).json({
-        error: 'Faltan campos obligatorios. Asegurate de enviar isbn_code, titulo, descripcion, numero_de_paginas e idioma_id.'
+        error: 'Faltan campos obligatorios. Asegurate de enviar isbn_code, titulo'
         });
     }
     
@@ -72,11 +72,11 @@ router.post('/api/libros', async (req, res)=>{
     return res.status(400).json({ error: 'fecha_publicacion debe tener formato de fecha válido (año-mes-dia).' });
     }
     
-    if (typeof descripcion !== 'string' || descripcion.trim() === '') {
+    if (descripcion && (descripcion !== 'string' || descripcion.trim() === '')) {
     return res.status(400).json({ error: 'descripcion debe ser un texto no vacío.' });
     }
     
-    if (!Number.isInteger(Number(numero_de_paginas)) || Number(numero_de_paginas) <= 0) {
+    if (numero_de_paginas && (!Number.isInteger(Number(numero_de_paginas)) || Number(numero_de_paginas) <= 0)) {
     return res.status(400).json({ error: 'numero_de_paginas debe ser un número entero positivo.' });
     }
     
@@ -84,7 +84,7 @@ router.post('/api/libros', async (req, res)=>{
     return res.status(400).json({ error: 'imagen_portada debe ser una cadena de texto (URL).' });
     }
     
-    if (!Number.isInteger(Number(idioma_id)) || Number(idioma_id) < 0) {
+    if (idioma_id && (!Number.isInteger(Number(idioma_id)) || Number(idioma_id) < 0)) {
     return res.status(400).json({ error: 'idioma_id debe ser un número entero.' });
     }
  
@@ -106,6 +106,10 @@ router.post('/api/libros', async (req, res)=>{
         if (error.code==='23505') {
             return res.status(409).json({ error: 'El libro que intentas crear ya existe'});
         };
+        if (error.code==='23505') {
+            return res.status(404).json({ error: 'El idioma o el autor no esta disponible o no existe'});
+        };
+        console.log(error);
         return res.status(500).json({error: 'Error del servidor no se pudo crear el libro.'});
     };
     

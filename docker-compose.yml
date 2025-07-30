@@ -28,6 +28,10 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_NAME: librillo
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: ["./wait-for-it.sh", "librillo_db:5432", "--", "npm", "run", "dev"]
 
   frontend:
     image: nginx:alpine

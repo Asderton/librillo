@@ -77,16 +77,15 @@ async function Obtener_libro(isbn_code) {
     return {...result.rows[0], etiquetas, libros_autor};
 }
 
-
 async function Crear_libro(
     isbn_code,
     titulo,
-    id_autor,
-    descripcion,
-    fecha_publicacion,
-    numero_de_paginas,
-    imagen_portada,
-    idioma_id
+    id_autor = null,
+    descripcion = null,
+    fecha_publicacion = null,
+    numero_de_paginas = null,
+    imagen_portada = null,
+    idioma_id = null
 )
 {
     const result=await db_client.query(

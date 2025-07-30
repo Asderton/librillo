@@ -2,73 +2,50 @@ const url_idiomas = "http://localhost:3000/api/idiomas";
 const url_autores = "http://localhost:3000/api/autores";
 
 
-function crear_opcion_idioma(idioma){
-    const {id_idioma, nombre_idioma} = idioma
-    const opcion = document.createElement('option');
-    opcion.value = id_idioma;
-    opcion.innerText = nombre_idioma;
-    return opcion;
-}
-
-function crear_opcion_autor(autor){
-    const {id_autor, nombre_completo} = autor
-    const opcion = document.createElement('option');
-    opcion.value = id_autor;
-    opcion.innerText = nombre_completo;
-    return opcion;
-}
-
 function validar_datos(datos){
     const {
         isbn_code,
         titulo,
-        descripcion,
-        numero_de_paginas,
-        idioma_id
-    } = datos;
-
-    if (!isbn_code || !titulo || !descripcion || !numero_de_paginas || !idioma_id) {
-        return alert("Faltan campos obligatorios");
-    }
-    if (!Number.isInteger(Number(isbn_code))) {
-        return alert("El codigo isbn debe ser un numero entero");
-    }
-    if (typeof titulo !== 'string' || titulo.trim() === '') {
-        return alert("El titulo debe ser un texto no vacio");
-    }   
-    if (typeof descripcion !== 'string' || descripcion.trim() === '') {
-        return alert("La descripcion debe ser un texto no vacio");
-    }
-    
-    if (!Number.isInteger(Number(numero_de_paginas)) || Number(numero_de_paginas) <= 0) {
-        return alert("El numero de paginas debe ser un entero positivo");
-    }
-
-}
-
-function estandarizar_datos(datos){
-    const {
-        fecha_publicacion,
         imagen_portada
     } = datos;
 
-    let fecha_estandar;
-    let imagen_estandar;
+    if (!isbn_code || !titulo) {
+        return alert('Faltan campos obligatorios. Asegurate de enviar isbn_code, titulo');
+    }
+    if (!Number.isInteger(Number(isbn_code))) {
+        return alert('isbn_code debe ser un número entero.');
+    }
+    if (typeof titulo !== 'string' || titulo.trim() === '') {
+        return alert('El titulo debe ser un texto no vacio');
+    }
+    if (imagen_portada && typeof imagen_portada !== 'string') {
+    return alert("La imagen de portada debe ser un URL a la imagen")
+    }
+    
+}
 
-    if(imagen_portada.trim() === ''){
-        retrato_estandar = null;
+function estandarizar_datos(datos){
+
+    if (datos.id_autor === ''){
+        datos.id_autor = null;
     }
-    else {
-        imagen_estandar = imagen_portada;
+    if (datos.idioma_id === ''){
+        datos.idioma_id = null;
+    }
+    if (datos.fecha_publicacion === ''){
+        datos.fecha_publicacion = null;
+    }
+    if (datos.numero_de_paginas === ''){
+        datos.numero_de_paginas = null;
+    }
+    if (datos.imagen_portada === ''){
+        datos.imagen_portada = null;
+    }
+    if (datos.descripcion === ''){
+        datos.descripcion = null;
     }
 
-    if (fecha_publicacion === ''){
-        fecha_estandar = null;
-    }
-    else{
-        fecha_estandar = fecha_publicacion;
-    }
-    return {...datos, imagen_portada: imagen_estandar, fecha_publicacion: fecha_estandar};
+    return {...datos};
 }
 
 async function manejar_submit(event){
@@ -93,12 +70,20 @@ async function manejar_submit(event){
     } else {
         const error = await respuesta.json();
         console.error(error);
+        alert(error.error);
         return;
     }
 }
 
+function crear_opcion_idioma(idioma){
+    const {id_idioma, nombre_idioma} = idioma
+    const opcion = document.createElement('option');
+    opcion.value = id_idioma;
+    opcion.innerText = nombre_idioma;
+    return opcion;
+}
 
-async function llenar_idiomas(idiomas) 
+function llenar_idiomas(idiomas) 
 {
     const dropdown = document.getElementById("idiomas");
     for (const idioma of idiomas){
@@ -106,6 +91,14 @@ async function llenar_idiomas(idiomas)
         dropdown.appendChild(opcion);
     }
     return;
+}
+
+function crear_opcion_autor(autor){
+    const {id_autor, nombre_completo} = autor
+    const opcion = document.createElement('option');
+    opcion.value = id_autor;
+    opcion.innerText = nombre_completo;
+    return opcion;
 }
 
 function llenar_autores(autores){
@@ -121,11 +114,13 @@ function llenar_autores(autores){
 async function fetch_data() {
     const respuesta_idiomas = await fetch(url_idiomas);
     const idiomas = await respuesta_idiomas.json();
+    llenar_idiomas(idiomas);
+
     const respuesta_autores = await fetch(url_autores);
     const autores = await respuesta_autores.json();
-
-    llenar_idiomas(idiomas);
     llenar_autores(autores);
+
+
 
 }
 
