@@ -58,13 +58,25 @@ main{
     padding: 0.5rem;
 }
 
-.nombre-username{
-    height: 100%;
-    width: 100%;
-    text-align: center;
-    place-content: top;
+#seguidores {
+    margin-left: 0.5rem;
 }
 
+#boton-seguir {
+    background-color: transparent;
+    color: #A8B9CA;
+    border: #A8B9CA 1px solid;
+    border-radius: 3px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+#boton-seguir:hover {
+    color: whitesmoke;
+    cursor: pointer;
+    border: whitesmoke 1px solid;;
+}
 
 
 #contenedor-bio{

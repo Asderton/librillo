@@ -20,20 +20,54 @@ function crear_retrato(retrato){
     return;
 }
 
-function crear_info(usuario){
+async function crear_info(usuario){
     const {
         username,
         nombre,
         bio
     } = usuario;
 
+                //     <div class = contenedor_username>
+                //     <h1 class="nombre-username">SRTOSTON</h1>
+                //     <a>Seguidos</a>
+                //     <a>Seguidores</a>
+                //     <button id="boton-seguir">Dejar de seguir</button>
+                // </div>
+
     const contenedor = document.getElementById('contenedor-informacion');
 
-    // Nombre autor
+    // Nombre y seguidos etc...
+
     const titulo_username = document.createElement('h1');
     titulo_username.classList.add('nombre-username');
-    titulo_username.innerText = username;
-    contenedor.appendChild(titulo_username);
+    titulo_username.innerText = username.toUpperCase();
+
+    const seguidos = document.createElement('a');
+    seguidos.href = `./seguidos/?username=${username}`;
+    seguidos.innerText = "Seguidos";
+
+    const seguidores = document.createElement('a');
+    seguidores.href = `./seguidores/?username=${username}`;
+    seguidores.innerText = "Seguidores";
+    seguidores.id = "seguidores";
+
+    const boton_seguir = document.createElement('button');
+    boton_seguir.id = "boton-seguir";
+    boton_seguir.innerText = "Colocar aca seguir o dejar de seguir xd";
+
+    const contenedor_username = document.createElement('div');
+    contenedor_username.classList.add('contenedor_username');
+    contenedor_username.appendChild(titulo_username);
+    contenedor_username.appendChild(seguidos);
+    contenedor_username.appendChild(seguidores);
+    contenedor_username.appendChild(boton_seguir);
+
+    contenedor.appendChild(contenedor_username);
+    // contenedor.appendChild(titulo_username);
+    // const contenedor_username = document.createElement('div');
+    // contenedor_username.classList.add('contenedor-username');
+
+
 
     // Fecha nacimiento y nacionalidad
     const nombre_perfil = document.createElement('h3');
