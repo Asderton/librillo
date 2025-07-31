@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<head>
+    <title>Autores</title>
+    <link rel="stylesheet" href="./editar_autor.css">
+    <link rel="stylesheet" href="../../styles/general.css">
+</head>
+<body>
+    <header>
+        <div class="barra-navegacion" id="contenedor_barra_navegacion">
+            <a href="/" id="link-logo">
+                <img src="/images/logo-prueba-final.png" id="imagen-logo">
+            </a>
+            <nav class="botones-nav" id="botones-nav">
+                <a class="boton-nav" href="/libros/"><b>LIBROS</b></a>
+                <a class="boton-nav" href="/usuarios/"><b>USUARIOS</b></a>
+                <a class="boton-nav" href="/autores/"><b>AUTORES</b></a>
+                <a class="boton-nav" href="/login/"><b>LOGIN</b></a>
+            </nav>
+        </div>
+    </header>
+    <main>
+            <H1 id="mensaje-editando"></H1>
+            <form method="POST"  onsubmit="manejar_submit(event)">
+                <div class="contenedor-campo">
+                    <label for="nombre-autor">NOMBRE</label>
+                    <input class="form-input" type="text" name="nombre_completo" id="nombre-autor" required autocomplete="off">
+                </div>
+                <div class="contenedor-campo">
+                    <label for="nacionalidades">NACIONALIDAD</label>
+                    <select class="form-input" name="nacionalidad" id="nacionalidades">
+                        <option value="">Desconocido</option> 
+                        </select>
+                </div>
+                <div class="contenedor-campo">
+                    <label for="fecha-nacimiento">FECHA DE NACIMIENTO</label>
+                    <input class="form-input" type="date" name="fecha_nacimiento" id="fecha-nacimiento">
+                </div>
+                <div class="contenedor-campo">
+                    <label for="retrato-autor">LINK A FOTO DEL AUTOR</label>
+                    <input class="form-input" type="url" name="retrato" id="retrato-autor" autocomplete="off">
+                </div>
+                <div class="contenedor-campo">
+                    <label for="biografia-autor">BIOGRAFIA</label>
+                    <textarea class="form-input" name="biografia" id="biografia-autor"  autocomplete="off"></textarea>
+                </div>
+                <input type="submit" id="submit-button" name="submit" value="Editar autor">
+            </form>
+    </main>
+    <script src="./editar_autor.js"></script>
+</body>

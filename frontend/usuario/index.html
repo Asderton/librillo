@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+    <title>Usuario</title>
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="./usuario.css">
+    <script src="/scripts//fetchear.js"></script>
+</head>
+<body>
+    <header>
+        <div class="barra-navegacion" id="contenedor_barra_navegacion">
+            <a href="/" id="link-logo">
+                <img src="/images/logo-prueba-final.png" id="imagen-logo">
+            </a>
+            <nav class="botones-nav" id="botones-nav">
+                <a class="boton-nav" href="/libros/"><b>LIBROS</b></a>
+                <a class="boton-nav" href="/usuarios/"><b>USUARIOS</b></a>
+                <a class="boton-nav" href="/autores/"><b>AUTORES</b></a>
+                <a class="boton-nav" href="/login/"><b>LOGIN</b></a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <a class ="opciones" id="cerrar-sesion">Cerrar Sesion</a>
+        <div class="contenedor-botones opciones">
+            <a id="boton-editar">Editar</a>
+            <a id="boton-borrar">Borrar</a>
+        </div>
+        <div class="container contenedor-autor" id="contenedor-autor">
+            <div class="container contenedor-retrato" id="contenedor-imagen-usuario"></div>
+            <div class="container contenedor-informacion" id="contenedor-informacion"></div>
+        </div>
+        <div class="container" id="footer">
+            <div id="contenedor-libros-autor">
+                <h3>Libros Favoritos: (Implementar luego de bibliotecas)</h3>
+                <div class="contenedor_biblioteca" id="contenedor-biblioteca"></div>
+            </div>
+        </div>
+    </main>
+    <script src="./usuario.js"></script>
+</body>

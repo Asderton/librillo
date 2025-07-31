@@ -6,28 +6,36 @@ function validar_request_autor(body){
         nombre_completo,
         nacionalidad,
         fecha_nacimiento,
-        retrato
+        retrato, 
+        biografia
     } = body;
 
     //validar campos obligatorios
     if (!nombre_completo) {
+        console.log(nombre_completo);
         return {resultado: false, status: 400, mensaje: "Campos obligatorios faltantes!"};
     };
 
     //validar tipos de datos
-    if (typeof nombre_completo !== 'string' || nombre_completo.trim() === ''){
+    if (nombre_completo.trim() === ''){
+
         return {resultado: false, status: 400, mensaje: "El nombre del autor no puede estar vacio!"};
     };
     if(nacionalidad && !Number.isInteger(Number(nacionalidad))){
         return {resultado: false, status: 400, mensaje: "Formato de nacionalidad invalido!"};
-        //Falta ver si nacionalidad existe en la tabla :)
+
+
     };
+    if (biografia && biografia.trim() === ''){
+        return {resultado: false, status: 400, mensaje: "La biografia no puede ser un texto vacio"};
+    }
     if (fecha_nacimiento && !Number.isInteger(Number(Date.parse(fecha_nacimiento)))){
         return {resultado: false, status: 400, mensaje: "Formato de fecha invalido!"};
     };
     if (retrato && !es_url_valido(retrato)){
         return {resultado: false, status: 400, mensaje: "El URL de la imagen no es valido!"};
-    }
+    };
+
 
     return {resultado: true, status: 200, mensaje: "OK"};
 }

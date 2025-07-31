@@ -13,29 +13,23 @@ async function Obtener_etiqueta(id_etiqueta) {
     return result.rows[0];
 }
 
-async function Crear_etiqueta(
-    id_etiqueta,
-    nombre_etiqueta
-) {
-    
-    const result=await db_client.query(
-        'INSERT INTO etiqueta (id_etiqueta, nombre_etiqueta ) VALUES ($1, $2)  RETURNING *' , 
-        [id_etiqueta, nombre_etiqueta]
+async function Crear_etiqueta(nombre_etiqueta){
+
+    const query='INSERT INTO etiquetas (nombre_etiqueta ) VALUES ($1)  RETURNING *';
+    const result=await db_client.query( query, [ nombre_etiqueta]
     )
-    if (result.rowCount === 0) {
-        return undefined;
-        }
+
     return result.rows[0];
 }
 
-async function Eliminar_etiqueta(i){
+async function Eliminar_etiqueta(id_etiqueta){
 
-    const result=await db_client.query('DELETE FROM etiqueta WHERE id_etiqueta=$1 RETURNING nombre_etiqueta', [id_etiqueta]);
+    const result=await db_client.query('DELETE FROM etiquetas WHERE id_etiqueta=$1 RETURNING nombre_etiqueta', [id_etiqueta]);
     
     if (result.rowCount === 0) {
         return undefined;
     }
-    result.rows[0].nombre_etiqueta;
+    return result.rows[0].nombre_etiqueta;
 }
 
 

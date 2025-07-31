@@ -1,0 +1,91 @@
+main{
+    display: grid;
+    grid-area: main;
+    grid-template-columns: 1fr 67rem 1fr;
+    grid-template-rows: 4.5rem max-content 1fr;
+    grid-template-areas:
+    'aside mensaje aside2'
+    'aside form aside2'
+    'aside bottom aside2';
+    padding: 1.5rem;
+    font-family: 'Times New Roman', Times, sans-serif;
+    color: #A8B9CA;
+}
+
+#mensaje-editando{
+    grid-area: mensaje;
+    text-align: center;
+}
+
+form{
+    display: flex;
+    height: 50vh;
+    grid-area: form;
+    flex-direction: column;
+    justify-content: space-around; 
+    align-items: center; 
+}
+
+
+.contenedor-campo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+
+}
+
+label{
+    font-size: 40px;
+
+}
+
+.form-input{
+    width: 60%;
+    height: max-content;
+    border-radius: 20px;
+    padding-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    background-color:#A8B9CA;
+    border: black solid 2px;
+    font-family: 'Times New Roman', Times, sans-serif;
+    text-align: center;
+    color: #14181C;
+    font-size: 30px;
+}
+
+#biografia-autor {
+    width: 100%;
+    font-size: 16px;
+    padding: 0.5rem ;
+    text-align: justify;
+    align-items: left;
+    height: 6rem;
+    white-space: normal;   
+    word-wrap: break-word;
+}
+
+option{
+    font-size: 15px;
+}
+
+#submit-button{
+    margin-top: 20px;
+    height: 3rem;
+    width: 30%;
+    border-radius: 20px;
+    background-color:#A8B9CA;
+    border: black solid 2px;
+    font-family: 'Times New Roman', Times, sans-serif;
+    text-align: center;
+    color: #14181C;
+    font-size: 30px;
+}
+
+#submit-button:hover{
+    cursor: pointer;;
+    transform: translateY(-0.2rem);
+    color: gray;
+    text-shadow: #080A0C;
+}

@@ -1,28 +1,32 @@
-run_back:
-	@npm run dev
+sudo_app: back front
+	@echo "App funcionando:"
+	@echo "API puerto: 3000"
+	@echo "Frontend puerto: 8080"
 
-# Correr y detener la base de datos
-run_db:
-	@cd ./backend && sudo docker compose up -d
-	@docker ps
-	@echo "Base de datos iniciada con exito"
 
-stop_db:
-	@cd ./backend && sudo docker compose down
-	@docker ps
-	@echo "Base de datos detenida con exito"
+sudo_back: 
+	@gnome-terminal --title="API" -- bash -c "sudo docker compose up backend; exec bash"
+	@echo "--Backend corriendo"
 
-# Cuando ya tengas la base de datos corriendo, ejecuta este para crear todas las tablas
-crear_db:
-	@docker exec -i librillo_db psql -U postgres -c "CREATE DATABASE librillo" 
+sudo_front:
+	@gnome-terminal --title="FRONTEND" -- bash -c "sudo docker compose up frontend"
+	@echo "--Frontend corriendo"
 
-crear_tablas_db:
-	@docker exec -i librillo_db psql -U postgres -d librillo < ./backend/scripts/tablas.sql
-	@echo "Tablas de Base de datos creadas con exito"
 
-llenar_tablas_db:
-	@docker exec -i librillo_db psql -U postgres -d librillo < ./backend/scripts/inserts.sql
-	@echo "Base de datos llenada con exito"
+app: back front
+	@echo "App funcionando:"
+	@echo "API puerto: 3000"
+	@echo "Frontend puerto: 8080"
+
+
+back: 
+	@gnome-terminal --title="API" -- bash -c "docker compose up backend; exec bash"
+	@echo "--Backend corriendo"
+
+front:
+	@gnome-terminal --title="FRONTEND" -- bash -c "docker compose up frontend"
+	@echo "--Frontend corriendo"
+
 
 # Para acceder a hacer consultas (tiene que estar corriendo la base de datos)
 acceder_db:

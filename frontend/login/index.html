@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+    <title>Libro</title>
+    <link rel="stylesheet" href="./login.css">
+    <link rel="stylesheet" href="/styles/general.css">
+    <script src="/scripts/fetchear.js"></script>
+</head>
+<body>
+    <header>
+        <div class="barra-navegacion" id="contenedor_barra_navegacion">
+            <a href="/" id="link-logo">
+                <img src="/images/logo-prueba-final.png" id="imagen-logo">
+            </a>
+            <nav class="botones-nav" id="botones-nav">
+                <a class="boton-nav" href="/libros/"><b>LIBROS</b></a>
+                <a class="boton-nav" href="/usuarios/"><b>USUARIOS</b></a>
+                <a class="boton-nav" href="/autores/"><b>AUTORES</b></a>
+                <a class="boton-nav" href="/login/"><b>LOGIN</b></a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <H1 id="mensaje-crear">Inicio de sesion</H1>
+        <form method="POST" action="http://localhost:3000/api/login" onsubmit="manejar_submit(event)">
+            <div class="contenedor-campo">
+                <label for="username">NOMBRE USUARIO</label>
+                <input class="form-input" type="text" name="username" id="username" required autocomplete="off">
+            </div>
+            <div class="contenedor-campo">
+                <label for="clave">CONTRASEÑA</label>
+                <input class="form-input" type="password" name="clave_plana" id="clave" required autocomplete="off">
+            </div>
+            <input type="submit" id="submit-button" name="submit" value="Iniciar Sesion" class="boton-inferior">
+            <a href="./crear/" id="boton-crear" class="boton-inferior">Crear Usuario</a>
+        </form>
+    </main>
+    <script src="./login.js"></script>
+</body>

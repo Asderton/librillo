@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<head>
+    <title>Libros</title>
+    <link rel="stylesheet" href="./libros.css">
+    <link rel="stylesheet" href="/styles/general.css">
+    <script src="/scripts/fetchear.js"></script>
+</head>
+<body>
+    <header>
+        <div class="barra-navegacion" id="contenedor_barra_navegacion">
+            <a href="/" id="link-logo">
+                <img src="/images/logo-prueba-final.png" id="imagen-logo">
+            </a>
+            <nav class="botones-nav" id="botones-nav">
+                <a class="boton-nav" href="/libros/"><b>LIBROS</b></a>
+                <a class="boton-nav" href="/usuarios/"><b>USUARIOS</b></a>
+                <a class="boton-nav" href="/autores/"><b>AUTORES</b></a>
+                <a class="boton-nav" href="/login/"><b>LOGIN</b></a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <a id="boton-crear-autor" href="./crear/">Crear libro</a>
+        <div class="container contenedor_mensaje" id="contenedor_mensaje_bienvenida">
+            <h1>Nuestros Libros</h1>
+            <h3>En esta sección encontraras todos los libros que actualmente tenemos en nuestra base de datos</h3>
+        </div>
+        <div class="container" id="contenedor_recomendados">
+            <h3>Nuestros Libros:</h3>
+            <div class="contenedor_biblioteca" id="contenedor_biblioteca">
+            </div>
+        </div>
+    </main>
+    <script src="./libros.js"></script>
+</body>

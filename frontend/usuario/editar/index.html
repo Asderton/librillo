@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+    <title>Libro</title>
+    <link rel="stylesheet" href="./editar_usuario.css">
+    <link rel="stylesheet" href="/styles/general.css">
+    <script src="/scripts/fetchear.js"></script>
+</head>
+<body>
+    <header>
+        <div class="barra-navegacion" id="contenedor_barra_navegacion">
+            <a href="/" id="link-logo">
+                <img src="/images/logo-prueba-final.png" id="imagen-logo">
+            </a>
+            <nav class="botones-nav" id="botones-nav">
+                <a class="boton-nav" href="/libros/"><b>LIBROS</b></a>
+                <a class="boton-nav" href="/usuarios/"><b>USUARIOS</b></a>
+                <a class="boton-nav" href="/autores/"><b>AUTORES</b></a>
+                <a class="boton-nav" href="/login/"><b>LOGIN</b></a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <H1 id="mensaje-crear">Cambiar clave (No esta implementado jeje)</H1>
+        <form method="POST" action="http://localhost:3000/api/usuarios" onsubmit="manejar_submit(event)">
+            <div class="contenedor-campo">
+                <label for="nombre">NOMBRE</label>
+                <input class="form-input" type="text" name="nombre" id="nombre" required autocomplete="off">
+            </div>          
+            <div class="contenedor-campo">
+                <label for="foto_perfil">LINK FOTO PERFIL</label>
+                <input class="form-input" type="url" name="foto_perfil" id="foto_perfil" autocomplete="off">
+            </div>
+            <div class="contenedor-campo">
+                <label for="username">BIOGRAFIA</label>
+                <input class="form-input" type="text" name="bio" id="bio" autocomplete="off">
+            </div>                        
+            <input type="submit" id="submit-button" name="submit" value="Editar Usuario">
+        </form>
+    </main>
+    <script src="./editar_usuario.js"></script>
+</body>
+
