@@ -30,16 +30,23 @@ async function manejar_logout(event) {
     window.location.href = '/';
 }
 
+
+function mostrar_main(){
+    const main = document.getElementById("main");
+    main.style.visibility = 'visible';
+}
+
+
 async function comprobar_sesion() {
     const url = "http://localhost:3000/api/me";
     const result = await fetchear(url);
     if (result.ok){
         const usuario = await result.json();
         const { username, foto_perfil } = usuario;
-        console.log(`username: ${username} foto: ${foto_perfil}`);
         window.location.href = `../usuario/?username=${username}`;
     }
     else {
+        mostrar_main();
         const error = await result.json();
         console.error(error);
         return;

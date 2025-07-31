@@ -197,7 +197,6 @@ function mostrar_opciones(){
 async function unfollow(usuario) {
     const respuesta = await fetchear(`http://localhost:3000/api/usuarios/seguidos/${usuario}`, {method: 'DELETE'});
     if (respuesta.ok){
-        alert(`Has dejado de seguir a ${usuario}`);
         location.reload();
     }
 }
@@ -205,7 +204,6 @@ async function unfollow(usuario) {
 async function follow(usuario) {
     const respuesta = await fetchear(`http://localhost:3000/api/usuarios/seguidos/${usuario}`, {method: 'POST'});
     if (respuesta.ok){
-        alert(`Has empezado a seguir a ${usuario}`);
         location.reload();
     }
 }
