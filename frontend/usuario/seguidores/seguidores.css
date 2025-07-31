@@ -1,0 +1,66 @@
+main{
+    display: grid;
+    grid-area: main;
+    grid-template-columns: 1fr 67rem 1fr;
+    grid-template-rows: 4.5rem 1fr 1fr;
+    grid-template-areas: 
+    'aside bienvenida botones'
+    'aside usuarios aside2'
+    'aside espacio aside2';
+    padding: 1.5rem;
+    color: #A8B9CA;
+}
+
+.contenedor_mensaje {
+    grid-area: bienvenida;
+    place-content: center;
+    text-align: center;
+}
+
+#mensaje-bienvenida {
+    width: 100%;
+}
+
+.contenedor-usuarios {
+    grid-area: usuarios;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 2rem;
+    padding-left: 8rem;
+}
+
+.link-usuario {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.link-unfollow {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    border: #A8B9CA 1px solid;
+    border-radius: 3px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    visibility: hidden;
+}
+
+.usuario {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.nombre-usuario {
+    text-align: center;
+    align-items: center;
+}
+
+.imagen-usuario {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+}
