@@ -16,11 +16,10 @@ const router_etiquetas_libros=require('./rutas/rutas_etiquetas_libros.js');
 const router_idiomas = require('./rutas/rutas_idiomas.js');
 
 
-
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(middleware_error);
+
 
 app.use(router_paises);
 app.use(router_login);
@@ -32,7 +31,7 @@ app.use(router_libros);
 app.use(router_etiquetas);
 app.use(router_etiquetas_libros);
 app.use(router_idiomas);
-
+app.use(middleware_error);
 
 app.listen(port, () =>{
 console.log (`servidor escuchando en el puerto: ${port}`);

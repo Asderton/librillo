@@ -15,7 +15,7 @@ function firmar_objeto(objeto) {
 
 function middleware_error(err, req, res, next) {
     if(err.name === 'UnauthorizedError') {
-      res.status(err.status).send({ message: "Debe iniciar sesion!"});
+      res.status(err.status).json({ error: "Debe iniciar sesion!"});
       return;
     }
 

@@ -1,46 +1,19 @@
-function validar_datos(datos){
-    const {
-        nombre,
-        bio
-    } = datos;
+const urlParams = new URLSearchParams(window.location.search);
+const username_perfil = urlParams.get('username');
 
-    if (nombre.trim() === ''){
-        return alert("El nombre no puede estar vacio");
-    }
-    if (bio && bio.trim() ===  ''){
-        return alert("La bio no puede ser un texto vacio");
-    }
-    // Validar campos obligatorios
-    if (!nombre){
-        return alert("Campos obligatorios faltantes");
-    }
-
-}
+const url_usuario = `http://localhost:3000/api/usuarios/${username_perfil}`;
+const url_auth =  `http://localhost:3000/api/me`;
 
 function estandarizar_datos(datos){
-    const {
-        foto_perfil,
-        bio
-    } = datos;
+    const campos = ["foto_perfil", "bio"];
 
-    let foto_estandar;
-    let bio_estandar;
-
-    if (foto_perfil === ''){
-      foto_estandar = null;
-    }
-    else {
-        foto_estandar = foto_perfil;
+    for (const campo of campos){
+        if (datos[campo] === ""){
+            datos[campo] = null;
+        }
     }
 
-    if (bio === ''){
-        bio_estandar = null;
-    }
-    else{
-        bio_estandar = bio;
-    }
-
-    return {...datos, foto_perfil: foto_estandar, bio: bio_estandar};
+    return {...datos};
 }
 
 async function manejar_submit(event){
@@ -50,7 +23,6 @@ async function manejar_submit(event){
 
     const info_form = new FormData(form);
     const datos_form = Object.fromEntries(info_form.entries());
-    validar_datos(datos_form);
     const datos_estandatizados = estandarizar_datos(datos_form);
 
     const respuesta = await fetchear(url_post,{
@@ -60,15 +32,51 @@ async function manejar_submit(event){
     });
 
     if (respuesta.ok) {
-        alert('Usuario editado con exito')
+        alert('Usuario editado con exito');
         window.location.href = '/';
     } else {    
         const error = await respuesta.json();
-        if(respuesta.status === 409){
-            alert("Nombre de usuario en uso");
-        }
+        alert(error.error);
         console.error(error);
         return;
     }
 }
 
+async function llenar_defaults(){
+    const resultado = await fetch(url_usuario);
+    const usuario = await resultado.json();
+
+    const nombre = document.getElementById("nombre");
+    nombre.value = usuario.nombre;
+    const foto_perfil = document.getElementById("foto_perfil");
+    foto_perfil.value = usuario.foto_perfil;
+    const bio = document.getElementById("bio");
+    bio.value = usuario.bio;
+
+}
+
+async function check_auth(){
+    const respuesta = await fetchear(url_auth);
+    if (respuesta.ok){
+        const usuario = await respuesta.json();
+        if (usuario.username !== username_perfil){
+            alert("No estas registrado como este usuario!!");
+            window.location.href = '/usuarios/';
+            return;
+        }
+    }
+    else {
+        if (respuesta.status === 401){
+            alert("No estas autorizado para modificar este perfil");
+            window.location.href = '/usuarios/';
+        }
+        const error = await respuesta.json();
+        alert(error.error);
+        console.error(error);
+        return;
+    }
+
+    llenar_defaults()
+}
+
+window.addEventListener('load', check_auth);

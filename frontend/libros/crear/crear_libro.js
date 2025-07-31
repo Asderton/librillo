@@ -2,24 +2,12 @@ const url_idiomas = "http://localhost:3000/api/idiomas";
 const url_autores = "http://localhost:3000/api/autores";
 
 function estandarizar_datos(datos){
+    const campos = ["autor", "idioma_id", "fecha_publicacion", "numero_de_paginas", "imagen_portada", "descripcion"];
 
-    if (datos.id_autor === ''){
-        datos.id_autor = null;
-    }
-    if (datos.idioma_id === ''){
-        datos.idioma_id = null;
-    }
-    if (datos.fecha_publicacion === ''){
-        datos.fecha_publicacion = null;
-    }
-    if (datos.numero_de_paginas === ''){
-        datos.numero_de_paginas = null;
-    }
-    if (datos.imagen_portada === ''){
-        datos.imagen_portada = null;
-    }
-    if (datos.descripcion === ''){
-        datos.descripcion = null;
+    for (const campo of campos){
+        if (datos[campo] ===  ""){
+            datos[campo] = null;
+        }
     }
 
     return {...datos};
