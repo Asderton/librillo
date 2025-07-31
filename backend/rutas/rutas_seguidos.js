@@ -10,7 +10,7 @@ const {
 }= require('../modelos/modelos_seguidos.js');
 
 // Ver seguidos
-router.get ('/api/:username/seguidos', async (req,res) => {
+router.get ('/api/usuarios/:username/seguidos', async (req,res) => {
     const username = req.params.username;
     try{
         const seguidos = await get_all_seguidos(username);
@@ -26,7 +26,7 @@ router.get ('/api/:username/seguidos', async (req,res) => {
 });
 
 // Ver seguidores
-router.get ('/api/:username/seguidores', async (req,res) => {
+router.get ('/api/usuarios/:username/seguidores', async (req,res) => {
     const username = req.params.username;
     try{
         const seguidores = await get_all_seguidores(username);
@@ -42,7 +42,7 @@ router.get ('/api/:username/seguidores', async (req,res) => {
 });
 
 // Seguir
-router.post ('/api/seguidos/:username', middleware_jwt, async (req,res) =>{ 
+router.post ('/api/usuarios/seguidos/:username', middleware_jwt, async (req,res) =>{ 
     const usuario_cliente = req.auth.username;
     const usuario_a_seguir = req.params.username;
 
@@ -56,7 +56,7 @@ router.post ('/api/seguidos/:username', middleware_jwt, async (req,res) =>{
 })
 
 // Dejar de seguir
-router.delete ('/api/seguidos/:username', middleware_jwt, async (req, res) => {
+router.delete ('/api/usuarios/seguidos/:username', middleware_jwt, async (req, res) => {
     const usuario_a_unfollow = req.params.username;
     const usuario_cliente = req.auth.username;
 
