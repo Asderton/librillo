@@ -168,7 +168,7 @@ async function fetch_data() {
     const autor = await response.json();
     linkear_botones(autor);
     crear_contenedor(autor);
-    // llenar_biblioteca(autor.libros);
+    llenar_biblioteca(autor.libros);
     return;
 }
 
