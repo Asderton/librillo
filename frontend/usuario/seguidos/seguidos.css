@@ -17,6 +17,10 @@ main{
     text-align: center;
 }
 
+#mensaje-bienvenida {
+    width: 100%;
+}
+
 .contenedor-usuarios {
     grid-area: usuarios;
     display: flex;

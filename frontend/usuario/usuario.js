@@ -27,17 +27,9 @@ async function crear_info(usuario){
         bio
     } = usuario;
 
-                //     <div class = contenedor_username>
-                //     <h1 class="nombre-username">SRTOSTON</h1>
-                //     <a>Seguidos</a>
-                //     <a>Seguidores</a>
-                //     <button id="boton-seguir">Dejar de seguir</button>
-                // </div>
-
     const contenedor = document.getElementById('contenedor-informacion');
 
     // Nombre y seguidos etc...
-
     const titulo_username = document.createElement('h1');
     titulo_username.classList.add('nombre-username');
     titulo_username.innerText = username.toUpperCase();
@@ -53,7 +45,9 @@ async function crear_info(usuario){
 
     const boton_seguir = document.createElement('button');
     boton_seguir.id = "boton-seguir";
-    boton_seguir.innerText = "Colocar aca seguir o dejar de seguir xd";
+    boton_seguir.innerText = "";
+    boton_seguir.innerText = "Seguir";
+    boton_seguir.addEventListener('click', async ()=> follow(username_perfil));
 
     const contenedor_username = document.createElement('div');
     contenedor_username.classList.add('contenedor_username');
@@ -63,11 +57,6 @@ async function crear_info(usuario){
     contenedor_username.appendChild(boton_seguir);
 
     contenedor.appendChild(contenedor_username);
-    // contenedor.appendChild(titulo_username);
-    // const contenedor_username = document.createElement('div');
-    // contenedor_username.classList.add('contenedor-username');
-
-
 
     // Fecha nacimiento y nacionalidad
     const nombre_perfil = document.createElement('h3');
@@ -191,9 +180,9 @@ function crear_libro(libro){
 async function fetch_data() {
     const response = await fetch(url_info_usuario);
     const usuario = await response.json();
-    await comprobar_sesion();
     linkear_botones(usuario);
     crear_contenedor(usuario);
+    await comprobar_sesion();
     // llenar_biblioteca(autor.libros);
     return;
 }
@@ -205,18 +194,52 @@ function mostrar_opciones(){
     }
 }
 
+async function unfollow(usuario) {
+    const respuesta = await fetchear(`http://localhost:3000/api/usuarios/seguidos/${usuario}`, {method: 'DELETE'});
+    if (respuesta.ok){
+        alert(`Has dejado de seguir a ${usuario}`);
+        location.reload();
+    }
+}
+
+async function follow(usuario) {
+    const respuesta = await fetchear(`http://localhost:3000/api/usuarios/seguidos/${usuario}`, {method: 'POST'});
+    if (respuesta.ok){
+        alert(`Has empezado a seguir a ${usuario}`);
+        location.reload();
+    }
+}
+
+async function mostrar_boton_seguir(me_username) {
+    const boton = document.getElementById('boton-seguir');
+    boton.style.visibility = 'visible';
+
+    const respuesta = await fetch(`http://localhost:3000/api/usuarios/${me_username}/seguidos`);
+    const seguidos = await respuesta.json();
+
+    if (!seguidos.mensaje){
+        const usernames_seguidos = seguidos.map(s => s.username);
+        const set_seguidos = new Set(usernames_seguidos);
+        if (set_seguidos.has(`${username_perfil}`)){
+            boton.innerText = "Dejar de seguir";
+            boton.addEventListener('click', () => unfollow(username_perfil));
+        }
+    }
+
+}
+
+
 async function comprobar_sesion() {
     if (localStorage.getItem('token')){
         const url = "http://localhost:3000/api/me";
         const result = await fetchear(url);
         if (result.ok){
-            const usuario = await result.json();
-            const { username } = usuario;
-            if (username === username_perfil){
-                console.log('entro');
+            const usuario_cliente = await result.json();
+            if (usuario_cliente.username === username_perfil){
                 mostrar_opciones();
-                return;
             }
+            mostrar_boton_seguir(usuario_cliente.username);
+            return;
         }
         else {
             const error = await result.json();

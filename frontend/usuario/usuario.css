@@ -70,6 +70,7 @@ main{
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     margin-left: 0.5rem;
+    visibility: hidden;
 }
 
 #boton-seguir:hover {

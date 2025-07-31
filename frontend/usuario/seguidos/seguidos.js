@@ -70,7 +70,7 @@ async function crear_usuario(usuario){
 
 async function llenar_usuarios(usuarios){
     if (usuarios.mensaje){
-        alert("El usuario no tiene seguidores!!");
+        alert("El usuario no tiene seguidos!!");
         window.location.href = `/usuario/?username=${username_perfil}`;
     }
     const contenedor_usuarios = document.getElementById('contenedor-usuarios');
